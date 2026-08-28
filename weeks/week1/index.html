@@ -357,9 +357,7 @@
 
     <!-- Footer-->
     <footer>
-        <!--<div class="col-auto"><div class="small m-0 text-white">Fab Academy · Derek Rodríguez Cancino · Fab Lab Puebla · México · 201265@iberopuebla.mx</div></div>-->
-        <div class="col-auto"><div class="small m-0 text-gray">Copyright 2026 Derek Rodriguez - Creative Commons Attribution Non Commercial</div></div>
-        <div class="col-auto"><div class="small m-0 text-gray">Source code hosted at<a href="https://gitlab.fabcloud.org/academany/fabacademy/2026/labs/puebla/students/derek-rodriguez" style="color:gray;"> gitlab.fabcloud.org</a></div></div>
+        <div class="col-auto"><div class="small m-0 text-gray">Proyectos IV · Derek Rodríguez Cancino · Ibero Puebla · México · 201265@iberopuebla.mx</div></div>
     </footer>
 
     <!-- Bootstrap core JS-->
@@ -367,15 +365,82 @@
     <script> AOS.init(); </script>
     <!-- Core theme JS-->
     <script>
-    const links = document.querySelectorAll('.menu-link');
 
-    links.forEach(link => {
-        link.addEventListener('click', () => {
-            links.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
+        document.querySelectorAll(".cad-tabs-wrapper").forEach(wrapper => {
+
+        let currentGroup = wrapper.querySelector(".cad-group:not([style*='none'])")?.id 
+                            || wrapper.querySelector(".cad-group").id;
+
+        let menuIndex = 0;
+
+        function getMenus(){
+            return wrapper.querySelectorAll(
+            `#${currentGroup} .cad-menu`
+            );
+        }
+
+        function showMenu(){
+            const menus = getMenus();
+            menus.forEach(m => m.classList.remove("active"));
+            if(menus.length > 0){
+            menus[menuIndex].classList.add("active");
+            }
+        }
+
+        wrapper.querySelectorAll(".cad-arrow").forEach(btn=>{
+            btn.addEventListener("click", e=>{
+            const dir = btn.classList.contains("left") ? -1 : 1;
+            const menus = getMenus();
+
+            menuIndex += dir;
+
+            // carrusel infinito
+            if(menuIndex < 0) menuIndex = menus.length - 1;
+            if(menuIndex >= menus.length) menuIndex = 0;
+
+            showMenu();
+            });
         });
-    });
-</script>
+
+        wrapper.querySelectorAll(".cad-tab").forEach(tab=>{
+            tab.addEventListener("click", ()=>{
+
+            wrapper.querySelectorAll(".cad-tab")
+                .forEach(t=>t.classList.remove("active"));
+            tab.classList.add("active");
+
+            const group = tab.getAttribute("onclick")
+                ?.match(/'([^']+)'/)[1];
+
+            wrapper.querySelectorAll(".cad-group")
+                .forEach(g=>g.style.display="none");
+
+            const target = wrapper.querySelector("#"+group);
+            if(target){
+                target.style.display="block";
+                currentGroup = group;
+                menuIndex = 0;
+                showMenu();
+            }
+
+            });
+        });
+
+        showMenu();
+
+        });
+
+    </script>
+    <script>
+        const links = document.querySelectorAll('.menu-link');
+
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                links.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+    </script>
 
 </body>
 
