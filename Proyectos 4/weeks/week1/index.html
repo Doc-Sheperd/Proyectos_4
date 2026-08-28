@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="contact" content="201265@iberopuebla.mx" />
+    <meta name="author" content="Derek Rodríguez Cancino" />
+    <title>Week 1 | Fab Academy</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="../../assets/fablab.png" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="../../css/styles.css" rel="stylesheet">
+    <link href="../../css/faces.css" rel="stylesheet">
+</head>
+
+<body class="d-flex flex-column h-100" style="background-color:#fffffe">
+    <main class="flex-shrink-0">
+        <!-- Navigation-->
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+                <div class="container px-5">
+                    <!--<a class="navbar-brand">Fab Academy</a>-->
+                    <a class="navbar-brand d-flex align-items-center" href="../../">
+                        <img src="../../assets/fablab.png" alt="FabLab Logo" width="40"height="40" class="me-2"> Fab Academy </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">                   
+                            <li class="nav-item"><a class="nav-link" href="../../index.html#yo">About Me</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../../index.html#proyect">Final project</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../../index.html#practicas">Weekly Assignments</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../../assets/index.html">Student Agreement</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+        <section class="week-header">
+            <div class="week-glass">
+                <h1>Week 1: Project Management</h1>
+                <div>This page presents the process of creating and updating my repository used to document the Fab Academy weekly work.</div>
+            </div>
+        </section>
+
+    <!-- Seccion de CONTENIDO-->
+        <section class="week-content">
+            <div class="week-layout">
+                <aside class="week-menu">
+                    <a href="#Basics" class="menu-link active">Basic for Fab</a>
+                    <a href="#Git" class="menu-link">Git</a>
+                    <a href="#VSC" class="menu-link">HTML & CSS</a>
+                    <a href="#DI" class="menu-link">Design Inspiration</a>
+                    <div class="side-shrimp">
+                        <img src="../../img/faces/AA.png" class="shrimp-dance" alt="Dancing shrimp">
+                    </div>
+                </aside>
+                <div class="week-paper">
+                    <h2 id="Basics">Before starting</h2>
+                    <div>
+                        Before uploading any documentation to the repository, it is necessary to install and configure the required software 
+                        tools that allow the communication between the local development environment and the cloud-based repository.<br>
+                        These tools enable version control, code editing, and synchronization of files throughout the documentation process.
+                        <ul>
+                            <li><strong>Visual Studio Code:</strong></li>
+                            <div><a href="https://share.google/Y9tIHsavfug9iPJpq">VS Code</a> it's a code editor used to develop and edit files such as 
+                                HTML, CSS, and JavaScript, among other programming and markup languages.
+                            </div>
+                            <li><strong>Git:</strong></li>
+                            <div>In the Fab Lab, <a href="https://share.google/YTuw1Y6wq2DQlzekt">Git</a> is used as a version control system to upload, update, 
+                            and maintain weekly documentation. It allows changes made on the local machine to be tracked and pushed to a remote repository hosted on the Fab Cloud.</div>
+                        </ul> 
+                    </div>
+
+                    <h2>Cloud and software connections</h2>
+                    <div>During the Fab Academy application process, our email addresses were registered and are used as the primary communication channel for receiving access links and credentials.
+                        This allows us to access the repository previously created under our name on GitLab, with all the tools and resources provided by the Fab Academy.
+                        <div class="week-images double">
+                            <img src="img/B.png" alt="Fab email">
+                            <img src="img/A.jpeg" alt="Fab git">
+                        </div>
+                    </div>
+
+                    <h2 id="Git"><br>Git ecosystem</h2>
+                    <div>
+                        The Git ecosystem consists of a local working directory, a staging area, a local repository, and a remote repository hosted on the Fab Cloud.
+                        <br>To connect to the Git repository, you need to install and configure Git Bash. This tool provides a terminal interface where you can run commands to manage 
+                        both local files and the remote repository.<br>
+                        Some of the essential commands to learn early on include those used to synchronize the local repository with the cloud, upload changes, and manage version control. 
+                        These basic commands are summarized in the following command blocks.
+                    </div>
+                    <div class="command-block">
+                        <code>git clone "URL"</code>
+                        <p>It is used to create a complete local copy of a remote repository, including all files and version history. It is typically run only once, when accessing the project for the first time.</p>
+                    </div>
+
+                    <div class="command-block">
+                        <code>cd "folder"</code>
+                        <p>It is used to navigate to a specific directory within the terminal.</p>
+                    </div>
+
+                    <div class="command-block">
+                        <code>cd ..</code>
+                        <p>It is used to go to the previous folder.</p>
+                    </div>
+
+                    <div class="command-block">
+                        <code>git add .</code>
+                        <p>Adds all modified files to the staging area in preparation for a commit.</p>
+                    </div>
+
+                    <div class="command-block">
+                        <code>git add "name-of-file"</code>
+                        <p>Is used to add a specific file to the staging area.</p>
+                    </div>
+
+                    <div class="command-block">
+                        <code>git commit -m "message"</code>
+                        <p>Records the staged changes into the local repository by creating a new commit. The commit message provides a concise description of the changes made, helping to track the project’s development over time.</p>
+                    </div>
+
+                    <div class="command-block">
+                        <code>git push</code>
+                        <p>Uploads the committed changes from the local repository to the remote repository hosted on the Fab Cloud.</p>
+                    </div>
+
+                    <div class="command-block">
+                        <code>git pull</code>
+                        <p>Downloads the latest changes from the cloud repository and automatically integrates them into the local project.</p>
+                    </div>
+
+                    <div>Once the environment is properly set up, the first step is to clone the remote repository.</div>
+                    <ol>
+                        <li>Select the local directory where the project will be stored on the computer; in this case, the “EXFAB”.</li>
+                        <div class="week-images">
+                            <img src="img/C.png" alt="Fab carp">
+                        </div>
+                        <li>Before, open this folder in Visual Studio Code and create a new terminal.</li>
+                        <div class="week-images">
+                            <img src="img/D.png" alt="Fab termi">
+                        </div>
+                        <li>At this point, we need to access to the online repository and copy the project’s repository URL.</li>
+                        <div class="week-images">
+                            <img src="img/E.jpeg" alt="Fab termi">
+                        </div>
+                        Using this URL, execute the corresponding command to clone the repository.
+                        <div class="command-block">
+                            <code>git clone https://gitlab.fabcloud.org/academany/fabacademy/2026/labs/puebla/students/derek-rodriguez.git</code>
+                        </div>
+                        <div class="week-images">
+                            <img src="img/F.png" alt="Fab termi">
+                        </div>
+                        <li>To verify that the process was successful, all folders and files visible in the online repository should also appear in the VS Code file explorer within the personal repository.</li>
+                        <div class="week-images">
+                            <img src="img/G.png" alt="Fab termi">
+                        </div>
+                        <br>
+                        <li>To update the online repository and keep it synchronized with the local repository, the following three steps must be followed:</li>
+                        <div class="command-block">
+                            <code>git add .</code>
+                            <p>Adds all modified files to the staging area in preparation for a commit.</p>
+                            <code>git commit -m "Prioritary"</code>
+                            <p>Records the staged changes into the local repository by creating a new commit. The commit message provides a concise description of the changes made, helping to track the project’s development over time.</p>
+                            <code>git push</code>
+                            <p>Uploads the committed changes from the local repository to the remote repository hosted on the Fab Cloud.</p>
+                        </div>
+                        <div class="week-images">
+                            <img src="img/H.png" alt="Fab termi">
+                        </div>
+                        <li>Before moving on to the next step, it is essential not to delete the .gitlab-ci file, since without it we will not be able to access the cloud.</li>
+                    </ol>
+
+                    <h2 id="VSC">HTML & CSS Basics</h2>
+                    <div>
+                        HTML is the markup language and foundation of web content. It defines the structure and content of web pages, allowing browsers 
+                        to interpret the code and display it as a custom web page. Generally, tags are written between angle brackets, and most work in pairs, 
+                        with an opening and a closing tag, which together form the basic structure of any web page.
+                    </div>
+
+                    <div>
+                        The basic tags used in this programming style are the following:
+
+                        <div class="command-block">
+                            <code>&lt;!DOCTYPE html&gt;</code>
+                            <p>Declares the document type and HTML version used. It instructs the web browser to render the page according to the HTML5 standard, ensuring consistent behavior and compatibility with modern browsers.</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>&lt;html&gt;</code>
+                            <p>It contains the HTML document metadata, which are &lt;head&gt; and &lt;body&gt;.</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>&lt;head&gt;</code>
+                            <p>Contains the metadata of the HTML document, like:</p>
+                            <ul>
+                                <code>&lt;meta charset="utf-8"&gt;</code>
+                                <p>It supports a wide range of characters, including accented letters, special symbols, and non-Latin alphabets.</p>
+                                <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"&gt;</code>
+                                <p>Controls how a web page is displayed on different devices, like on mobile screens.</p>
+                                <code>&lt;title&gt;</code>
+                                <p>Defines the title of the HTML document, which appears in the browser tab.</p>
+                                <code>&lt;link&gt;</code>
+                                <p>It's used to connect external resources to an HTML document. For example, when the rel="stylesheet" attribute is specified, it links an external CSS file that defines the visual style of the web page.</p>
+                                <code>&lt;script&gt;</code>
+                                <p>It's used to embed or link JavaScript code into an HTML document. JavaScript allows adding interactivity, logic, animations, and dynamic behavior to a web page.</p>
+                            </ul>
+                        </div>
+
+                        <div class="command-block">
+                            <code>&lt;body&gt;</code>
+                            <p>Contains all the visible content of the web page.</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>&lt;main&gt;</code>
+                            <p>It contains the core information that is directly related to the purpose of the page.</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>&lt;section&gt;</code>
+                            <p>It's a semantic container used to group related content within a page.</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>&lt;div&gt;</code>
+                            <p>It's a generic block-level container used to group and organize content</p>
+                        </div>
+                        
+                        <div class="command-block">
+                            <code>&lt;header&gt;</code>
+                            <p>Defines a header section for a document or a section.</p>
+                        </div>
+                        
+                        <div class="command-block">
+                            <code>&lt;nav&gt;</code>
+                            <p>Defines a navigation block containing links to other parts of the page or external pages.</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>&lt;h1&gt; a &lt;h6&gt;</code>
+                            <p>They are used to define titles and headings on a web page, helping to organize content into a clear structure. 
+                                The &lt;h1&gt; tag represents the main and most important title of the page, while the &lt;h2> to &lt;h6> tags are used for subheadings 
+                                    and subsections with decreasing levels of importance.</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>&lt;p&gt;</code>
+                            <p>It's used to define a paragraph of text.</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>&lt;br&gt;</code>
+                            <p>It's used to insert a line break within text</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>&lt;ul&gt;</code>
+                            <p>Defines an unordered list, which displays list items with bullet points.</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>&lt;ol&gt;</code>
+                            <p>Defines an ordered list, which displays the list items in a numbered or ordered format.</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>&lt;li&gt;</code>
+                            <p>It's used to define an item within a list.</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>&lt;a&gt;</code>
+                            <p>It's used to create hyperlinks</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>&lt;img&gt;</code>
+                            <p>It's used to embed images in a web page. Doesn't need a closing tag.</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>&lt;video&gt;</code>
+                            <p>It's used to embed video content. And in the same way, it doesn't need a closing tag.</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <br>These go hand in hand with some attributes that are added to the opening tags, such as:<br>
+
+                        <div class="command-block">
+                            <code>id</code>
+                            <p>Assign a unique identifier to a single item on a page, and it must not be repeated.</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>class</code>
+                            <p>It can be shared by multiple elements and is commonly used to group elements to apply the same styles</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>style</code>
+                            <p>It allows you to apply inline CSS directly to an element to control its visual presentation.</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>src</code>
+                            <p>Specifies the source file for elements such as &lt;img&gt;, &lt;video&gt;</p>
+                        </div>
+                        
+                        <div class="command-block">
+                            <code>href</code>
+                            <p>It is used in the a tag to specify the page URL.</p>
+                        </div>
+
+                        <div class="command-block">
+                            <code>width and height</code>
+                            <p>Defines the dimensions of elements such as &lt;img&gt; or &lt;video&gt;, usually in pixels, 
+                                and controls how large or small the element will appear on the page.</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        Using CSS with HTML offers several important advantages that improve both the development process and the user experience of a website. By separating structure from visual design, developers can create cleaner, more organized, and more efficient web projects.
+                        <ol>
+                            <li>Separation of content and presentation</li>
+                            <div>HTML defines the structure and content of a web page, while CSS controls it's visual appearance, including colors, fonts, spacing, and animations. This separation makes it easier to read, maintain, and update the code over time.</div>
+                            <li>Consistent design across multiple pages</li>
+                            <div>A single CSS file can be applied to multiple HTML documents, ensuring a consistent appearance across the entire website. This consistency helps create a professional and cohesive user interface.</div>
+                            <li>Efficient global updates</li>
+                            <div>Modifying a style property in the CSS file allows developers to instantly update the appearance of all connected pages. This streamlines and optimizes the implementation of design changes without having to edit each HTML file individually.</div>
+
+                        </ol>
+                        In my opinion, the second point is the most important, as it allows the developer to define the behavior and style of each element only once. Once the appearance and properties of each tag are established in the CSS file, the main task becomes organizing and applying them correctly within the HTML structure. This approach improves efficiency and simplifies the design process.
+                        <br>Below are the two CSS files used in this project:
+                        <ul>
+                            <li><strong><a href="../../css/styles.css" download>styles</a>.css:</strong></li>
+                            This file was provided by Professor Huber Giron and contains the base styles used throughout the website.
+                            <li><strong><a href="../../css/faces.css" download>faces</a>.css:</strong></li>
+                            This file was created during the development process and includes custom animations, such as the dancing shrimp effects, along with additional visual elements used on the website.
+                        </ul>
+                        <div class="week-images">
+                            <img src="img/I.png" alt="Fab email">
+                        </div>
+                    </div>
+                    <br>To conclude, whenever updates are made to the online repository, the procedures described in step 5 of the Git workflow must be followed in the specified order.
+
+                    <h2 id="DI">Design Inspiration</h2>
+                    This is not the first website I have created, but it is the first one in which I have put so much effort into the CSS. I became very excited about the visual presentation, and I hope the same enthusiasm is reflected in the content.
+                    <br>
+                    Throughout the design process, I first needed to explore different websites to identify what elements were most visually appealing and what encouraged users to stay and engage with the content.
+                    <br>
+                    The shrimp were a challenge, since at first I had no idea that they could be animated to rotate. Everything was static and only bounced within confined borders. Eventually, I decided to use AI to give them the spark they were missing and bring them to life.
+                    <ul>
+                        <li><a href="https://paletadecolores.com.mx/">For the color palette</a></li>
+                        <li><a href="https://github.com/">Limited transparent spaces</a></li>
+                        <li><a href="https://www.w3schools.com/css/css_examples.asp">More advanced CSS </a></li>
+                        <li><a href="Chatgpt.com">Axis change to simulate the shrimp’s dance</a></li>
+                        <li><a href="../../eje.html">Basic practice page</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+     <!--FIN CONTENIDO-->
+
+
+    </main>
+
+    <!-- Footer-->
+    <footer>
+        <!--<div class="col-auto"><div class="small m-0 text-white">Fab Academy · Derek Rodríguez Cancino · Fab Lab Puebla · México · 201265@iberopuebla.mx</div></div>-->
+        <div class="col-auto"><div class="small m-0 text-gray">Copyright 2026 Derek Rodriguez - Creative Commons Attribution Non Commercial</div></div>
+        <div class="col-auto"><div class="small m-0 text-gray">Source code hosted at<a href="https://gitlab.fabcloud.org/academany/fabacademy/2026/labs/puebla/students/derek-rodriguez" style="color:gray;"> gitlab.fabcloud.org</a></div></div>
+    </footer>
+
+    <!-- Bootstrap core JS-->
+    <!--script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script-->
+    <script> AOS.init(); </script>
+    <!-- Core theme JS-->
+    <script>
+    const links = document.querySelectorAll('.menu-link');
+
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            links.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        });
+    });
+</script>
+
+</body>
+
+</html>

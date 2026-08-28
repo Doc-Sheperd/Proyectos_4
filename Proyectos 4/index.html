@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="contact" content="201265@iberopuebla.mx" />
+        <meta name="author" content="Derek Rodríguez Cancino" />
+        <title>Derek RoCa | Proyectos IV</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/fablab.png" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <link href="css/faces.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet">
+
+    </head>
+    <body class="d-flex flex-column h-100" style="background-color:#fffffe; padding-top:90px;">
+        <main class="flex-shrink-0">
+            
+            <!-- Navigation-->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+                <div class="container px-5">
+                    <!--<a class="navbar-brand">Fab Academy</a>-->
+                    <a class="navbar-brand d-flex align-items-center" href="#">
+                        <img src="assets/fablab.png" alt="FabLab Logo" width="40"height="40" class="me-2"> Proyectos IV </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">                   
+                            <li class="nav-item"><a class="nav-link" href="#yo">About Me</a></li>
+                            <!--li class="nav-item"><a class="nav-link" href="#proyect">Final project</a></li-->
+                            <li class="nav-item"><a class="nav-link" href="#practicas">Weekly Assignments</a></li
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Seccion Acerca de Mi -->
+             <section class="about-float" id="yo">
+                <div class="about-card">
+                    <h2 class="text-center">About Me</h2>
+                    <div class="text-center">
+                        <img class="img-fluid rounded-circle mb-4 px-2" width="200px" src="assets/AR.jpg" alt="...">
+                        <h5 class="fw-bolder">Rodríguez Cancino Derek</h5>
+                        <div class="fst-italic text-muted " style="color:#ef4044;">ingeniería mecatrónica</div>
+                    </div>
+                    <div class="mb-3 text-center" style="color:#ef4044;"><i class="bi bi-envelope text-primary"></i> 201265@iberopuebla.mx </div>
+                    <p class="text-center">
+                        Hi! My name is José Carlos Matanzo Pérez. I'm currently a sixth semester student of mechatronics engineering at IBERO Puebla. I was born and raised in the city of Puebla, Mexico, and I am now taking the Engineering Project 4 course to learn the necessary skills to design and develop efficient and attractive AI applications.
+My hobbies include 3d modeling, reading, pencil and digital drawing and videogames. I would describe myself a incredibly curious person with a hunger for new knowledge and a tendency to push technical and moral boundaries, as some would say.
+                    </p>
+                </div>
+
+                <div class="floating-area" id="floatingArea">
+                    <img src="img/faces/AE.png" class="face">
+                    <img src="img/faces/AE.png" class="face">
+                    <img src="img/faces/AI.png" class="face">
+                    <img src="img/faces/AO.png" class="face">
+                    <img src="img/faces/AU.png" class="face">
+                    <img src="img/faces/AU.png" class="face">
+                    <img src="img/faces/EE.png" class="face">
+                    <img src="img/faces/KM.png" class="cam_face">
+                </div>
+            </section>
+
+            <!-- Seccion Tarjetas reportes Prácticas-->
+            <section id="practicas">
+                <div class="container px-5 my-2" data-aos="fade-right" data-aos-duration="500" data-aos-delay="50">
+                    <h2 class="fw-bolder fs-5 mb-4 text-center">WEEKLY ASSIGNMENTS</h2>
+                    <div class="row gx-5">
+
+                        <!--WEEK 1 -->
+                        <div class="col-lg-4 mb-5">
+                            <a href="weeks/week1" class="week-card">
+                                <img src="img/target/AE.jpg" alt="Week 1">
+                                <div class="week-overlay">
+                                    <h3 class="week-title">WEEK 1</h3>
+                                    <p class="week-subtitle">Project Management</p>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </section> 
+            <!--Fin Seccion de Tarjetas de Prácticas -->
+
+        </main>
+
+        <!-- Footer-->
+        <footer>
+                    <div class="col-auto"><div class="small m-0 text-gray">Proyectos IV · Derek Rodríguez Cancino · Ibero Puebla · México · 201265@iberopuebla.mx</div></div>
+        </footer>
+        
+        <!-- Bootstrap core JS-->
+        <script> AOS.init(); </script>
+        <!-- Core theme JS-->
+        <script>
+            const container = document.getElementById("floatingArea");
+            const faces = document.querySelectorAll(".face, .cam_face");
+
+            const objects = [];
+
+            faces.forEach(face => {
+            const size = 70;
+
+            const obj = {
+                el: face,
+                x: Math.random() * (container.clientWidth - size),
+                y: Math.random() * (container.clientHeight - size),
+                vx: (Math.random() * 0.6 + 0.2) * (Math.random() < 0.5 ? -1 : 1),
+                vy: (Math.random() * 0.6 + 0.2) * (Math.random() < 0.5 ? -1 : 1),
+                size: size
+            };
+
+            face.style.left = obj.x + "px";
+            face.style.top  = obj.y + "px";
+
+            objects.push(obj);
+             });
+
+            function animate() {
+                objects.forEach(obj => {
+                    obj.x += obj.vx;
+                    obj.y += obj.vy;
+
+                    if (obj.x <= 0 || obj.x + obj.size >= container.clientWidth) {
+                        obj.vx *= -1;
+                    }
+
+                    if (obj.y <= 0 || obj.y + obj.size >= container.clientHeight) {
+                        obj.vy *= -1;
+                    }
+
+                    obj.el.style.left = obj.x + "px";
+                    obj.el.style.top  = obj.y + "px";
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+
+        animate();
+        </script>   
+
+    </body>
+</html>
