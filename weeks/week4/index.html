@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="contact" content="201265@iberopuebla.mx" />
+    <meta name="author" content="Derek Rodríguez Cancino" />
+    <title>Semana 4 | Proyectos IV</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="../../assets/fablab.png" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="../../css/styles.css" rel="stylesheet">
+    <link href="../../css/faces.css" rel="stylesheet">
+</head>
+
+<body class="d-flex flex-column h-100" style="background-color:#fffffe">
+    <main class="flex-shrink-0">
+        <!-- Navigation-->
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+                <div class="container px-5">
+                    <!--<a class="navbar-brand">Fab Academy</a>-->
+                    <a class="navbar-brand d-flex align-items-center" href="../../">
+                        <img src="../../assets/fablab.png" alt="FabLab Logo" width="40"height="40" class="me-2"> Proyectos IV </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">                   
+                            <li class="nav-item"><a class="nav-link" href="../../index.html#yo">About Me</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../../index.html#practicas">Semanas</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+        <section class="week-header">
+            <div class="week-glass">
+                <h1>Semana 4: Propiedad intelectual, marca y vigilancia tecnológica</h1>
+                <div>En esta fase, utilizamos IA generativa (Claude y Perplexity) para generar nombres de marca, realizar una búsqueda fonética de marcas registradas (IMPI), analizar el ecosistema tecnológico y llevar a cabo entrevistas estructuradas a usuarios con el fin de validar la demanda de mercado de BRIS, un dispositivo de hardware de entrenamiento deportivo y reacción basado en el Internet de las cosas (IoT).</div>
+            </div>
+        </section>
+
+    <!-- Seccion de CONTENIDO-->
+        <section class="week-content">
+            <div class="week-layout">
+                <aside class="week-menu">
+                    
+                    <a href="#UNO" class="menu-link">Conclusión de entrevistas</a>
+                    <a href="#DOS" class="menu-link">Oportunidad de mercado</a>
+                    <a href="#TRES" class="menu-link">Piramide de Bain</a>
+                    <a href="#CUATRO" class="menu-link">TAM/SAM/SOM</a>
+                    <a href="#CINCO" class="menu-link">Análisis competitivo y Blue Ocean</a>
+                                       
+                </aside>
+
+                <div class="week-paper">
+                    
+                    
+
+    <h2 id="UNO">Conclusión de entrevistas</h2>
+    <div class="command-block">
+    <p><code>Revisión y Ajuste de Hipótesis</code></p>
+    <br>
+
+    <h4>Hipótesis Originales</h4>
+    <p><code style="display:inline;">⦿ H1 (Modelo de negocio):</code> Los dueños de estudios HIIT/funcional pagarían $1,500-2,000 MXN/mes por el software (adquiriendo los pods a costo), porque automatiza la dirección del circuito y aumenta retención. <b>Si es falso:</b> el SaaS muere y quedan atrapados en guerra de precios de hardware.</p>
+    <p><code style="display:inline;">⦿ H2 (Experiencia de usuario):</code> Los clientes de clases grupales prefieren guiarse por LEDs y rankear tiempos de reacción, porque la gamificación distrae mejor del agotamiento que un circuito tradicional. <b>Si es falso:</b> las luces no añaden valor sobre un cronómetro de pared.</p>
+    <p><code style="display:inline;">⦿ H3 (Viabilidad técnica):</code> La arquitectura ESP32 + tap sensors + acelerómetro resiste cientos de impactos diarios en pared, piso y costal sin fallar ni perder conexión durante un mes de uso comercial. <b>Si es falso:</b> el formato portátil es inviable y toca volver a una estación fija cableada.</p>
+    <br>
+
+    <h4>Hipótesis Reformuladas</h4>
+    <p><code style="display:inline;">⦿ H1 reformulada:</code> "Creemos que un dueño de estudio HIIT/funcional paga hoy por alguna herramienta o proceso para dirigir sus circuitos (instructor extra, cronómetro, app), y que reconoce un problema operativo lo bastante caro como para aceptar una suscripción institucional de $X MXN/mes por encima de lo que pagaría un usuario individual por una app de entrenamiento.<br>
+    <b>Si es falso:</b> no hay diferencial de valor entre 'para el estudio' y 'para mí', y el precio tiene que anclarse al rango de apps de consumo (60-150 MXN), obligando a un modelo B2C de bajo ticket en vez de B2B."</p>
+    
+    <p><code style="display:inline;">⦿ H2 reformulada:</code> "Creemos que agregar estímulo visual y ranking a un ejercicio de reacción aumenta la motivación y el número de repeticiones/toques frente a hacer el mismo ejercicio sin retroalimentación visual — sin importar si es en grupo, en casa o en una sesión individual con entrenador.<br>
+    <b>Si es falso:</b> la gamificación no cambia el comportamiento medible y el valor del producto se reduce a ser un cronómetro con luces."</p>
+    
+    <p><code style="display:inline;">⦿ H3:</code> Se mantiene igual.</p>
+    <br>
+
+    <h4>Hipótesis Nueva: Precio de suscripción individual vs. institucional</h4>
+    <p><i>"Creemos que, si el producto se vende como suscripción individual (no institucional), el precio que un usuario de gimnasio aceptará pagar está en el rango de $79-149 MXN/mes — el mismo rango que pagan hoy por Spotify, apps de streaming de entrenamiento (tipo Peloton Digital, Adidas Training) o wearables con app premium — y que un gimnasio estaría dispuesto a subsidiar o revender esa suscripción si el precio por usuario no supera ese techo, o pagar una suscripción con un precio más elevado pero que sea el gimnasio el que ofrece el servicio.<br>
+    <b>Si es falso:</b> los usuarios de gimnasio no valoran una app de reacción al mismo nivel que una app de streaming o fitness general, y el precio de equilibrio real es menor (freemium con upsell de hardware) o mayor solo si se reposiciona como herramienta profesional para el entrenador, no para el alumno."</i></p>
+    <br>
+
+    <h4>Síntesis de Validación (Preguntas y Respuestas)</h4>
+    <p><code style="display:inline;">⦿ 1. ¿Qué hipótesis pusieron a prueba?</code><br>
+    H1 (¿el dueño de estudio pagaría una suscripción SaaS de $1,500-2,000 MXN/mes?), H2 (¿los LEDs y el ranking mejoran la experiencia en clases grupales?) y H3 (¿el hardware resiste el uso comercial diario?), a través de 4 entrevistas de validación.</p>
+    
+    <p><code style="display:inline;">⦿ 2. ¿Qué encontraron — confirmó, ajustó o pivotó?</code><br>
+    <b>H1 se ajustó/pivota:</b> el único dato de precio disponible (60-100 MXN, tipo apps de consumo) contradice el ticket de $1,500-2,000, y ninguna entrevista fue con el comprador real (dueño de estudio HIIT).<br>
+    <b>H2 se ajustó parcialmente:</b> hay interés genuino en la gamificación, pero ninguna evidencia específica de "clases grupales" — el interés apareció más en uso individual/en casa.<br>
+    <b>H3 no se probó:</b> ninguna entrevista pudo evaluar durabilidad.</p>
+    
+    <p><code style="display:inline;">⦿ 3. La cita textual más importante de sus usuarios</code><br>
+    <i>"Es gratis. Todo es gratis, no hay como poner una parte económica."</i> — el administrador del gimnasio, respondiendo sobre el costo de no tener una buena solución de medición de reflejos.</p>
+    
+    <p><code style="display:inline;">⦿ 4. Qué cambió en el concepto (o por qué se mantuvo igual)</code><br>
+    <b>El concepto se ajusta:</b> de "medir tiempo de reacción" como propuesta de valor central a "hacer más divertido y motivante un circuito", con la medición como parte del juego, no como la promesa principal. El modelo de negocio se reposiciona de SaaS institucional de alto ticket hacia posible venta de hardware o suscripción individual de bajo ticket, mientras no se valide con el comprador correcto. La interacción tecnológica (estímulo + toque + ranking) se mantiene sin cambios, porque sigue teniendo resonancia en todas las entrevistas.</p>
+</div>
+
+    <h2 id="DOS">Oportunidad de mercado</h2>
+   <div class="command-block">
+    <h3><code>PERFIL DE SEGMENTO ACCIONABLE</code></h3>
+    <br>
+
+    <h4>CAPA 1 — DEMOGRÁFICA</h4>
+    <p><i>¿Quién es con suficiente detalle para encontrarlo?</i></p>
+    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> <b>Estudio boutique, gimnasio HIIT, box de CrossFit o centro de entrenamiento funcional ubicado en México.</b> Es el segmento definido por el equipo, pero ninguna entrevista confirmó que sea el comprador prioritario.</p>
+    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> <b>Negocio que ofrece clases grupales de alta intensidad, cardio-boxeo, artes marciales, agilidad o circuitos.</b> Las entrevistas mencionaron boxeo, artes marciales y agilidad como posibles aplicaciones, pero no validaron esta combinación como un nicho comercial homogéneo.</p>
+    <p><code style="display:inline;">⦿ VERIFICADO:</code> <b>Establecimiento privado de acondicionamiento físico identificable por ubicación, actividad y tamaño en el DENUE.</b> Funciona como criterio de localización, no como evidencia de necesidad. El DENUE permite filtrar establecimientos, reportando más de 6 millones de unidades económicas en total.</p>
+    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> <b>Negocio ubicado en una ciudad grande o zona con concentración de estudios premium.</b> La evidencia secundaria muestra oferta boutique y precios premium en CDMX, Monterrey, GDL y Mérida, pero no demuestra que esas plazas sean las mejores para este producto.</p>
+    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> <b>Operación con suficiente volumen de clases o alumnos para beneficiarse de rankings.</b> No se conoce todavía el número mínimo de alumnos, clases o entrenadores que hace económicamente atractivo el producto.</p>
+    <p><b>Hueco principal:</b> Aún no está identificado el rol comprador con suficiente precisión: propietario, administrador, head coach, entrenador o alumno.</p>
+    <br>
+
+    <h4>CAPA 2 — CONDUCTUAL</h4>
+    <p><i>¿Qué hace hoy para resolver el problema?</i></p>
+    <p><code style="display:inline;">⦿ VERIFICADO:</code> El entrenador entrevistado utiliza un semáforo y silbatos para trabajar estímulos y reacción.</p>
+    <p><code style="display:inline;">⦿ VERIFICADO:</code> El atleta de boxeo recibe el entrenamiento y la medición como parte de la mensualidad de su coach; no paga por separado.</p>
+    <p><code style="display:inline;">⦿ VERIFICADO:</code> El atleta de atletismo usa un reloj Garmin que le da datos de desempeño, pero suele olvidar revisarlos y debe pedírselos al entrenador.</p>
+    <p><code style="display:inline;">⦿ VERIFICADO:</code> El administrador conoce pruebas gratuitas de velocidad de reacción y mencionó una máquina de estímulos sonoros para taekwondo.</p>
+    <p><code style="display:inline;">⦿ VERIFICADO:</code> El administrador identificó un dispositivo similar de Kigo con ranking y escaneo de código en Plaza Solesta (requiere verificación directa posterior).</p>
+    <p><code style="display:inline;">⦿ VERIFICADO:</code> El problema observable es la fricción para convertir mediciones existentes en entrenamiento frecuente, seguimiento y motivación; no la ausencia de instrumentos de medición.</p>
+    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El segmento objetivo ya utiliza wearables, pantallas, leaderboards o software de desempeño. (Solo se confirmó un Garmin en un atleta, no una práctica generalizada B2B).</p>
+    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El negocio realiza mediciones con frecuencia suficiente para justificar un dispositivo dedicado.</p>
+    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> La solución actual incluye reportar resultados a alumnos, crear rankings o administrar retos dentro de clase.</p>
+    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El estudio tiene un problema de retención que intenta resolver mediante gamificación y datos.</p>
+    <br>
+
+    <h4>CAPA 3 — PSICOGRÁFICA</h4>
+    <p><i>¿Qué le preocupa y qué lo movería a cambiar?</i></p>
+    <p><code style="display:inline;">⦿ VERIFICADO:</code> <i>“Lo que verdaderamente generará el cambio será el entrenamiento diario”</i>, no el aparato en sí (Cita del entrenador).</p>
+    <p><code style="display:inline;">⦿ VERIFICADO:</code> <i>“¿Cómo lo hago divertido? ¿Cómo lo hago desde una app?”</i> El administrador regresó a la motivación y experiencia, no a la precisión.</p>
+    <p><code style="display:inline;">⦿ VERIFICADO:</code> La motivación y el enganche parecen tener más peso que aumentar la precisión del dato (patrón preliminar).</p>
+    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El segmento podría valorar una experiencia que convierta una medición en práctica diaria, reto o ranking.</p>
+    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El comprador cambiaría si el sistema reduce el trabajo del entrenador, facilita la consulta de resultados y aumenta la asistencia.</p>
+    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> La exactitud técnica por sí sola no sería una razón suficiente para comprar.</p>
+    <p><code style="display:inline;">⦿ EMERGENTE (Hipótesis comercial):</code> La inclusión de personas ciegas o con discapacidad visual podría ser una línea de valor relevante (planteado espontáneamente por el administrador).</p>
+    <p><b>Hueco principal:</b> No existe evidencia suficiente sobre actitudes, criterios de confianza, percepción de IA, privacidad de datos o disposición a sustituir procesos actuales. No conviene afirmar que este segmento es “innovador” o “premium” sin observar conductas concretas.</p>
+    <br>
+
+    <h4>CAPA 4 — ECONÓMICA</h4>
+    <p><i>¿Cuánto le cuesta el problema, cuánto podría pagar y quién decide?</i></p>
+    <p><code style="display:inline;">⦿ VERIFICADO:</code> Los entrevistados no pagan hoy específicamente por medir el tiempo de reacción.</p>
+    <p><code style="display:inline;">⦿ VERIFICADO:</code> El atleta de boxeo tiene la medición incluida en la mensualidad del coach.</p>
+    <p><code style="display:inline;">⦿ VERIFICADO:</code> El uso del Garmin y herramientas gratuitas reduce el costo monetario directo del problema.</p>
+    <p><code style="display:inline;">⦿ VERIFICADO:</code> El costo actual parece estar más relacionado con tiempo, olvido y seguimiento manual que con la compra de medición.</p>
+    <p><code style="display:inline;">⦿ VERIFICADO:</code> El único ancla de precio mencionada fue de 60–100 MXN mensuales (percepción de gasto personal B2C, no empresarial).</p>
+    <p><code style="display:inline;">⦿ VERIFICADO:</code> Una clase boutique puede costar aprox. 250–300 MXN (referencia secundaria, no presupuesto disponible).</p>
+    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El estudio objetivo tiene presupuesto para comprar el dispositivo o pagar la app.</p>
+    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El precio viable está entre 60–100 MXN mensuales por usuario (no transferible a un esquema B2B/HaaS).</p>
+    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El propietario/administrador decide la compra y el entrenador influye en ella.</p>
+    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El alumno pagaría una suscripción individual o el negocio pagaría por sede/dispositivo.</p>
+    <p><b>Hueco crítico:</b> No se conoce el costo económico de la fricción ni el valor de resolverla (horas del entrenador, alumnos afectados, retención, ingresos por clase, disposición de pago B2B).</p>
+    <br>
+
+    <h4>Nivel de Conocimiento del Segmento</h4>
+    <table class="material-table">
+        <thead>
+            <tr>
+                <th>Estado de Validación</th>
+                <th>Capas y Observaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="material-tag">Mayoría VERIFICADA</td>
+                <td><b>Capa 2 (Conductual)</b> y <b>Capa 3 (Psicográfica)</b>, pero <i>únicamente</i> respecto a las cuatro personas entrevistadas. La motivación, diversión y uso de herramientas gratuitas actuales son hechos documentados.<br>Algunos datos de la <b>Capa 4</b> (ausencia de pago específico y ancla de 60-100 MXN).</td>
+            </tr>
+            <tr>
+                <td class="material-tag">Mayoría de HIPÓTESIS</td>
+                <td><b>Capa 1 (Demográfica):</b> No está validado que estudios boutique/HIIT sean el comprador con mayor dolor.<br><b>Capa 4 (Económica):</b> No hay disposición de pago empresarial ni retorno cuantificado.<br><b>Capa 2:</b> Faltan frecuencias y operativas reales del negocio B2B.</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+    <h4>Agenda de Investigación Prioritaria</h4>
+    <table class="material-table">
+        <tbody>
+            <tr>
+                <td class="material-tag">Entrevistar</td>
+                <td>Propietarios y administradores de al menos tres subsegmentos por separado: box/CrossFit, boxeo-artes marciales y estudios HIIT/funcional.</td>
+            </tr>
+            <tr>
+                <td class="material-tag">Observar</td>
+                <td>Una clase completa y medir el proceso actual: preparación, aplicación de estímulos, captura de resultados, comunicación al alumno y tiempo invertido.</td>
+            </tr>
+            <tr>
+                <td class="material-tag">Métricas B2B</td>
+                <td>Preguntar por métricas concretas: asistencia, cancelaciones, retención, número de alumnos, clases por semana y gasto mensual en tecnología.</td>
+            </tr>
+            <tr>
+                <td class="material-tag">Validar Pago</td>
+                <td>Probar una demostración funcional (no conceptual) y solicitar una acción verificable: piloto pagado, depósito, carta de intención o introducción con quien decide.</td>
+            </tr>
+            <tr>
+                <td class="material-tag">Modelos</td>
+                <td>Comparar tres esquemas de precio: cobro por dispositivo, suscripción por sede y suscripción por alumno.</td>
+            </tr>
+            <tr>
+                <td class="material-tag">Inclusión</td>
+                <td>Investigar por separado la oportunidad con personas con discapacidad visual y organizaciones especializadas (no mezclarla con el segmento fitness).</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+    <h4>Hipótesis Críticas Sin Verificar</h4>
+    <table class="material-table">
+        <thead>
+            <tr>
+                <th>Hipótesis Crítica</th>
+                <th>Estado / Riesgo Principal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="material-tag">El comprador prioritario son negocios fitness grupales</td>
+                <td>Las entrevistas no convergieron en HIIT/funcional; ninguna persona lo mencionó espontáneamente.</td>
+            </tr>
+            <tr>
+                <td class="material-tag">La gamificación genera valor económico B2B</td>
+                <td>Se validó interés verbal en hacer el entrenamiento "divertido", pero no que esto aumente retención, ingresos o disposición de pago por parte del estudio.</td>
+            </tr>
+            <tr>
+                <td class="material-tag">Diferenciación clara de soluciones actuales</td>
+                <td>Ya existen Kigo, máquinas sonoras y apps gratuitas; "medir con luces" no es todavía una razón de compra única validada.</td>
+            </tr>
+            <tr>
+                <td class="material-tag">Modelo de precio sostenible</td>
+                <td>El ancla de 60–100 MXN es B2C. No se ha probado si soporta hardware, IA, soporte, instalación y margen.</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+    <h4>Perfil en una Oración &amp; Conclusión Operativa</h4>
+    <p><b>Perfil Provisional:</b> Negocio mexicano de entrenamiento grupal que actualmente puede resolver la medición con herramientas gratuitas, coach, silbatos, semáforos o wearables, pero podría pagar por una solución que convierta esos datos en entrenamiento diario, motivación y seguimiento dentro de una app; <i>sin embargo, todavía no está verificado que los estudios boutique, HIIT, CrossFit o funcional sean el segmento comprador ni que exista disposición de pago empresarial.</i></p>
+    
+    <p><b>Conclusión Operativa:</b> El segmento hipótesis no está validado como segmento de compra. Lo que sí aparece validado es un problema transversal de adopción y seguimiento, no de medición: <i>hacer que el entrenamiento ocurra con mayor frecuencia, sea más atractivo y requiera menos trabajo manual.</i> El siguiente experimento debería vender un <b>piloto de engagement y seguimiento</b> —no un sensor de mayor precisión— a un responsable de negocio claramente identificado.</p>
+</div>
+   
+    <h2 id="TRES">Piramide de Bain</h2>  
+    <div class="command-block">
+    <p><code>Pirámide de Valor de Bain — Ecosistema Portátil de Gamificación para HIIT</code></p>
+    <br>
+
+    <h4>1. Contexto del Segmento (Resumen Crítico)</h4>
+    <p>El segmento planteado (estudios boutique, HIIT, CrossFit, funcional) <b>no está validado:</b> de las 4 entrevistas realizadas, ninguna fue con un dueño/administrador de este tipo de negocio. La evidencia disponible apunta a un problema más amplio de adopción y seguimiento del entrenamiento, no a una carencia de instrumentos de medición.</p>
+    <br>
+
+    <h4>2. Análisis del Valor por Nivel</h4>
+    <div style="overflow-x: auto;">
+        <table class="material-table">
+            <thead>
+                <tr>
+                    <th>Nivel</th>
+                    <th>Valor</th>
+                    <th>Beneficiario</th>
+                    <th>Evidencia</th>
+                    <th>Cómo lo genera</th>
+                    <th>Qué falta validar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="material-tag">Impacto social</td>
+                    <td>Fomento de hábitos de entrenamiento más frecuentes</td>
+                    <td>Usuario final</td>
+                    <td>🟡 HIPÓTESIS</td>
+                    <td>Al convertir la medición en algo motivador, incentivaría entrenar con más regularidad.</td>
+                    <td>Que el uso del producto realmente aumente la frecuencia de entrenamiento, no solo la percepción de motivación.</td>
+                </tr>
+                <tr>
+                    <td class="material-tag">Impacto social</td>
+                    <td>Mayor accesibilidad al entrenamiento estructurado</td>
+                    <td>Usuario final</td>
+                    <td>🔴 NO VALIDADO</td>
+                    <td>No hay evidencia directa en las entrevistas sobre accesibilidad.</td>
+                    <td>Ninguna entrevista abordó barreras de acceso; requeriría investigación específica.</td>
+                </tr>
+                <tr>
+                    <td class="material-tag">Transformador</td>
+                    <td>Automatización de estímulos (sustituye semáforo/silbatos)</td>
+                    <td>Entrenador</td>
+                    <td>🟢 VERIFICADO (método actual) / 🟡 HIPÓTESIS (mejora)</td>
+                    <td>El entrenador ya usa semáforo y silbatos manualmente; el producto automatizaría ese estímulo.</td>
+                    <td>Que el entrenador perciba una mejora real (tiempo, consistencia) frente a su método actual.</td>
+                </tr>
+                <tr>
+                    <td class="material-tag">Transformador</td>
+                    <td>Conversión de mediciones en entrenamiento recurrente</td>
+                    <td>Negocio / Usuario</td>
+                    <td>🟡 HIPÓTESIS</td>
+                    <td>Es la interpretación central de las entrevistas: el problema no es medir, es sostener el hábito.</td>
+                    <td>Que el producto efectivamente convierta mediciones puntuales en uso recurrente (no solo lo prometa).</td>
+                </tr>
+                <tr>
+                    <td class="material-tag">Transformador</td>
+                    <td>Reducción de trabajo manual del entrenador / atención a más alumnos</td>
+                    <td>Negocio / Entrenador</td>
+                    <td>🔴 NO VALIDADO</td>
+                    <td>No hay evidencia de que el entrenador quiera o necesite delegar esta tarea.</td>
+                    <td>Ninguna entrevista mencionó carga de trabajo como problema.</td>
+                </tr>
+                <tr>
+                    <td class="material-tag">Emocional</td>
+                    <td>Motivación para entrenar</td>
+                    <td>Usuario final</td>
+                    <td>🟢 VERIFICADO</td>
+                    <td>La motivación y la diversión aparecieron como temas relevantes en las entrevistas.</td>
+                    <td>Que el producto específico (no solo la idea general) genere motivación medible.</td>
+                </tr>
+                <tr>
+                    <td class="material-tag">Emocional</td>
+                    <td>Diversión en el entrenamiento</td>
+                    <td>Usuario final</td>
+                    <td>🟢 VERIFICADO</td>
+                    <td>Los entrevistados expresaron interés en que el entrenamiento sea divertido.</td>
+                    <td>Que la gamificación del producto sea percibida como divertida, no como gimmick.</td>
+                </tr>
+                <tr>
+                    <td class="material-tag">Emocional</td>
+                    <td>Sensación de progreso / seguimiento de desempeño</td>
+                    <td>Usuario final</td>
+                    <td>🟡 HIPÓTESIS</td>
+                    <td>El atleta de atletismo usa Garmin para ver datos, aunque a veces no los revisa.</td>
+                    <td>Que el seguimiento visual del producto se use de forma sostenida, a diferencia del caso Garmin.</td>
+                </tr>
+                <tr>
+                    <td class="material-tag">Funcional</td>
+                    <td>Medición de tiempo de reacción y cadencia</td>
+                    <td>Usuario / Entrenador</td>
+                    <td>🟢 VERIFICADO</td>
+                    <td>Existen soluciones similares en uso: semáforo, Garmin, pruebas gratuitas, dispositivo Kigo.</td>
+                    <td>Que esta medición sea diferenciable de las alternativas ya conocidas por los entrevistados.</td>
+                </tr>
+                <tr>
+                    <td class="material-tag">Funcional</td>
+                    <td>Visualización de resultados / rankings</td>
+                    <td>Usuario / Negocio</td>
+                    <td>🟡 HIPÓTESIS</td>
+                    <td>El dispositivo Kigo identificado ya ofrece ranking y escaneo de código (precedente de mercado).</td>
+                    <td>Que los rankings generen valor económico y no solo valor funcional.</td>
+                </tr>
+                <tr>
+                    <td class="material-tag">Funcional</td>
+                    <td>Portabilidad / facilidad de implementación</td>
+                    <td>Negocio</td>
+                    <td>🟡 HIPÓTESIS</td>
+                    <td>Es un atributo de diseño del producto, sin evidencia directa.</td>
+                    <td>Que la portabilidad sea un factor relevante para quien decide comprar.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <h4>3. Construcción de la Pirámide</h4>
+    <p>Solo se colocan los valores con evidencia (🟢) o hipótesis razonable (🟡); los 🔴 NO VALIDADOS se excluyen explícitamente.</p>
+    
+    <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; font-family: monospace; text-align: center; line-height: 1.4; border: 1px solid #ddd; overflow-x: auto;">
+                 ╔══════════════════════╗<br>
+                 ║   IMPACTO SOCIAL     ║<br>
+                 ║  (solo hipótesis —   ║<br>
+                 ║   sin evidencia      ║<br>
+                 ║   sólida todavía)    ║<br>
+                 ╚══════════════════════╝<br>
+<br>
+              ╔════════════════════════════╗<br>
+              ║      TRANSFORMADOR         ║<br>
+              ║  Convertir medición en     ║<br>
+              ║  entrenamiento recurrente  ║<br>
+              ║  (🟡 hipótesis central)    ║<br>
+              ╚════════════════════════════╝<br>
+<br>
+           ╔══════════════════════════════════╗<br>
+           ║             EMOCIONAL            ║<br>
+           ║   Motivación 🟢 · Diversión 🟢   ║<br>
+           ║   Sensación de progreso 🟡       ║<br>
+           ╚══════════════════════════════════╝<br>
+<br>
+        ╔══════════════════════════════════════════╗<br>
+        ║                FUNCIONAL                 ║<br>
+        ║  Medición de reacción/cadencia 🟢        ║<br>
+        ║  Rankings/visualización 🟡               ║<br>
+        ║  Portabilidad 🟡                         ║<br>
+        ╚══════════════════════════════════════════╝
+    </div>
+    <p><i>Nota: el nivel de impacto social no tiene evidencia suficiente para sostener ningún valor sólido; se deja marcado como vacío por diseño, no relleno artificialmente.</i></p>
+    <br>
+
+    <h4>4. Priorización del Valor</h4>
+    
+    <p><b>Top 3 Funcionales:</b></p>
+    <p><code style="display:inline;">⦿ Medición de tiempo de reacción y cadencia:</code> 🟢 VERIFICADO (hay uso real de alternativas: semáforo, Garmin, Kigo).</p>
+    <p><code style="display:inline;">⦿ Visualización de resultados / rankings:</code> 🟡 HIPÓTESIS (precedente de mercado con Kigo, sin evidencia de pago).</p>
+    <p><code style="display:inline;">⦿ Portabilidad / facilidad de implementación:</code> 🟡 HIPÓTESIS (atributo de diseño, no validado como criterio de compra).</p>
+
+    <p><b>Top 3 Emocionales:</b></p>
+    <p><code style="display:inline;">⦿ Motivación:</code> 🟢 VERIFICADO (mencionado directamente por entrevistados).</p>
+    <p><code style="display:inline;">⦿ Diversión:</code> 🟢 VERIFICADO (mencionado directamente por entrevistados).</p>
+    <p><code style="display:inline;">⦿ Sensación de progreso:</code> 🟡 HIPÓTESIS (evidencia mixta: caso Garmin muestra interés parcial, no consistente).</p>
+
+    <p><b>Mayor Potencial Transformador:</b></p>
+    <p><code style="display:inline;">⦿ Conversión de mediciones en entrenamiento recurrente:</code> 🟡 HIPÓTESIS (es la lectura más fuerte de las entrevistas, pero no está demostrada con datos de comportamiento).</p>
+
+    <p><b>Posibles Valores de Impacto Social:</b></p>
+    <p><code style="display:inline;">⦿ Fomento de hábitos de entrenamiento más frecuentes:</code> 🟡 HIPÓTESIS (derivada indirectamente, no mencionada como tal).</p>
+    <br>
+
+    <h4>5. Análisis Crítico</h4>
+    
+    <p><b>A. ¿Dónde está el valor más sólido?</b><br>
+    En el nivel emocional, específicamente motivación y diversión: son los únicos valores mencionados de forma directa y repetida por los entrevistados. El nivel funcional tiene evidencia de que el problema (medir reacción) ya se resuelve de varias formas (semáforo, Garmin, pruebas gratuitas, Kigo), lo cual es una señal de que la medición en sí no es escasa. El nivel transformador y social son, por ahora, interpretación.</p>
+    
+    <p><b>B. ¿Cuál parece ser el verdadero problema?</b><br>
+    Las entrevistas sugieren que el problema no es la falta de medición, sino la cadena <b>medición → entrenamiento frecuente → motivación → seguimiento</b>: el atleta con Garmin tiene datos pero a veces no los revisa; el boxeador recibe medición como parte de un servicio ya existente (el coach), no como algo que compra aparte. Esto apunta a que el reto real es sostener el hábito y el engagement, no instrumentar la medición.</p>
+    
+    <p><b>C. Afirmaciones todavía no demostradas:</b></p>
+    <p><code style="display:inline;">⦿ Retención:</code> 🔴 No hay evidencia de que los rankings aumenten retención o asistencia.</p>
+    <p><code style="display:inline;">⦿ Churn:</code> 🔴 No se identificó un problema de abandono relevante en las entrevistas.</p>
+    <p><code style="display:inline;">⦿ Ahorro de entrenadores:</code> 🔴 No mencionado por ningún entrevistado.</p>
+    <p><code style="display:inline;">⦿ Escalabilidad:</code> 🔴 Atender a más alumnos sin contratar más staff no está validado.</p>
+    <p><code style="display:inline;">⦿ ROI y Disposición de pago:</code> 🔴 Sin datos B2B. El rango 60–100 MXN es gasto personal, no precio institucional.</p>
+    <p><code style="display:inline;">⦿ Segmento comprador:</code> 🟡 Hipótesis sin validar (ningún entrevistado fue dueño/administrador de estudio HIIT).</p>
+    <p><code style="display:inline;">⦿ Diferenciación:</code> 🔴 Existe al menos un competidor identificado (Kigo) y no se ha probado diferenciación frente a él.</p>
+
+    <p><b>D. ¿Qué propuesta de valor debería probarse primero?</b><br>
+    La hipótesis <i>"el negocio no necesita más precisión, necesita convertir la medición en una experiencia de entrenamiento frecuente, motivadora y fácil de seguir"</i> tiene respaldo moderado. Se apoya en los temas de motivación/diversión mencionados y en el patrón de subuso de datos (caso Garmin). Pero sigue siendo una hipótesis: falta evidencia directa de un dueño de gimnasio HIIT que confirme que este es su problema prioritario, y falta evidencia de que resolverlo genere disposición de pago.</p>
+    
+    <p><b>E. ¿Qué debería probar el siguiente experimento comercial?</b><br>
+    El experimento debería apuntar directamente a cerrar los vacíos de la sección C, con foco en <b>quién compra y cuánto valor económico percibe</b>, no solo en validar la experiencia de usuario. Opciones más fuertes que una entrevista de opinión:</p>
+    <p><code style="display:inline;">⦿ 1.</code> Un piloto pagado de bajo costo (o depósito reembolsable) con 2-3 estudios HIIT/CrossFit reales, para probar si el dueño/administrador está dispuesto a comprometer dinero.</p>
+    <p><code style="display:inline;">⦿ 2.</code> Una carta de intención firmada por el decisor de compra, condicionada a resultados del piloto.</p>
+    <p><code style="display:inline;">⦿ 3.</code> Probar dos modelos de cobro en paralelo (por sede vs. por dispositivo) para detectar cuál reduce más la fricción de decisión.</p>
+    <p><i>El objetivo de este experimento no es confirmar que el producto "gusta", sino identificar si existe un comprador real dispuesto a pagar por resolver la cadena medición → hábito → motivación, y a qué precio.</i></p>
+</div>
+
+     <h2 id="CUATRO">TAM/SAM/SOM</h2>
+   <div class="command-block">
+    <p><code>DIMENSIONAMIENTO DE MERCADO: Lumetriq</code></p>
+    <br>
+
+    <h4>TAM — Mercado Total Direccionable</h4>
+    <p><b>Universo de partida:</b> 30,242 establecimientos privados de acondicionamiento físico en México. Es un escenario provisional que debe validarse extrayendo del DENUE los establecimientos de la clase SCIAN 713943. El DENUE 05/2026 reporta 6,138,075 establecimientos totales y permite filtrarlos por actividad, ubicación y tamaño.</p>
+    
+    <table class="material-table">
+        <thead>
+            <tr>
+                <th>Filtro Aplicado</th>
+                <th>Establecimientos Resultantes</th>
+                <th>Fuente / Justificación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="material-tag">Entrenamiento presencial</td>
+                <td>18,145</td>
+                <td>Supuesto de primer principio; no existe un porcentaje público específico.</td>
+            </tr>
+            <tr>
+                <td class="material-tag">Afinidad con HIIT, funcional, CrossFit, combate, atletismo</td>
+                <td>8,165</td>
+                <td>Supuesto de primer principio.</td>
+            </tr>
+            <tr>
+                <td class="material-tag">Utilidad del sistema en clases grupales/sesiones</td>
+                <td>4,899</td>
+                <td>Supuesto de primer principio.</td>
+            </tr>
+            <tr>
+                <td class="material-tag">Disposición de pago (HW MXN 4,490–7,990 + SW B2B)</td>
+                <td>1,715</td>
+                <td>Hipótesis de disposición de pago; requiere validación mediante entrevistas, pilotos y preventas.</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <p><b>Universo final TAM:</b> 1,715 establecimientos compradores potenciales</p>
+    
+    <p><b>Supuestos de producto:</b></p>
+    <ul>
+        <li><code style="display:inline;">⦿ Distribución:</code> 70% compra Lumetriq Studio (6 disp. por MXN 7,990) y 30% compra Lumetriq Starter (3 disp. por MXN 4,490).</li>
+        <li><code style="display:inline;">⦿ Precio promedio ponderado de hardware:</code> MXN 6,940.</li>
+        <li><code style="display:inline;">⦿ Suscripción para gimnasio Studio Pro:</code> MXN 899 mensuales o MXN 10,788 anuales.</li>
+        <li><code style="display:inline;">⦿ Ticket promedio del primer año:</code> MXN 17,728 por establecimiento.</li>
+    </ul>
+    
+    <p><b>Valor anual TAM:</b> MXN 30,407,520 durante el primer año</p>
+    <ul>
+        <li><code style="display:inline;">⦿ Hardware inicial:</code> 1,715 × MXN 6,940 = MXN 11,902,100.</li>
+        <li><code style="display:inline;">⦿ Suscripción anual (Recurrente):</code> 1,715 × MXN 10,788 = MXN 18,505,420.</li>
+    </ul>
+    <br>
+
+    <h4>SAM — Mercado Alcanzable</h4>
+    <p><i>Filtros aplicados al TAM:</i></p>
+    <table class="material-table">
+        <thead>
+            <tr>
+                <th>Filtro Aplicado</th>
+                <th>Establecimientos Resultantes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="material-tag">Geografía inicial (CDMX, Edomex, GDL, MTY, PUE)</td>
+                <td>943</td>
+            </tr>
+            <tr>
+                <td class="material-tag">Operación grupal recurrente y capacidad de compra</td>
+                <td>472</td>
+            </tr>
+            <tr>
+                <td class="material-tag">Accesibilidad comercial (venta directa, redes, coaches, alianzas)</td>
+                <td>330</td>
+            </tr>
+            <tr>
+                <td class="material-tag">Capacidad de pago (Paquete prom. MXN 6,940 + suscripción)</td>
+                <td>198</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <p><b>Universo final SAM:</b> 198 establecimientos</p>
+    <p><b>Valor anual SAM:</b> MXN 3,510,144 durante el primer año</p>
+    <ul>
+        <li><code style="display:inline;">⦿ Hardware inicial:</code> 198 × MXN 6,940 = MXN 1,374,120.</li>
+        <li><code style="display:inline;">⦿ Suscripción anual (Recurrente):</code> 198 × MXN 10,788 = MXN 2,136,024.</li>
+    </ul>
+    <p><i>Nota: El SAM excluye gimnasios públicos, cadenas con procesos corporativos, centros sin clases grupales, usuarios domésticos, atletas individuales y establecimientos que solo aceptarían una app gratuita.</i></p>
+    <br>
+
+    <h4>SOM — Mercado Obtenible (Años 1–2)</h4>
+    <p><b>Meta:</b> 45 gimnasios o estudios pagadores (22.7% del SAM)</p>
+    
+    <p><b>Lógica de Go-To-Market:</b></p>
+    <ul>
+        <li><code style="display:inline;">⦿ Canal específico:</code> Demostraciones presenciales en clases funcionales/HIIT; prospección por IG, WA y alianzas con coaches/distribuidores.</li>
+        <li><code style="display:inline;">⦿ Geografía piloto:</code> CDMX y Edomex (Año 1); GDL y Monterrey (Año 2); Puebla mediante prospección digital.</li>
+        <li><code style="display:inline;">⦿ Capacidad del equipo:</code> 2 personas en ventas/demos, 8–10 demos calificadas por vendedor a la semana, conversión objetivo de 5–8%.</li>
+        <li><code style="display:inline;">⦿ Oferta comercial:</code> Lumetriq Studio (6 dispositivos) a MXN 7,990, con acceso de prueba a la app y renovación a MXN 899/mes.</li>
+        <li><code style="display:inline;">⦿ Trayectoria:</code> 15 clientes (Año 1) y 30 clientes nuevos (Año 2) para alcanzar los 45 clientes acumulados.</li>
+    </ul>
+    
+    <p><b>Valor anual SOM:</b> MXN 797,760 de ingresos del primer año para 45 clientes</p>
+    <ul>
+        <li><code style="display:inline;">⦿ Hardware inicial:</code> 45 × MXN 6,940 = MXN 312,300.</li>
+        <li><code style="display:inline;">⦿ Suscripción anual (Recurrente):</code> 45 × MXN 10,788 = MXN 485,460.</li>
+    </ul>
+    <p><i>Nota: Si los clientes se adquieren gradualmente, el ingreso real del año 2 sería aprox. MXN 693,660, considerando renovaciones, nuevas suscripciones y hardware de los clientes nuevos.</i></p>
+    <br>
+
+    <h4>SEÑAL DE VIABILIDAD</h4>
+    <p><b>SOM × precio anual = MXN 797,760 de ingresos brutos de primera compra</b></p>
+    <p><code style="display:inline;">⦿ ¿Cubre costos operativos básicos de una startup de 4 personas?</code><br> <b>Marginal</b> — El precio revisado mejora el modelo, pero 45 clientes todavía probablemente no cubren cuatro salarios, desarrollo de app, inventario, ventas, soporte, garantía y logística.</p>
+    
+    <p><code style="display:inline;">⦿ Recomendación Estratégica:</code><br> Para una operación más sólida, Lumetriq debería alcanzar aprox. 75–100 sedes, aumentar el plan B2B a MXN 1,199–1,499 mensuales, vender paquetes de 12 dispositivos o agregar instalación, capacitación y contenido premium.</p>
+    
+    <p><code style="display:inline;">⦿ Precios Hipotéticos Recomendados:</code></p>
+    <table class="material-table">
+        <thead>
+            <tr>
+                <th>Producto / Servicio</th>
+                <th>Precio Estimado (MXN)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="material-tag">Lumetriq Starter (3 dispositivos)</td>
+                <td>$4,490</td>
+            </tr>
+            <tr>
+                <td class="material-tag">Lumetriq Studio (6 dispositivos)</td>
+                <td>$7,990</td>
+            </tr>
+            <tr>
+                <td class="material-tag">App Individual Pro</td>
+                <td>$149 / mes (o $1,290 anual)</td>
+            </tr>
+            <tr>
+                <td class="material-tag">App Gimnasio Studio Pro</td>
+                <td>$899 / mes (o $8,990 anual)</td>
+            </tr>
+            <tr>
+                <td class="material-tag"><b>Ticket Promedio 1er Año (Gimnasio)</b></td>
+                <td><b>~ $17,728</b></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+    <h4>FUENTES UTILIZADAS</h4>
+    <ul>
+        <li><code style="display:inline;">⦿ INEGI, DENUE 05/2026:</code> Reporta 6,138,075 establecimientos totales y permite analizarlos por actividad, ubicación y tamaño. Define el directorio como fuente para identificar unidades económicas activas.</li>
+        <li><code style="display:inline;">⦿ BlazePod:</code> Starter Kit y Bundles (2024–2026). Referencia de paquetes de dispositivos, accesorios y precios internacionales.</li>
+        <li><code style="display:inline;">⦿ BlazePod / Perform Better:</code> Membresía de la aplicación (2026). Referencia de planes gratuitos y Pro.</li>
+        <li><code style="display:inline;">⦿ FITLIGHT:</code> FITLIGHT System (2025–2026). Referencia de sistema profesional y aplicación sin suscripción.</li>
+        <li><code style="display:inline;">⦿ Banco de México:</code> Tipo de cambio FIX, 24 de septiembre de 2026. Utilizado para convertir referencias internacionales a pesos mexicanos.</li>
+    </ul>
+</div>
+
+
+    
+<h2 id="CINCO">Análisis competitivo y Blue Ocean</h2>
+<!--PARTE 1-->
+<div class="command-block">
+    <h3>Parte 1 - Mapa de posicionamiento competitivo</h3>
+    <p><code>MAPA COMPETITIVO</code></p>
+    <p><b>Segmento:</b> Entrenadores independientes y administradores de instalaciones deportivas/universitarias en México, especialmente combate, atletismo y acondicionamiento físico.</p>
+    <p><i>Criterio: “Directo” significa que compite con luces/paneles interactivos controlados por app para entrenar reacción. “Indirecto” resuelve la misma necesidad de mejorar reacción, agilidad o autonomía del circuito mediante otra tecnología. Los precios son referencias públicas internacionales; no necesariamente incluyen importación, IVA, distribución o servicio en México.</i></p>
+    <br>
+
+    <h4>DIRECTOS</h4>
+    <p><code style="display:inline;">⦿ BlazePod:</code> Sistema de pods luminosos inalámbricos controlados por app, con estímulos aleatorios, ejercicios configurables, datos en tiempo real y dinámicas competitivas — opera globalmente; disponible para compra internacional — kits desde US$439, con planes de app gratuitos y membresías Pro alrededor de US$12.99/mes.<br>
+    <b>Debilidad específica:</b> El costo total en México, sumando importación y suscripción Pro, está muy por encima del ancla de software de MX$60–100 mensuales del segmento; además, el entrenador debe administrar la app y colocar varios pods antes de la clase, por lo que no elimina completamente la fricción operativa.</p>
+
+    <p><code style="display:inline;">⦿ FITLIGHT:</code> Luces LED inalámbricas que se desactivan por toque o movimiento, con ejercicios programables, seguimiento de resultados y uso individual o grupal — global, con envío directo desde Estados Unidos — sistema desde US$999, con app sin suscripción; cada luz adicional se ofrece alrededor de US$179.<br>
+    <b>Debilidad específica:</b> Está diseñado y vendido como equipo profesional/elite, lo que lo vuelve financieramente difícil para un gimnasio local o universidad mexicana que prioriza diversión y competencia sobre análisis neurocognitivo avanzado; además, el envío puede generar impuestos y costos de importación, y la garantía anunciada es de un año.</p>
+
+    <p><code style="display:inline;">⦿ Lummic:</code> Sistema de cuatro a ocho luces de reacción con estímulos visuales y auditivos, sensores táctiles, juegos y una app gratuita con más de 40 programas — global, principalmente Europa; no se observa una operación local mexicana documentada — kits de cuatro luces desde aproximadamente €241.88, seis desde €349.69 y ocho desde €459; la app es gratuita de forma permanente.<br>
+    <b>Debilidad específica:</b> Su propuesta es amplia y lúdica, pero la información pública muestra una orientación multisegmento —deporte, niños y adultos mayores— más que una solución enfocada en circuitos de combate o atletismo con flujo de clase, ranking por grupo y configuración rápida para varios atletas.</p>
+
+    <p><code style="display:inline;">⦿ ReactionX / VEGVISIR:</code> Pods de reacción con app, sensores de toque, proximidad, vibración y sonido, modos de batalla y medición con precisión anunciada de 0.01 segundos — global; distribución internacional — paquetes publicados desde US$1,600 para cuatro pods, aunque distribuidores comparativos ubican algunos kits de seis unidades aproximadamente entre US$250 y US$370, lo que sugiere una estructura de precios/distribución inconsistente.<br>
+    <b>Debilidad específica:</b> La inconsistencia entre precios y canales dificulta la compra institucional mexicana y la comparación presupuestaria; tampoco se observa una propuesta localizada para entrenadores mexicanos que necesiten soporte, facturación local, contenido en español y uso sencillo durante clases grupales.</p>
+
+    <p><b>Lectura competitiva:</b> Los tres primeros son los referentes que Lumetriq debe superar en percepción de categoría. BlazePod es el rival más cercano por combinación de hardware, app, aleatoriedad y gamificación; FITLIGHT domina la percepción profesional; Lummic demuestra que existe una alternativa con app gratuita y menor fricción de suscripción.</p>
+    <br>
+
+    <h4>INDIRECTOS</h4>
+    <p><code style="display:inline;">⦿ Quick Board:</code> Panel físico sensible a presión que proporciona retroalimentación en tiempo real para entrenar reacción, velocidad, coordinación, equilibrio y rehabilitación — global, principalmente Estados Unidos — tablero desde US$2,295–2,495, más licencia de software de US$49.99 a US$199.99 mensuales según número de atletas.<br>
+    <b>Debilidad específica:</b> Su formato de tablero fijo concentra el entrenamiento en una estación y exige una inversión y suscripción incompatibles con un gimnasio mexicano que quiere mover a varios atletas por un circuito; además, está más orientado a evaluación, rehabilitación y reporting que a la competencia rápida tipo “el primero que toca gana”.</p>
+
+    <p><code style="display:inline;">⦿ Reaction Light Trainer / apps de reacción en teléfonos:</code> Aplicaciones que convierten los smartphones o tablets disponibles en estímulos luminosos y registran el desempeño sin comprar hardware dedicado — global; disponible en App Store y Google Play — generalmente gratuitas o con compras dentro de la app.<br>
+    <b>Debilidad específica:</b> Reduce la inversión inicial, pero no resuelve bien el cuello de botella físico de BRIS: los atletas siguen teniendo que acercarse a una pantalla pequeña o depender de teléfonos colocados estratégicamente; en una clase de combate o atletismo, los dispositivos pueden moverse, dañarse o distraer y no ofrecen una superficie de toque robusta.</p>
+
+    <p><code style="display:inline;">⦿ QuickPLAY RXTR Pro Coach:</code> Panel de rebote deportivo con luces visuales integradas y ejercicios guiados, diseñado para que el equipo “entrene” al jugador sin instrucciones constantes del coach — global, principalmente Reino Unido/Europa — alrededor de €129.99, con posibilidad de conectar hasta seis luces de reacción.<br>
+    <b>Debilidad específica:</b> Está centrado en pases, fútbol y coordinación con rebote, no en circuitos espaciales configurables para boxeo, atletismo o acondicionamiento institucional; además, un único panel restringe la variedad de trayectorias y la participación simultánea de una clase.</p>
+
+    <p><code style="display:inline;">⦿ Conos y material de agilidad con señales de un compañero:</code> Circuitos con conos donde el coach o compañero grita números, señala un cono o utiliza una luz/señal para indicar el siguiente movimiento — México, LATAM y global; práctica ampliamente accesible — conos básicos desde unos cientos de pesos por set.<br>
+    <b>Debilidad específica:</b> Los conos son baratos y flexibles, pero conservan exactamente el problema que Lumetriq pretende eliminar: el entrenador debe decidir y comunicar cada estímulo, controlar el orden, observar quién respondió primero y reiniciar el circuito.</p>
+    <br>
+
+    <h4>SUSTITUTOS</h4>
+    <p><code style="display:inline;">⦿ Drill manual dirigido por el coach (aplausos, silbato, gritos):</code> El entrenador coloca conos, asigna zonas y da una señal auditiva o verbal impredecible para que el atleta corra, golpee, bloquee o cambie de dirección. Costo monetario bajo (MX$100–500 por silbato y conos); costo operativo alto (preparación, voz, atención continua).<br>
+    <b>Debilidad frente a BRIS:</b> Es el sustituto más arraigado, pero el coach se convierte en el “controlador” del sistema y no puede dirigir simultáneamente técnica, seguridad, intensidad y corrección individual.</p>
+
+    <p><code style="display:inline;">⦿ Pelotas de tenis, pelotas de reacción o estímulos lanzados:</code> Un entrenador o atleta lanza objetos de forma irregular para forzar atrapadas, esquivas y decisiones rápidas. Costo monetario bajo (MX$50–300 por objeto); costo operativo dependiente de un compañero.<br>
+    <b>Debilidad frente a BRIS:</b> Produce una reacción más realista y barata, pero no genera una secuencia reproducible, marcador automático, ranking ni historial de progreso; tampoco permite que un único coach mantenga varios circuitos activos.</p>
+
+    <p><code style="display:inline;">⦿ Cronómetro de intervalos o app de pitidos:</code> El coach usa un teléfono para generar intervalos, sonidos o señales aleatorias mientras los atletas ejecutan un patrón previamente explicado. Costo monetario gratuito o muy bajo.<br>
+    <b>Debilidad frente a BRIS:</b> Automatiza el tiempo, pero no automatiza la dirección espacial ni confirma quién desactivó correctamente el estímulo; sigue requiriendo que el coach verbalice el movimiento y resuelva disputas entre atletas.</p>
+    <br>
+
+    <h4>EL COMPETIDOR MÁS PELIGROSO</h4>
+    <p><b>El circuito manual con conos y silbato</b></p>
+    <p>El competidor más peligroso no es BlazePod: es el comportamiento actual de usar conos, una pelota, un silbato y la voz del entrenador. Tiene costo marginal casi nulo, ya forma parte del lenguaje de entrenamiento, funciona con cualquier deporte y no requiere aprobación presupuestaria, conectividad, carga de baterías ni capacitación tecnológica. Una app puede sustituir una parte de la aleatoriedad, pero no basta para desplazar un método que el coach ya sabe improvisar en segundos.</p>
+    
+    <p>Para lograr que el usuario cambie, BRIS tendría que vender menos “medición avanzada” y más fluidez de clase:</p>
+    <ul>
+        <li><code style="display:inline;">⦿</code> Configurar un circuito en menos de un minuto.</li>
+        <li><code style="display:inline;">⦿</code> Permitir que el coach elija un modo simple: “batalla”, “todos contra todos”, “defensa”, “cambio de dirección” o “sigue la luz”.</li>
+        <li><code style="display:inline;">⦿</code> Activar estímulos impredecibles sin que el entrenador tenga que gritar instrucciones.</li>
+        <li><code style="display:inline;">⦿</code> Identificar automáticamente el toque correcto y mostrar quién ganó cada ronda.</li>
+        <li><code style="display:inline;">⦿</code> Operar a grupos pequeños sin que cada atleta necesite una cuenta.</li>
+        <li><code style="display:inline;">⦿</code> Ofrecer rankings, retos y progresión básica sin forzar una suscripción B2B costosa.</li>
+        <li><code style="display:inline;">⦿</code> Incluir contenido en español y soporte, garantía y facturación adecuados para México.</li>
+        <li><code style="display:inline;">⦿</code> Mantener una experiencia offline o de baja dependencia de internet.</li>
+    </ul>
+    
+    <p>La oportunidad de BRIS está, por tanto, en posicionarse como un asistente de clase que libera al coach, no como otro sistema de evaluación deportiva. Su ventaja tendría que ser: <i>“el circuito se dirige solo, los atletas compiten y el entrenador vuelve a concentrarse en corregir técnica”</i>.</p>
+    <br>
+
+    <h4>Implicación para precio</h4>
+    <p>El precio de Lumetriq todavía no debería fijarse tomando como referencia únicamente el costo de una app de MX$60–100 mensuales. Los competidores directos muestran que el valor percibido se concentra principalmente en el hardware, mientras que la suscripción puede convertirse en una barrera: BlazePod cobra hardware más membresía; FITLIGHT evita la suscripción, pero compensa con un equipo de aproximadamente US$999; Lummic compite con app gratuita y kits de menor precio.</p>
+    
+    <p>Para este segmento, la hipótesis comercial más coherente sería:</p>
+    <ul>
+        <li><code style="display:inline;">⦿</code> Pago único por kit físico como oferta principal.</li>
+        <li><code style="display:inline;">⦿</code> App base gratuita con rutinas, competencia y progreso esencial.</li>
+        <li><code style="display:inline;">⦿</code> Funciones opcionales de pago, solo si el cliente las percibe como útiles: múltiples grupos, historial avanzado, panel institucional, exportación de resultados o administración de varias sedes.</li>
+        <li><code style="display:inline;">⦿</code> Kit inicial pequeño y ampliable, para evitar que un entrenador tenga que comprar desde el principio un sistema de 8–12 unidades.</li>
+    </ul>
+    
+    <p>Ese diseño atacaría simultáneamente las dos barreras observables: el rechazo a SaaS costoso y la percepción de que los sistemas importados son equipos profesionales fuera del presupuesto cotidiano de un gimnasio local.</p>
+</div>
+<div class="week-images">
+                        <img src="../images/Week_17/MAPA.jpeg" alt="Fab ">
+ 
+                    </div>
+<!--PARTE 2-->                  
+<div class="command-block">
+    <h3>Parte 2 - Blue Ocean</h3>
+    <p><code>LIENZO ESTRATÉGICO BLUE OCEAN</code></p>
+    <p><b>Concepto:</b> Lumetriq<br>
+    <b>Segmento:</b> Coaches y administradores de estudios boutique, HIIT, CrossFit y funcionales en México, con clases grupales de alta intensidad, que hoy dirigen la reacción de sus atletas con métodos manuales (silbato, conos, cronómetro) y rechazan pagar un SaaS caro.</p>
+    <br>
+
+    <h4>Marco de las Cuatro Acciones</h4>
+    
+    <p><b>ELIMINAR — el concepto no ofrecerá:</b></p>
+    <ul>
+        <li><code style="display:inline;">⦿ Profundidad de analítica neurocognitiva/deportiva de nivel profesional:</code> (Reportes tipo scouting, evaluación clínica de desempeño). La Capa 3 psicográfica del segmento es explícita — valoran motivación, variedad y competencia ("el primero que toca gana") muy por encima del análisis profundo. FITLIGHT ya es dueño de esa percepción profesional/elite; competir ahí es océano rojo puro, y además encarece el producto sin que el segmento lo pida.</li>
+    </ul>
+
+    <p><b>REDUCIR — el concepto ofrecerá muy por debajo del estándar:</b></p>
+    <ul>
+        <li><code style="display:inline;">⦿ Tamaño mínimo del kit inicial requerido para empezar:</code> El estándar de la industria empuja kits de 4 a 8+ unidades (BlazePod vende en paquetes de 6, ReactionX desde 4, FITLIGHT desde 2 pero cara la unidad adicional). La Capa 4 económica del segmento rechaza un compromiso de entrada alto y ancla su disposición real de compra al pago único accesible, no a un sistema completo desde el día uno.</li>
+    </ul>
+
+    <p><b>INCREMENTAR — el concepto ofrecerá muy por encima del estándar:</b></p>
+    <ul>
+        <li><code style="display:inline;">⦿ Velocidad y autonomía de configuración del circuito:</code> (Modos preconfigurados de un toque: "batalla", "todos contra todos", "cambio de dirección"). El propio mapa competitivo señala que ni BlazePod ni FITLIGHT eliminan la fricción operativa del coach — hay que colocar varios pods y administrar la app antes de cada clase. La Capa 2 conductual confirma que el método actual (aplausos, silbato) ya es tedioso; el objetivo es liberar al coach, no darle otra app que administrar.</li>
+        <li><code style="display:inline;">⦿ Localización completa para México (idioma, soporte, garantía, facturación):</code> Ninguno de los cuatro competidores directos documentados opera localmente en México — todos son operación global sin presencia local confirmada. El equipo tiene conocimiento directo del usuario objetivo (coaches y gimnasios mexicanos reales, entrevistados) como capacidad diferencial declarada.</li>
+    </ul>
+
+    <p><b>CREAR — el concepto introducirá por primera vez:</b></p>
+    <ul>
+        <li><code style="display:inline;">⦿ Medición multimodal de impacto:</code> (Fuerza + aceleración/movimiento + proximidad, no solo tiempo de reacción binario). Ningún competidor documentado en el mapa mide intensidad del golpe, solo tiempo/toque. Se basa directamente en la capacidad diferencial declarada del equipo: sensores de contacto, fuerza, acelerómetro y proximidad integrados.</li>
+        <li><code style="display:inline;">⦿ Progreso social persistente entre sesiones:</code> (Comparación con compañeros del grupo a lo largo del tiempo, no solo dentro de una sola clase o "modo batalla"). Siguiendo el patrón validado de Hevy —donde la comparación social sostenida es lo que mantiene el hábito—, ningún competidor de reacción documentado ofrece esto como núcleo de producto; BlazePod solo ofrece competencia dentro de una sesión, no un historial social acumulado.</li>
+    </ul>
+    <br>
+
+    <h4>Atributos del Lienzo &amp; Tabla de Puntuación (1=muy bajo · 5=muy alto)</h4>
+    <table class="material-table">
+        <thead>
+            <tr>
+                <th>Atributo</th>
+                <th>BlazePod</th>
+                <th>FITLIGHT</th>
+                <th>Circuito manual (conos/silbato)</th>
+                <th>Lumetriq</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="material-tag">1. Precio de entrada del hardware</td>
+                <td>2</td>
+                <td>1</td>
+                <td>5</td>
+                <td><b>4</b></td>
+            </tr>
+            <tr>
+                <td class="material-tag">2. Costo recurrente de software/suscripción</td>
+                <td>2</td>
+                <td>5</td>
+                <td>5</td>
+                <td><b>4</b></td>
+            </tr>
+            <tr>
+                <td class="material-tag">3. Velocidad y autonomía de configuración</td>
+                <td>2</td>
+                <td>2</td>
+                <td>5</td>
+                <td><b>4</b></td>
+            </tr>
+            <tr>
+                <td class="material-tag">4. Profundidad de analítica avanzada</td>
+                <td>4</td>
+                <td>5</td>
+                <td>1</td>
+                <td><b>0</b></td>
+            </tr>
+            <tr>
+                <td class="material-tag">5. Medición multimodal de impacto [CREADO]</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><b>4</b></td>
+            </tr>
+            <tr>
+                <td class="material-tag">6. Localización para México</td>
+                <td>1</td>
+                <td>1</td>
+                <td>5</td>
+                <td><b>4</b></td>
+            </tr>
+            <tr>
+                <td class="material-tag">7. Escalabilidad del kit inicial</td>
+                <td>2</td>
+                <td>2</td>
+                <td>5</td>
+                <td><b>4</b></td>
+            </tr>
+            <tr>
+                <td class="material-tag">8. Progreso social persistente [CREADO]</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td><b>4</b></td>
+            </tr>
+        </tbody>
+    </table>
+    <p><i>Nota: Atributo 4 eliminado → 0 para Lumetriq. Atributos 5 y 8 creados → 0 para todos los competidores; atributo 8 se puntuó 1, no 0, para BlazePod porque su producto sí menciona explícitamente "compete against others" dentro de una sesión, aunque no un historial social persistente entre sesiones como el de Hevy — se documenta la diferencia en vez de forzar la regla ciegamente.</i></p>
+    <br>
+
+    <h4>Lectura del Lienzo</h4>
+    <p>La curva de Lumetriq es diferente a la de los competidores en:</p>
+    <ul>
+        <li><code style="display:inline;">⦿ Atributo 4 (Analítica avanzada):</code> Cae a 0 mientras BlazePod y FITLIGHT compiten ahí — es la señal más clara de que Lumetriq no juega el mismo juego que ellos.</li>
+        <li><code style="display:inline;">⦿ Atributo 5 (Medición multimodal):</code> Único punto donde nadie más puntúa arriba de 0 — es el verdadero diferencial técnico.</li>
+        <li><code style="display:inline;">⦿ Atributo 8 (Progreso social persistente):</code> También único, y es el diferencial de producto/experiencia (no solo de hardware).</li>
+        <li><code style="display:inline;">⦿ Atributos 1, 3, 6 y 7:</code> Lumetriq se acerca al circuito manual (el competidor más peligroso) en vez de a BlazePod/FITLIGHT — la curva se dobla hacia "lo simple y accesible" en lugar de "lo profesional y caro".</li>
+    </ul>
+
+    <p><b>El océano azul en una oración:</b><br>
+    Lumetriq no compite por ser el sistema de reacción más preciso ni el más barato, sino por ser el único que combina medición de impacto real (no solo tiempo), progreso social persistente y una fricción de adopción cercana a la del método manual que el segmento ya usa — un espacio que hoy ningún competidor documentado ocupa simultáneamente.</p>
+    <br>
+
+    <h4>Advertencia de Océano Rojo</h4>
+    <p>Los puntajes de 4 en los atributos 1, 2, 3, 6 y 7 son diseño intencionado, no evidencia validada — ninguno de esos números viene de un prototipo funcionando ni de una entrevista con el comprador real (dueño de estudio HIIT/boutique). Si al construir el producto los sensores multimodales encarecen el hardware, o si el circuito tarda más de un minuto en armarse en la práctica, esos puntajes caen hacia el 2 de BlazePod — y ahí Lumetriq queda compitiendo en las mismas dimensiones que su rival más cercano, sin el colchón de precio del circuito manual ni la reputación profesional de FITLIGHT. Además, el propio "Segmento accionable" señala una hipótesis contradictoria sin resolver: que los gimnasios "podrían estar dispuestos a pagar una suscripción mayor" — si eso resulta cierto, el atributo 2 se mueve hacia el modelo SaaS de BlazePod, el mismo que la Capa 4 económica del segmento dice rechazar.</p>
+    <br>
+
+    <h4>Pregunta Clave para el Equipo</h4>
+    <p><i>¿El dueño real de un estudio boutique/HIIT/CrossFit en México (no un administrador de gimnasio universitario ni un coach individual) pagará un precio único accesible por el hardware — y seguirá usando la app gratuita lo suficiente como para generar el progreso social persistente (atributo 8) que sostiene el hábito — o su verdadera disposición de pago está, como insinúa la hipótesis sin resolver, en una suscripción institucional mayor a cambio de gestionar el leaderboard en pantalla de toda la clase?</i><br>
+    <b>Esa respuesta decide si Lumetriq se parece más al circuito manual con un salto tecnológico, o termina pareciéndose a BlazePod con otro nombre.</b></p>
+</div>
+
+<!--PARTE 3-->
+<div class="command-block">
+    <h3>Parte 3 - Propuesta de valor</h3>
+    <p><code>PROPUESTA DE VALOR: Lumetriq</code></p>
+    <br>
+
+    <h4>Nivel en Pirámide de Bain</h4>
+    <p><code style="display:inline;">⦿ Nivel actual:</code> <b>Funcional</b></p>
+    <p><code style="display:inline;">⦿ Justificación:</code> El dolor identificado (monotonía en los drills de reacción) y la ganancia (gamificar el estímulo con luces, sonido y ranking) se describen en términos de qué hace el producto y qué resuelve, no en términos de cómo hace sentir al coach o al atleta respecto de sí mismo.</p>
+    <p><code style="display:inline;">⦿ Oportunidad de subir:</code> <b>Sí, a Emocional</b> — sin exagerar, porque la Capa 3 psicográfica del segmento ya da la puerta abierta: valoran "la competencia" (el primero que toca gana) muy por encima del dato analítico. Ese impulso competitivo y de orgullo grupal es material emocional legítimo, no inventado; subir de nivel es nombrar ese sentimiento, no prometer transformación de vida ni identidad (eso sería saltarse un nivel sin evidencia).</p>
+    <br>
+
+    <h4>Evaluación IDEO</h4>
+    <p><code style="display:inline;">⦿ Insightful ✅:</code> Ningún competidor directo (BlazePod, FITLIGHT) combina estímulo impredecible + progreso social persistente a precio de entrada accesible; el hueco azul ya lo dejó claro.</p>
+    <p><code style="display:inline;">⦿ Unique ⚠️:</code> La ventaja real (sensores multimodales de fuerza/movimiento) es difícil de replicar, pero el precio de 1,332 MXN/unidad en paquetes de 3 y 6 aún no está validado con el comprador real (dueño de estudio boutique/HIIT), así que la unicidad de "accesible" es hipótesis, no hecho confirmado.</p>
+    <p><code style="display:inline;">⦿ Targeted ✅:</code> El segmento tiene las 4 capas bien definidas (quién, qué hace hoy, qué valora, cuánto paga), lo suficientemente preciso para hablarle directo sin sonar genérico.</p>
+    <br>
+
+    <h4>Desarrollo de la Propuesta de Valor</h4>
+    
+    <p><b>VERSIÓN 1 — FUNCIONAL:</b></p>
+    <p><i>"Para coaches de HIIT, box y funcional en México: Lumetriq convierte tus drills de reacción en un reto con luces, sonido y ranking, sin depender del silbato ni de un cronómetro."</i></p>
+    <ul>
+        <li><code style="display:inline;">⦿ Fuerza:</code> Nombra al usuario, el resultado (reto medible) y por qué no el método actual (silbato/cronómetro).</li>
+        <li><code style="display:inline;">⦿ Limitación:</code> Se queda en describir la mecánica del producto; no transmite por qué al atleta le importaría volver a jugarlo la próxima semana.</li>
+    </ul>
+
+    <p><b>VERSIÓN 2 — EMOCIONAL:</b></p>
+    <p><i>"Para coaches de HIIT, box y funcional en México: Lumetriq hace que tus alumnos compitan por ser los más rápidos del grupo, semana tras semana — no solo dentro de una clase."</i></p>
+    <ul>
+        <li><code style="display:inline;">⦿ Fuerza:</code> Apela directo al "el primero que toca gana" que ya validaron en las entrevistas; el gancho es el orgullo de superar a otros, no solo el ejercicio.</li>
+        <li><code style="display:inline;">⦿ Riesgo:</code> Si "semana tras semana" no está respaldado por un historial de progreso real y visible en la app, suena a promesa vacía — depende de que el ranking persistente sí se construya como feature central, no como adorno.</li>
+    </ul>
+
+    <p><b>VERSIÓN 3 — LA MÁS FUERTE:</b></p>
+    <div style="background-color: #f4f8ff; padding: 15px; border-left: 5px solid #0078D7; margin-bottom: 15px;">
+        <b>"Para coaches de HIIT, box y funcional en México: Lumetriq convierte cada drill de reacción en un reto que tus alumnos quieren repetir, con un ranking que compite semana tras semana — no solo el día de la clase."</b>
+    </div>
+    <p><b>Por qué esta es la más fuerte:</b> Combina lo funcional (drill de reacción, mecánica clara) con lo emocional (querer repetir, competir entre sesiones) sin perder ninguno de los dos. Además contrasta implícitamente con el competidor más peligroso (el circuito manual no genera ranking ni historial) y con BlazePod (cuya competencia muere al terminar la sesión), sin nombrarlos ni sonar como una lista de features.</p>
+    <br>
+
+    <h4>Oferta vs. Propuesta de Valor</h4>
+    <table class="material-table">
+        <thead>
+            <tr>
+                <th>Concepto</th>
+                <th>Definición en Lumetriq</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="material-tag">Oferta del producto<br><i>(Qué venden)</i></td>
+                <td>"Dispositivos táctiles con sensores de contacto, fuerza y acelerómetro, sincronizados por app vía luces y sonido, con métricas de tiempo de reacción y leaderboard, vendidos en paquetes de 3 y 6 unidades a 1,332 MXN por unidad."</td>
+            </tr>
+            <tr>
+                <td class="material-tag">Propuesta de valor<br><i>(Por qué lo compran)</i></td>
+                <td>"Para coaches de HIIT, box y funcional en México: Lumetriq convierte cada drill de reacción en un reto que tus alumnos quieren repetir, con un ranking que compite semana tras semana — no solo el día de la clase."</td>
+            </tr>
+        </tbody>
+    </table>
+    <p><b>La diferencia en una línea:</b> La oferta describe sensores, precio y paquetes <i>desde el punto de vista del fabricante</i>; la propuesta describe el enganche y la repetición del hábito <i>desde el punto de vista del coach y sus alumnos</i> — pasa de "qué trae la caja" a "por qué van a querer volver a usarlo".</p>
+</div>
+    <h2 id="Learning">Reflexión sobre aprendizajes</h2>
+        <div>
+            
+    </div>
+
+                                                           
+
+                    </div>
+                </div>                
+        </section>
+
+     <!--FIN CONTENIDO-->
+
+
+    </main>
+
+    <!-- Footer-->
+    <footer>
+        <div class="col-auto"><div class="small m-0 text-gray">Proyectos IV · Derek Rodríguez Cancino · Ibero Puebla · México · 201265@iberopuebla.mx</div></div>
+    </footer>
+
+    <!-- Bootstrap core JS-->
+    <!--script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script-->
+    <script> AOS.init(); </script>
+    <!-- Core theme JS-->
+    <script>
+
+        document.querySelectorAll(".cad-tabs-wrapper").forEach(wrapper => {
+
+        let currentGroup = wrapper.querySelector(".cad-group:not([style*='none'])")?.id 
+                            || wrapper.querySelector(".cad-group").id;
+
+        let menuIndex = 0;
+
+        function getMenus(){
+            return wrapper.querySelectorAll(
+            `#${currentGroup} .cad-menu`
+            );
+        }
+
+        function showMenu(){
+            const menus = getMenus();
+            menus.forEach(m => m.classList.remove("active"));
+            if(menus.length > 0){
+            menus[menuIndex].classList.add("active");
+            }
+        }
+
+        wrapper.querySelectorAll(".cad-arrow").forEach(btn=>{
+            btn.addEventListener("click", e=>{
+            const dir = btn.classList.contains("left") ? -1 : 1;
+            const menus = getMenus();
+
+            menuIndex += dir;
+
+            // carrusel infinito
+            if(menuIndex < 0) menuIndex = menus.length - 1;
+            if(menuIndex >= menus.length) menuIndex = 0;
+
+            showMenu();
+            });
+        });
+
+        wrapper.querySelectorAll(".cad-tab").forEach(tab=>{
+            tab.addEventListener("click", ()=>{
+
+            wrapper.querySelectorAll(".cad-tab")
+                .forEach(t=>t.classList.remove("active"));
+            tab.classList.add("active");
+
+            const group = tab.getAttribute("onclick")
+                ?.match(/'([^']+)'/)[1];
+
+            wrapper.querySelectorAll(".cad-group")
+                .forEach(g=>g.style.display="none");
+
+            const target = wrapper.querySelector("#"+group);
+            if(target){
+                target.style.display="block";
+                currentGroup = group;
+                menuIndex = 0;
+                showMenu();
+            }
+
+            });
+        });
+
+        showMenu();
+
+        });
+
+    </script>
+    <script>
+        const links = document.querySelectorAll('.menu-link');
+
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                links.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+    </script>
+
+</body>
+
+</html>
