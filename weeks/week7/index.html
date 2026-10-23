@@ -12,7 +12,7 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="../../css/styles.css" rel="stylesheet">
     <link href="../../css/faces.css" rel="stylesheet">
-    <!-- Estilos propios de la semana 7-->
+    <!-- Estilos propios de la semana 7 (v2)-->
     <style>
         /* Menú lateral: cabe en pantalla y marca las subsecciones */
         .week-menu { flex-shrink: 0; max-height: calc(100vh - 160px); overflow-y: auto; gap: 6px; padding-right: 4px; }
@@ -68,8 +68,6 @@
 
         .reflexion p { line-height: 1.8; }
         .prompt-box { white-space: pre-wrap; overflow-x: auto; }
-        .prompt-box.resultado { border: 1px solid rgba(112, 210, 13, 0.45); }
-        .prompt-box.resultado::before { content: "RESULTADO DEL PROMPT"; color: #3d7a0b; }
 
         /* Etiquetas Cumple / Parcial / Falta */
         .ok, .no, .mid { display: inline-block; padding: 1px 8px; border-radius: 10px; font-weight: 700; font-size: 0.88em; }
@@ -80,8 +78,7 @@
         /* Costos D/F/S */
         .tag-d, .tag-f, .tag-s { font-weight: 700; text-align: center; }
         span.tag-d, span.tag-f, span.tag-s { display: inline-block; min-width: 24px; padding: 0 6px; border-radius: 6px; }
-        .tag-d { color: #a2680b !important; background: rgba(210, 134, 13, 0.16); }
-        span.tag-d { color: #ffffff !important; background: #d2860d; }
+        .tag-d { color: #ffffff !important; background: #d2860d; }
         .tag-f { color: #17708a !important; background: rgba(28, 197, 235, 0.16); }
         .tag-s { color: #555 !important; background: #e6e9ed; }
 
@@ -96,6 +93,24 @@
             white-space: pre; overflow-x: auto; padding: 16px 18px; margin: 12px 0 16px; border-radius: 14px;
             background: #fafafa; border: 1px dashed rgba(210, 134, 13, 0.45);
         }
+        .prompt-box.resultado { border: 1px solid rgba(112, 210, 13, 0.45); }
+        .prompt-box.resultado::before { content: "RESULTADO DEL PROMPT"; color: #3d7a0b; }
+        span.tag-d { color: #ffffff !important; background: #d2860d; }
+        td.tag-d { color: #a2680b !important; background: rgba(210, 134, 13, 0.16); }
+
+        /* Negativos, tarjetas de cifras, flujo y descarga */
+        .material-table td.num.neg { color: #ae2f0b; }
+        .material-table tr.tot td.num.neg { color: #ffb3a0; }
+        .chips { display: flex; flex-wrap: wrap; gap: 12px; margin: 14px 0 16px; }
+        .chip { flex: 1 1 160px; padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,0.85); box-shadow: 0 6px 16px rgba(0,0,0,0.07); border-top: 3px solid #d2860d; }
+        .chip b { display: block; font-size: 1.35rem; color: #2c3e50; }
+        .chip span { display: block; font-size: 0.85rem; color: #555; line-height: 1.4; }
+        .material-table.flujo { font-size: 12px; }
+        .material-table.flujo td, .material-table.flujo th { padding: 6px 7px; }
+        .material-table.flujo td.material-tag { white-space: nowrap; position: sticky; left: 0; background: #ffffff; }
+        .material-table.flujo tr.tot td.material-tag { background: #2c3e50; color: #ffffff; }
+        .descarga { display: inline-block; padding: 10px 22px; border-radius: 12px; background: #2c3e50; color: #ffffff !important; font-weight: 700; letter-spacing: 0.5px; text-decoration: none; box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+        .descarga:hover { background: #d2860d; }
     </style>
 </head>
 
@@ -121,7 +136,7 @@
         <section class="week-header">
             <div class="week-glass">
                 <h1>SEMANA 7: Viabilidad técnica y económica</h1>
-                <div>Lumetriq ya es deseable (semanas 2–4) y construible (semanas 5–6). Esta semana responde si el negocio cierra: benchmarking de modelos de ingresos, inventario de costos D/F/S, costo real de la IA y los tres primeros pasos del modelo económico (costo unitario, precio de venta y punto de equilibrio) para el concepto <b>Reflejo Fijo</b>.</div>
+                <div>Lumetriq ya es pertinente (semanas 2–4) y factible (semanas 5–6). Esta semana responde si el negocio cierra: benchmarking de modelos de ingresos, inventario de costos D/F/S, BOM cotizado, costo real de la IA, costo de desarrollo por subsistema, el modelo económico completo en cinco pasos (costo unitario, precio, punto de equilibrio, flujo de caja y VPN) y los ejercicios de matemáticas financieras, para el concepto <b>Reflejo Fijo</b> (Ø 160 × 75 mm).</div>
             </div>
         </section>
 
@@ -129,23 +144,42 @@
         <section class="week-content">
             <div class="week-layout">
                 <aside class="week-menu">
+                    <a href="#CAMBIOS" class="menu-link">Qué cambió</a>
                     <a href="#UNO" class="menu-link">Viabilidad</a>
+                    <a href="#UNO-1" class="menu-link menu-sub">Las tres dimensiones de la viabilidad</a>
+                    <a href="#UNO-2" class="menu-link menu-sub">Viabilidad legal</a>
                     <a href="#DOS" class="menu-link">Benchmarking</a>
                     <a href="#TRES" class="menu-link">Modelo de ingresos</a>
                     <a href="#CUATRO" class="menu-link">Costos D/F/S</a>
+                    <a href="#BOM" class="menu-link">BOM cotizado</a>
                     <a href="#CINCO" class="menu-link">Costo de la IA</a>
+                    <a href="#CICLOS" class="menu-link">Costo de desarrollo</a>
+                    <a href="#CICLOS-1" class="menu-link menu-sub">1. Costo de la hora de ingeniería</a>
+                    <a href="#CICLOS-2" class="menu-link menu-sub">2. Subsistemas y sus componentes</a>
+                    <a href="#CICLOS-3" class="menu-link menu-sub">3. Costo por ciclo de cada subsistema</a>
+                    <a href="#CICLOS-4" class="menu-link menu-sub">4. Lo que hay que presentar</a>
                     <a href="#SEIS" class="menu-link">Paso 1: costo unitario</a>
-                    <a href="#SEIS-1" class="menu-link menu-sub">BOM por pod a 10 y a 100 unidades</a>
-                    <a href="#SEIS-2" class="menu-link menu-sub">Costo unitario completo</a>
                     <a href="#SIETE" class="menu-link">Paso 2: precio</a>
                     <a href="#SIETE-1" class="menu-link menu-sub">Método 1</a>
                     <a href="#SIETE-2" class="menu-link menu-sub">Método 2</a>
                     <a href="#SIETE-3" class="menu-link menu-sub">Precio recomendado</a>
                     <a href="#OCHO" class="menu-link">Paso 3: equilibrio</a>
-                    <a href="#OCHO-1" class="menu-link menu-sub">Margen de contribución por gimnasio</a>
-                    <a href="#OCHO-2" class="menu-link menu-sub">Costos fijos del primer año y equilibrio</a>
+                    <a href="#P4" class="menu-link">Paso 4: flujo de caja</a>
+                    <a href="#P5" class="menu-link">Paso 5: VPN</a>
+                    <a href="#P5-1" class="menu-link menu-sub">Sensibilidad</a>
+                    <a href="#EJ" class="menu-link">Ejercicios 1–9</a>
+                    <a href="#EJ-1" class="menu-link menu-sub">Ejercicio 1 · Valor futuro con capitalización trimestral</a>
+                    <a href="#EJ-2" class="menu-link menu-sub">Ejercicio 2 · Valor presente de una obligación</a>
+                    <a href="#EJ-3" class="menu-link menu-sub">Ejercicio 3 · Flujos irregulares al 9 %</a>
+                    <a href="#EJ-4" class="menu-link menu-sub">Ejercicio 4 · Anualidad</a>
+                    <a href="#EJ-5" class="menu-link menu-sub">Ejercicio 5 · VPN con flujos variables</a>
+                    <a href="#EJ-6" class="menu-link menu-sub">Ejercicio 6 · Con valor residual</a>
+                    <a href="#EJ-7" class="menu-link menu-sub">Ejercicio 7 · Comparación de proyectos</a>
+                    <a href="#EJ-8" class="menu-link menu-sub">Ejercicio 8 · Sensibilidad a la tasa</a>
+                    <a href="#EJ-9" class="menu-link menu-sub">Ejercicio 9 · TIR por interpolación lineal</a>
                     <a href="#NUEVE" class="menu-link">Resumen</a>
-                    <a href="#NUEVE-1" class="menu-link menu-sub">Fuentes consultadas el 8 de octubre de 2026</a>
+                    <a href="#SALIDA" class="menu-link">Preguntas de salida</a>
+                    <a href="#SALIDA-1" class="menu-link menu-sub">Fuentes consultadas</a>
                     <a href="#Learning" class="menu-link">Reflexión</a>
                 </aside>
 
@@ -153,10 +187,30 @@
 
 
     <div class="nota">
-        <p><i><b>Cómo leer esta página:</b> <b>[Confirmado]</b> = verificado en la fuente el 8 de octubre de 2026. <b>[Estimado]</b> = cálculo o rango propio. <b>[Hipótesis]</b> = supuesto por validar con clientes. <b>[Verificar]</b> = comprobar antes de decidir. Precios en MXN <b>sin IVA</b>. Tipo de cambio: se conservan <b>18.5 MXN/USD</b> de la semana 5 (el FIX de hoy ronda 18.1–18.2), porque es el escenario menos favorable para un BOM con piezas importadas. Base técnica: <b>PDS v1.0 y BOM de la semana 5</b> (Ø 140 × 75 mm, BOM de $1,390 por pod a 10 unidades).</i></p>
+        <p><i><b>Cómo leer esta página:</b> <b>[Confirmado]</b> = verificado en la fuente indicada (consultas del 22 de octubre de 2026 salvo que se diga otra fecha). <b>[Estimado]</b> = cálculo o rango propio. <b>[Hipótesis]</b> = supuesto por validar con clientes. <b>[Verificar]</b> = comprobar antes de decidir. Precios en MXN <b>sin IVA</b>. Tipo de cambio: <b>18.70 MXN/USD</b> (FIX de Banxico del 22/10/2026: 18.7005). Base técnica: <b>PDS v1.0, anexo de componentes y comunicación v2 (semana 5) y concepto Reflejo Fijo (semana 6)</b>: Ø 160 × 75 mm, pad Ø 120, plato Ø 118 × 3 mm, arco de 18 LED, ≈ 0.6 kg.</i></p>
     </div>
+    <p style="text-align:center;"><a href="files/lumetriq-modelo-economico-semana7.xlsx" class="descarga">DESCARGAR LA HOJA DE CÁLCULO (FÓRMULAS VISIBLES)</a></p>
+    <p style="font-size:0.9rem;">Todas las cifras de esta página salen de esa hoja: 10 pestañas (Supuestos, BOM, Costo unitario, IA, Precio, Equilibrio, Flujo, Desarrollo, D-F-S y Ejercicios) con 1,167 fórmulas. Los datos azules de <i>Supuestos</i> se pueden cambiar y todo se recalcula.</p>
 
-    <!-- ===================== 1. VIABILIDAD ===================== -->
+    <div class="yellowcommand-block">
+    <h4 id="CAMBIOS">Qué cambió respecto a la versión del 9 de octubre</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Tema</th><th>Antes</th><th>Ahora</th><th>Por qué</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">Tamaño del pod</td><td>Ø 140 × 75, pad Ø 100, 15 LED</td><td>Ø 160 × 75, pad Ø 120, plato Ø 118, 18 LED</td><td>PDS v1.0 actualizado (RD-04) y semana 6</td></tr>
+            <tr><td class="material-tag">BOM a 10 unidades</td><td>$1,390</td><td><b>$1,467</b></td><td>BOM de la semana 5 ($1,460 a 18.5) con el tipo de cambio de hoy</td></tr>
+            <tr><td class="material-tag">Tipo de cambio</td><td>18.50</td><td>18.70</td><td>El FIX de hoy ya está arriba del supuesto anterior</td></tr>
+            <tr><td class="material-tag">Precio del kit</td><td>$12,990</td><td><b>$13,490</b></td><td>El piso cost-plus subió a $12,756; $12,990 quedaba solo 1.8 % arriba</td></tr>
+            <tr><td class="material-tag">Suscripción</td><td>Desde el mes de compra</td><td>Primer mes gratis</td><td>Así lo pide el desafío de diseño del modelo de ingresos</td></tr>
+            <tr><td class="material-tag">Comisión de cobro</td><td>≈ 4.2 % estimado</td><td>3.49 % + $4 + IVA</td><td>Tarifa de Mercado Pago (link de pago, dinero al instante) [Confirmado]</td></tr>
+            <tr><td class="material-tag">Costo de desarrollo</td><td>$111,378 (5 ciclos × 120 h × $80)</td><td><b>$908,231</b> (15 subsistemas a $195/h)</td><td>Corrección de la revisión anterior</td></tr>
+            <tr><td class="material-tag">Alcance</td><td>Pasos 1 a 3</td><td>Semana completa</td><td>Se agregan BOM cotizado, pasos 4 y 5, ejercicios 1–9, viabilidad legal y operativa, y la hoja de cálculo</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+<!-- ===================== 1. VIABILIDAD ===================== -->
     <h2 id="UNO">Pertinencia, factibilidad y viabilidad</h2>
     <h3>Dónde está Lumetriq en las tres preguntas</h3>
 
@@ -165,11 +219,40 @@
     <table class="material-table">
         <thead><tr><th>Pregunta</th><th>Evidencia que ya hay</th><th>Estado</th></tr></thead>
         <tbody>
-            <tr><td class="material-tag">Pertinencia: ¿vale la pena?</td><td>Entrevistas de la semana 4: nadie paga hoy por medir reacción; el atleta de boxeo la tiene dentro de la mensualidad del coach. Interés verbal en entrenar diario y de forma más divertida.</td><td><span class="mid">Parcial</span>: falta saber quién paga (gimnasio o atleta) y cuánto</td></tr>
-            <tr><td class="material-tag">Factibilidad: ¿cómo se hace?</td><td>PDS v1.0 con 16 requisitos verificables, arquitectura de 3 capas, BOM con fuentes y concepto Reflejo Fijo listo para CAD.</td><td><span class="ok">Respondida</span>, con riesgos técnicos mitigados (bayoneta, plato flotante, calor)</td></tr>
-            <tr><td class="material-tag">Viabilidad económica</td><td>Esta página: costo unitario, precio y punto de equilibrio.</td><td><span class="mid">Cierra solo con condiciones</span> (ver Resumen)</td></tr>
-            <tr><td class="material-tag">Viabilidad operativa</td><td>Ensamble ≤ 1.5 h por pod (RR-01); dos CI de paso fino los ensambla JLCPCB; carcasa en FDM. Un lote de 40 pods son ≈ 60 h de ensamble y prueba.</td><td><span class="ok">Viable</span> a 10–100 pods al año; arriba de eso hace falta molde o maquila</td></tr>
-            <tr><td class="material-tag">Viabilidad legal</td><td>La radio está en el módulo certificado ESP32-WROOM-32E; no se presenta como dispositivo médico; la app trata datos personales (aviso de privacidad bajo la ley de datos personales reformada en 2025).</td><td><span class="mid">Por verificar</span>: qué NOM y qué homologación del módulo aplican para <i>vender</i> en México <b>[Verificar]</b></td></tr>
+            <tr><td class="material-tag">Pertinencia: ¿vale la pena? (semanas 2–4)</td><td>Entrevistas de la semana 4: nadie paga hoy por medir reacción; el atleta de boxeo la tiene dentro de la mensualidad del coach. Interés verbal en entrenar a diario y de forma más divertida.</td><td><span class="mid">Parcial</span>: falta confirmar que el <b>gimnasio</b> pague y cuánto vale para él (2 alumnos retenidos al mes es hipótesis)</td></tr>
+            <tr><td class="material-tag">Factibilidad: ¿cómo se hace? (semanas 5–6)</td><td>PDS v1.0 con 16 requisitos verificables, diagrama de 3 capas, componentes críticos con plan B, BOM con fuentes y Reflejo Fijo listo para CAD.</td><td><span class="ok">Respondida</span>, con 3 riesgos técnicos con prueba asignada (bayoneta, pad flotante, calor al cargar)</td></tr>
+            <tr><td class="material-tag">Viabilidad: ¿se sostiene? (esta semana)</td><td>Modelo económico de 5 pasos, flujo de caja a 24 meses y VPN.</td><td><span class="mid">Cierra a 24 meses, no a 12</span> (ver pasos 4 y 5)</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+   <div class="command-block">
+    <h4 id="UNO-1">Las tres dimensiones de la viabilidad</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Dimensión</th><th>Qué se revisó</th><th>Resultado</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">Económica y financiera</td><td>Costo unitario, precio, equilibrio, flujo de caja y VPN al 15 %</td><td><span class="mid">Condicionada</span>: sin sueldos, el equilibrio es de 7 gimnasios y el VPN es negativo a 12 meses (−$58,906) pero positivo a 24 ($129,817). Con sueldo o con el desarrollo completo no cierra en 2 años</td></tr>
+            <tr><td class="material-tag">Operativa</td><td>Ensamble ≤ 1.5 h por pod (RR-01): 40 pods son 60 h en el año 1 y 100 pods ≈ 100 h en el año 2 (0.6 personas-mes). Soporte de 1 h al mes por gimnasio: ≈ 35 h al mes con 35 gimnasios. Los dos CI de paso fino los ensambla JLCPCB; la carcasa es FDM.</td><td><span class="ok">Viable</span> hasta ≈ 300 pods al año con un técnico de medio tiempo. <span class="mid">Riesgo</span>: LCSC tiene <b>64</b> ADXL375 en inventario y el año 2 necesita 100; hay que reservar con anticipación o activar el plan B (H3LIS331DL o versión sin ADXL375)</td></tr>
+            <tr><td class="material-tag">Legal</td><td>Radio, datos personales, seguridad eléctrica, etiquetado y envío de baterías (detalle abajo)</td><td><span class="mid">Por verificar</span>: la homologación del producto final para venderlo no está cotizada; no bloquea el prototipo académico</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+   <div class="purpcommand-block">
+    <h4 id="UNO-2">Viabilidad legal: qué preguntas hacer antes de vender</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Tema</th><th>Qué aplica</th><th>Qué hace Lumetriq</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">Radio (BLE y ESP-NOW en 2.4 GHz)</td><td>Todo producto que usa el espectro radioeléctrico debe homologarse; no se reconocen certificados de otros países. El IFT se extinguió el 17 de octubre de 2025 y la <b>Comisión Reguladora de Telecomunicaciones (CRT)</b> opera desde el 21 de octubre de 2025; los certificados del IFT siguen vigentes. Los esquemas para productos finales ponen la etiqueta en el producto que contiene el módulo, no solo en el módulo <b>[Confirmado en fuentes secundarias; Verificar con la CRT]</b>. Certificados tipo B o C: vigencia de 2 años salvo mantenimiento.</td><td>Radiar solo con el módulo certificado ESP32-WROOM-32E (RR-02) y pedir a un organismo de certificación la ruta y el costo para el pod completo antes de la primera venta. El costo entra como costo fijo cuando exista cotización (cada $10,000 suben el equilibrio en 1.5 gimnasios)</td></tr>
+            <tr><td class="material-tag">Datos personales</td><td>Nueva Ley Federal de Protección de Datos Personales en Posesión de los Particulares: DOF del 20 de marzo de 2025, vigente desde el 21 de marzo. La autoridad ahora es la <b>Secretaría Anticorrupción y Buen Gobierno</b> (antes INAI). Aviso de privacidad desde que se recaban los datos (simplificado en la app con liga al integral); los datos de salud son <b>sensibles</b> [Confirmado].</td><td>Aviso de privacidad y contrato SaaS con el gimnasio ($5,000, ya en costos). El campo <code>dolor_reportado</code> del prompt de IA es un dato de salud: se pide consentimiento expreso o se elimina. Al LLM solo van métricas agregadas sin nombre (RI-03). Alumnos menores de edad: consentimiento de padre o tutor <b>[Verificar]</b></td></tr>
+            <tr><td class="material-tag">Seguridad eléctrica</td><td>NOM-001-SCFI-2018 (seguridad de aparatos electrónicos) para lo que se conecta a la red eléctrica <b>[Verificar el alcance para un equipo de 5 V por USB]</b>.</td><td>El pod no se conecta a la red: carga por USB-C de 5 V. Se vende con un cargador que ya tenga NOM o sin cargador</td></tr>
+            <tr><td class="material-tag">Información comercial y garantía</td><td>Etiquetado de producto electrónico (NOM de información comercial) <b>[Verificar cuál aplica]</b>; garantía por escrito.</td><td>Etiqueta con modelo, datos del fabricante, clave BLE e IDs de certificación; garantía de 6 meses [Hipótesis]</td></tr>
+            <tr><td class="material-tag">Envío de baterías de litio</td><td>Baterías de litio dentro del equipo (UN3481) <b>[Verificar las condiciones de la paquetería]</b>.</td><td>Celda protegida dentro del pod, embalaje del kit con la leyenda correspondiente; el costo de envío se dejó en $250 por kit</td></tr>
+            <tr><td class="material-tag">Dispositivo médico</td><td>Un producto con fines de diagnóstico o tratamiento requiere registro sanitario.</td><td>No se presenta como dispositivo médico ni da consejos médicos (regla 4 del prompt de IA y RR-02)</td></tr>
         </tbody>
     </table>
     </div>
@@ -180,83 +263,135 @@
     <h3>Prompt de Perplexity: tres ofertas similares</h3>
 
    <div class="command-block">
-    <p><b>Método:</b> se usó el prompt de la semana con Lumetriq como producto y gimnasios de boxeo como segmento. Los precios se revisaron en las páginas de cada empresa y en reseñas recientes; se convierten a 18.5 MXN/USD.</p>
+    <p><b>Método:</b> se usó el prompt de la semana con Lumetriq como producto y gimnasios de boxeo como segmento. Los precios en USD se revisaron el 8 de octubre de 2026 en las páginas de cada empresa y en reseñas recientes <b>[Confirmado 8 oct]</b>; aquí se convierten a 18.70 MXN/USD.</p>
     <div class="tabla-scroll">
     <table class="material-table">
         <thead><tr><th>Producto o servicio similar</th><th>Modelo de ingresos (quién paga, cuándo)</th><th>Rango de precio</th><th>Notas: fricción y otros stakeholders</th></tr></thead>
         <tbody>
             <tr><td class="material-tag">BlazePod<br><i>pods de reacción de piso, sin medición de fuerza</i></td>
-                <td>Hardware de pago único + <b>freemium</b>: app gratuita (BlazePod Go) y membresía Pro mensual con analítica y trabajo con varios atletas.</td>
-                <td>Kits de 4 pods ≈ USD 389–534 (≈ $7,200–9,900) <b>[Confirmado]</b>; Pro ≈ USD 9.99/mes (≈ $185) <b>[Confirmado en reseñas]</b></td>
-                <td><b>Fricción:</b> reseñas se quejan de que funciones básicas quedan detrás del muro Pro después de pagar el hardware. <b>Stakeholders:</b> fisioterapia, clubes y escuelas con bundles "Team" y "PT Clinic".</td></tr>
+                <td>Hardware de pago único + <b>freemium</b>: app gratuita y membresía Pro mensual con analítica y trabajo con varios atletas.</td>
+                <td>Kits de 4 pods USD 389–534 (≈ $7,274–$9,986); Pro ≈ USD 9.99/mes (≈ $187)</td>
+                <td><b>Fricción:</b> reseñas se quejan de funciones básicas detrás del muro Pro después de pagar el hardware. <b>Stakeholders:</b> fisioterapia, clubes y escuelas con bundles "Team" y "PT Clinic".</td></tr>
             <tr><td class="material-tag">FightCamp<br><i>sensores en los puños + clases de boxeo</i></td>
                 <td>Hardware (pago o financiado) + <b>suscripción obligatoria</b>: sin membresía activa los sensores no sirven.</td>
-                <td>Equipo USD 199–899 (≈ $3,700–16,600); membresía USD 39.99/mes (≈ $740) <b>[Confirmado]</b></td>
+                <td>Equipo USD 199–899 (≈ $3,721–$16,811); membresía USD 39.99/mes (≈ $748)</td>
                 <td><b>Fricción:</b> la suscripción obligatoria se percibe como costo oculto; el primer año real es ≈ USD 780–1,380. <b>Stakeholders:</b> financiadoras (pago a meses) y hogares con varios perfiles.</td></tr>
             <tr><td class="material-tag">Liteboxer<br><i>tablero de pared con 6 objetivos luminosos y sensores de fuerza</i></td>
-                <td>Hardware de pago único + suscripción a contenidos; su versión Go regala los sensores con un contrato de 1–2 años.</td>
-                <td>Equipo ≈ USD 1,495–1,795 (≈ $27,700–33,200); membresía ≈ USD 29.99/mes (≈ $555) <b>[Confirmado en reseñas]</b></td>
-                <td><b>Fricción:</b> precio de entrada alto y espacio de instalación; por eso pasó a un modelo con hardware subsidiado. <b>Stakeholders:</b> inversionistas de fitness conectado; no vende a gimnasios.</td></tr>
+                <td>Hardware de pago único + suscripción a contenidos; su versión Go regala los sensores con contrato de 1–2 años.</td>
+                <td>Equipo USD 1,495–1,795 (≈ $27,956–$33,566); membresía ≈ USD 29.99/mes (≈ $561)</td>
+                <td><b>Fricción:</b> precio de entrada alto y espacio de instalación; por eso pasó a hardware subsidiado. <b>Stakeholders:</b> inversionistas de fitness conectado; no vende a gimnasios.</td></tr>
         </tbody>
     </table>
     </div>
-    <p><code>⦿ ¿Qué modelo predomina y por qué?</code> <b>Hardware + suscripción</b> en los tres. El hardware cubre la fabricación y la suscripción paga lo que cuesta mantener vivo el servicio (contenido, app, nube). Los que cobran suscripción obligatoria (FightCamp) generan más quejas; los freemium (BlazePod) tienen más usuarios que no pagan.</p>
-    <p><code>⦿ ¿Qué stakeholder nadie está cobrando?</code> Los tres venden sobre todo al <b>usuario en casa</b>. Nadie cobra bien al <b>gimnasio de boxeo</b>, que gana si sus alumnos se quedan más meses y puede vender una "evaluación de reacción y fuerza". También quedan libres las <b>escuelas y ligas de box amateur</b> (pruebas de selección) y las <b>marcas de equipo de box</b>, que podrían patrocinar retos y rankings. Lumetriq va por el gimnasio.</p>
+    <p><code>⦿ ¿Qué modelo predomina y por qué?</code> <b>Hardware + suscripción</b> en los tres. El hardware cubre la fabricación y la suscripción paga lo que cuesta mantener vivo el servicio (contenido, app, nube). Los que obligan a pagar la suscripción (FightCamp) generan más quejas; los freemium (BlazePod) tienen más usuarios que no pagan.</p>
+    <p><code>⦿ ¿Qué stakeholder nadie está cobrando?</code> Los tres venden sobre todo al <b>usuario en casa</b>. Nadie le cobra bien al <b>gimnasio de boxeo</b>, que gana si sus alumnos se quedan más meses y puede vender una "evaluación de reacción y fuerza". También quedan libres las <b>escuelas y ligas de box amateur</b> (pruebas de selección) y las <b>marcas de equipo de box</b>, que podrían patrocinar retos y rankings. Lumetriq va por el gimnasio.</p>
 </div>
 
 <!-- ===================== 3. MODELO DE INGRESOS ===================== -->
     <h2 id="TRES">Modelo de ingresos elegido</h2>
-    <h3>Hardware + suscripción por sede (B2B)</h3>
+    <h3>Hardware + suscripción por sede (B2B), con alumno gratis</h3>
 
    <div class="command-block">
     <p class="frase">"El gimnasio compra el kit de pods y paga una suscripción mensual por sede; sus alumnos usan la app sin costo."</p>
     <div class="tabla-scroll">
     <table class="material-table">
-        <thead><tr><th>Capa</th><th>Qué se cobra</th><th>Por qué</th></tr></thead>
+        <thead><tr><th>Capa (modelo IDEO)</th><th>Qué se cobra</th><th>Por qué</th></tr></thead>
         <tbody>
-            <tr><td class="material-tag">1. Hardware (pago por evento)</td><td><b>Kit Studio:</b> 4 pods Reflejo Fijo con 4 placas de pared y estuche, a precio completo (costo + margen)</td><td>El subsidio no cierra: recuperar el kit con la suscripción la llevaría a ≈ $1,500/mes (ver Paso 2)</td></tr>
-            <tr><td class="material-tag">2. Software (suscripción)</td><td><b>Studio:</b> sesiones de grupo, historial, ranking del gimnasio, recomendaciones con IA y reportes para el coach</td><td>Cubre nube, IA y soporte, y es el ingreso que se repite</td></tr>
-            <tr><td class="material-tag">Gratis para el alumno</td><td>Ver su historial y sus recomendaciones dentro del gimnasio</td><td>El ancla de las entrevistas fue $60–100/mes para un usuario individual: muy baja para sostener el producto, pero útil como motivo para que el alumno pida el sistema</td></tr>
+            <tr><td class="material-tag">1. Hardware (pago por evento)</td><td><b>Kit Studio:</b> 4 pods Reflejo Fijo con 4 placas de pared y estuche, a precio completo: <b>$13,490</b></td><td>Subsidiarlo no cierra: recuperar el kit con la suscripción la llevaría a $1,574 al mes (paso 2)</td></tr>
+            <tr><td class="material-tag">2. Software (suscripción)</td><td><b>Plan Studio:</b> sesiones de grupo, historial, ranking del gimnasio, recomendaciones con IA y reporte mensual para el coach: <b>$499/mes</b> o $4,990/año</td><td>Paga nube, IA y soporte, y es el ingreso que se repite</td></tr>
+            <tr><td class="material-tag">Plan básico (sin pagar)</td><td>Modo "reacción local": rutinas desde el teléfono, sin historial en la nube, ranking ni IA</td><td>El kit nunca queda inservible (la queja contra FightCamp)</td></tr>
+            <tr><td class="material-tag">Freemium para el alumno</td><td>Ve su historial y sus recomendaciones dentro del gimnasio</td><td>El ancla de las entrevistas fue $60–100/mes por usuario: muy baja para sostener el producto, pero útil para que el alumno pida el sistema</td></tr>
         </tbody>
     </table>
     </div>
-    <p><b>Desafío de diseño:</b> si los pods miden y encienden sin pagar, ¿por qué renovar? El valor de la suscripción tiene que verse <b>en la clase</b>: ranking del gimnasio en pantalla, reporte mensual que el dueño puede enseñar a sus alumnos y evaluaciones con historial. Sin suscripción, los pods quedan en modo "reacción local" (rutinas básicas en el teléfono, sin historial en la nube ni IA). El muro va al final del primer mes, cuando ya hay 4 semanas de datos que perder.</p>
+    <p><b>Desafío de diseño:</b> si los pods miden y encienden sin pagar, ¿por qué renovar? El valor tiene que verse <b>en la clase</b>: ranking del gimnasio en pantalla, reporte mensual que el dueño enseña a sus alumnos y evaluaciones con historial. El primer mes es gratis y el muro llega al final de ese mes, cuando ya hay 4 semanas de datos que se perderían. El modelo financiero ya descuenta ese mes sin cobro.</p>
 </div>
 
 <!-- ===================== 4. COSTOS D/F/S ===================== -->
     <h2 id="CUATRO">Inventario de costos D/F/S</h2>
-    <h3>Crear y distribuir la oferta</h3>
+    <h3>Plantilla de la clase: crear y distribuir la oferta</h3>
 
    <div class="command-block">
-    <p><span class="tag-d">D</span> diferenciación (no se toca), <span class="tag-f">F</span> flexible (se puede reducir o diferir), <span class="tag-s">S</span> establecido (no se negocia). Costos por pod a 10 unidades salvo que se indique.</p>
+    <p><span class="tag-d">D</span> diferenciación (lo último que se toca), <span class="tag-f">F</span> flexible (primer candidato a reducir o diferir), <span class="tag-s">S</span> establecido (no se negocia). Año 1 con 10 gimnasios (40 pods); el costo unitario = costo estimado ÷ unidades que produce.</p>
     <div class="tabla-scroll">
     <table class="material-table">
-        <thead><tr><th>Costo</th><th>D/F/S</th><th class="num">Costo estimado</th><th>Unidad</th><th>Por qué</th></tr></thead>
+        <thead><tr><th>Costo</th><th>D/F/S</th><th class="num">Costo estimado</th><th>Unidad de medida</th><th class="num">Unidades que produce (pods)</th><th class="num">Costo unitario por pod</th><th>Por qué</th></tr></thead>
         <tbody>
-            <tr><td colspan="5"><b>CREAR la oferta</b></td></tr>
-            <tr><td class="material-tag">4 celdas de carga + ADS1220 + plato de aluminio</td><td class="tag-d">D</td><td class="num">$215</td><td>por pod</td><td>Es lo que mide fuerza en N igual en pared, piso o costal; ningún competidor de pods lo hace</td></tr>
-            <tr><td class="material-tag">ADXL375 (acelerómetro ±200 g)</td><td class="tag-f">F</td><td class="num">$420</td><td>por pod</td><td>Es la pieza más cara (30 % del BOM). Con las celdas, la fuerza ya está cubierta; puede pasar a H3LIS331DL o quedar solo en la versión Pro</td></tr>
-            <tr><td class="material-tag">Arco de LED + difusor + pad de vinipiel</td><td class="tag-d">D</td><td class="num">$95</td><td>por pod</td><td>Es la experiencia de golpe y la señal "golpea aquí"</td></tr>
-            <tr><td class="material-tag">ESP32, celda 18650, carga y pasivos</td><td class="tag-f">F</td><td class="num">$280</td><td>por pod</td><td>Intercambiables por equivalentes</td></tr>
-            <tr><td class="material-tag">Conector pogo magnético</td><td class="tag-f">F</td><td class="num">$80</td><td>por pod</td><td>Se puede diferir: el USB-C basta en la primera versión</td></tr>
-            <tr><td class="material-tag">PCB + ensamble de 2 CI en JLCPCB</td><td class="tag-s">S</td><td class="num">$90</td><td>por pod</td><td>Precio de mercado sin negociación</td></tr>
-            <tr><td class="material-tag">Carcasa PETG, tornillería, burlete, placa de pared</td><td class="tag-f">F</td><td class="num">$210</td><td>por pod</td><td>FDM ahora; molde solo con volumen</td></tr>
-            <tr><td class="material-tag">Ensamble, calibración y prueba</td><td class="tag-f">F</td><td class="num">$120</td><td>por pod (1.5 h × $80)</td><td>Baja a ≈ 1 h con plantillas y práctica</td></tr>
-            <tr><td class="material-tag">Nube (Supabase Pro)</td><td class="tag-s">S</td><td class="num">$463</td><td>por mes (USD 25)</td><td>Precio de lista; el plan gratuito pausa proyectos inactivos y no tiene respaldos</td></tr>
-            <tr><td class="material-tag">IA (Claude Haiku 5.5)</td><td class="tag-d">D</td><td class="num">$4.5</td><td>por gimnasio al mes</td><td>Las recomendaciones en lenguaje de entrenador son parte de la propuesta (ver Costo de la IA)</td></tr>
-            <tr><td class="material-tag">Cuentas de desarrollador (Apple, Google), dominio</td><td class="tag-s">S</td><td class="num">$2,894</td><td>primer año</td><td>Apple USD 99/año, Google USD 25 una vez, dominio y correo ≈ $600</td></tr>
-            <tr><td colspan="5"><b>DISTRIBUIR la oferta</b></td></tr>
-            <tr><td class="material-tag">Empaque del kit (caja + espuma)</td><td class="tag-f">F</td><td class="num">$160</td><td>por kit de 4</td><td>Se puede simplificar</td></tr>
-            <tr><td class="material-tag">Envío nacional</td><td class="tag-s">S</td><td class="num">$250</td><td>por kit</td><td>Tarifa de paquetería</td></tr>
-            <tr><td class="material-tag">Comisión de pasarela de pago</td><td class="tag-s">S</td><td class="num">≈ 4.2 %</td><td>de cada cobro</td><td>≈ 3.6 % + IVA sobre la comisión <b>[Verificar con la pasarela elegida]</b>. Se cobra por web o factura, no dentro de la app, para evitar la comisión de las tiendas</td></tr>
-            <tr><td class="material-tag">Soporte técnico</td><td class="tag-f">F</td><td class="num">$80</td><td>por gimnasio al mes (1 h)</td><td>Baja con buena guía de instalación</td></tr>
-            <tr><td class="material-tag">Fundas de repuesto del pad</td><td class="tag-f">F</td><td class="num">$13</td><td>por gimnasio al mes</td><td>4 fundas de ≈ $10 cada 3 meses</td></tr>
-            <tr><td class="material-tag">Demostraciones (kit demo) y marketing digital</td><td class="tag-f">F</td><td class="num">$18,200</td><td>primer año</td><td>Kit demo al costo directo ($6,200) + $1,000/mes de anuncios</td></tr>
-            <tr><td class="material-tag">Aviso de privacidad, contrato SaaS, contador</td><td class="tag-s">S</td><td class="num">$17,000</td><td>primer año</td><td>$5,000 legal + $1,000/mes de contabilidad <b>[Estimado]</b></td></tr>
+            <tr><td colspan="6"><b>CREAR la oferta</b></td></tr>
+            <tr><td class="material-tag">4 celdas de carga + ADS1220 + plato de aluminio</td><td class="tag-d">D</td><td class="num">$235</td><td>por pod</td><td class="num">1</td><td class="num">$235.00</td><td>Miden fuerza en N igual en pared, piso o costal; ningún competidor de pods lo hace</td></tr>
+            <tr><td class="material-tag">Arco de 18 LED + difusor + pad de vinipiel</td><td class="tag-d">D</td><td class="num">$115</td><td>por pod</td><td class="num">1</td><td class="num">$115.00</td><td>Experiencia del golpe y señal "golpea aquí"</td></tr>
+            <tr><td class="material-tag">ADXL375 (acelerómetro ±200 g)</td><td class="tag-f">F</td><td class="num">$425</td><td>por pod</td><td class="num">1</td><td class="num">$425.00</td><td>La pieza más cara; con las celdas, la fuerza ya está cubierta: H3LIS331DL o solo en versión Pro</td></tr>
+            <tr><td class="material-tag">ESP32, celda 18650, carga y pasivos</td><td class="tag-f">F</td><td class="num">$281</td><td>por pod</td><td class="num">1</td><td class="num">$281.00</td><td>Intercambiables por equivalentes</td></tr>
+            <tr><td class="material-tag">Conector pogo magnético</td><td class="tag-f">F</td><td class="num">$80</td><td>por pod</td><td class="num">1</td><td class="num">$80.00</td><td>Se puede diferir: USB-C basta en la primera versión</td></tr>
+            <tr><td class="material-tag">PCB + ensamble de 2 CI en JLCPCB</td><td class="tag-s">S</td><td class="num">$91</td><td>por pod</td><td class="num">1</td><td class="num">$91.00</td><td>Precio de mercado sin negociación</td></tr>
+            <tr><td class="material-tag">Carcasa, tornillería, burlete y placa de pared</td><td class="tag-f">F</td><td class="num">$240</td><td>por pod</td><td class="num">1</td><td class="num">$240.00</td><td>FDM ahora; molde solo con volumen</td></tr>
+            <tr><td class="material-tag">Ensamble, calibración y prueba</td><td class="tag-f">F</td><td class="num">$120</td><td>por pod</td><td class="num">1</td><td class="num">$120.00</td><td>Baja a ≈ 1 h con plantillas</td></tr>
+            <tr><td class="material-tag">Nube (Supabase Pro), 12 meses</td><td class="tag-s">S</td><td class="num">$5,610</td><td>por año</td><td class="num">40</td><td class="num">$140.25</td><td>Precio de lista; el plan gratuito pausa proyectos</td></tr>
+            <tr><td class="material-tag">IA (Claude Haiku 5.5), 12 meses</td><td class="tag-d">D</td><td class="num">$54.80</td><td>por gimnasio al año</td><td class="num">4</td><td class="num">$13.70</td><td>Recomendaciones en lenguaje de entrenador</td></tr>
+            <tr><td class="material-tag">Cuentas de Apple y Google, dominio</td><td class="tag-s">S</td><td class="num">$2,918.80</td><td>por año</td><td class="num">40</td><td class="num">$72.97</td><td>Tarifas fijas de las tiendas</td></tr>
+            <tr><td colspan="6"><b>DISTRIBUIR la oferta</b></td></tr>
+            <tr><td class="material-tag">Empaque del kit (caja + espuma)</td><td class="tag-f">F</td><td class="num">$160</td><td>por kit</td><td class="num">4</td><td class="num">$40.00</td><td>Se puede simplificar</td></tr>
+            <tr><td class="material-tag">Envío nacional</td><td class="tag-s">S</td><td class="num">$250</td><td>por kit</td><td class="num">4</td><td class="num">$62.50</td><td>Tarifa de paquetería</td></tr>
+            <tr><td class="material-tag">Comisión de pasarela en el kit</td><td class="tag-s">S</td><td class="num">$550.77</td><td>por kit</td><td class="num">4</td><td class="num">$137.69</td><td>3.49 % + $4 + IVA (Mercado Pago); se cobra fuera de las tiendas de apps</td></tr>
+            <tr><td class="material-tag">Soporte técnico, 12 meses</td><td class="tag-f">F</td><td class="num">$960</td><td>por gimnasio al año</td><td class="num">4</td><td class="num">$240.00</td><td>Baja con buena guía de instalación</td></tr>
+            <tr><td class="material-tag">Fundas de repuesto, 12 meses</td><td class="tag-f">F</td><td class="num">$160</td><td>por gimnasio al año</td><td class="num">4</td><td class="num">$40.00</td><td>4 fundas cada 3 meses</td></tr>
+            <tr><td class="material-tag">Actualizaciones de firmware OTA</td><td class="tag-f">F</td><td class="num">$0</td><td>incluido en S8 y S11</td><td class="num">1</td><td class="num">$0.00</td><td>Partición OTA de ESP-IDF + almacenamiento de Supabase; sin costo extra</td></tr>
+            <tr><td class="material-tag">Kit demo y marketing digital</td><td class="tag-f">F</td><td class="num">$18,508</td><td>por año</td><td class="num">40</td><td class="num">$462.70</td><td>Kit al costo directo + $1,000/mes</td></tr>
+            <tr><td class="material-tag">Aviso de privacidad, contrato SaaS, contador</td><td class="tag-s">S</td><td class="num">$17,000</td><td>por año</td><td class="num">40</td><td class="num">$425.00</td><td>Obligatorio con la ley de datos de 2025</td></tr>
+            <tr><td class="material-tag">Homologación de radio y NOM</td><td class="tag-s">S</td><td class="num">$0</td><td>por modelo</td><td class="num">1</td><td class="num">$0.00</td><td>Sin cotizar: se agrega cuando un organismo de certificación dé precio [Verificar]</td></tr>
+            <tr class="tot"><td>Costo en efectivo por pod en el año 1</td><td></td><td></td><td></td><td></td><td class="num">$3,221.81</td><td>Sin overhead ni contingencias; incluye los costos fijos del año repartidos en 40 pods</td></tr>
         </tbody>
     </table>
     </div>
-    <p><b>Lectura:</b> los costos D son pocos y baratos (celdas, arco, pad, IA ≈ $315 por pod). El costo más grande, el ADXL375, es <b>F</b>, no D: es la primera palanca si el precio no cierra.</p>
+    <div class="chips">
+        <div class="chip"><b>$364</b><span>D · 11 % del total</span></div>
+        <div class="chip"><b>$1,929</b><span>F · 60 % del total</span></div>
+        <div class="chip"><b>$929</b><span>S · 29 % del total</span></div>
+    </div>
+    <p><b>Lectura:</b> los costos D son pocos y baratos (celdas, plato, arco, pad e IA: 11 %). La mayoría es <b>F</b>: ahí está el margen de maniobra. El más grande, el ADXL375 ($425 por pod), es F y no D, porque la fuerza ya la miden las celdas: es la primera palanca si el precio no cierra. Los S suman 29 % y salen sobre todo de la nube, la comisión de cobro y la parte legal.</p>
+</div>
+
+<!-- ===================== BOM ===================== -->
+    <h2 id="BOM">BOM completo cotizado</h2>
+    <h3>Componente, especificación, precio, proveedor y tiempo de entrega</h3>
+
+   <div class="command-block">
+    <p>Es el BOM de la semana 5 (15 líneas) con las piezas importadas convertidas al tipo de cambio de hoy. El precio del ADXL375 se volvió a consultar hoy en LCSC.</p>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>#</th><th>Componente</th><th>Especificación</th><th>Proveedor / entrega</th><th class="num">USD a 10</th><th class="num">MXN a 10</th><th class="num">MXN a 100</th><th>Fuente</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">1</td><td>ESP32-WROOM-32E-N4 (módulo)</td><td>Wi-Fi + BLE 5, 4 MB flash, módulo castelado 1.27 mm</td><td>LCSC / JLCPCB C701341 · 5–10 días</td><td class="num">USD 3.24</td><td class="num">$61</td><td class="num">$55</td><td>Sem. 5: $60 a 18.5 → USD 3.24 [Confirmado sem. 5]; a 100 [Estimado]</td></tr>
+            <tr><td class="material-tag">2</td><td>ADXL375BCCZ (CI, ensamblado por JLCPCB)</td><td>Acelerómetro ±200 g, LGA-14, SPI</td><td>LCSC / JLCPCB C662206 · 5–10 días</td><td class="num">USD 22.73</td><td class="num">$425</td><td class="num">$360</td><td>LCSC 22/10/2026: USD 22.7315 (10+), 19.2744 (100+), 64 en inventario [Confirmado]</td></tr>
+            <tr><td class="material-tag">3</td><td>ADS1220IPWR</td><td>ADC 24 bits, 2 kSPS, PGA ×128, TSSOP-16</td><td>Unit Electronics · 1–3 días</td><td class="num">—</td><td class="num">$95</td><td class="num">$80</td><td>Unit $95.40 (outlet) [Confirmado sem. 5]; a 100 por LCSC [Estimado]</td></tr>
+            <tr><td class="material-tag">4</td><td>4 celdas de carga 50 kg SEN-10245</td><td>Medio puente, 34 × 34 × 7 mm, 1.0 mV/V</td><td>Unit Electronics · 1–3 días</td><td class="num">—</td><td class="num">$60</td><td class="num">$60</td><td>4 × $14.97 (precio 35+) [Confirmado sem. 5]</td></tr>
+            <tr><td class="material-tag">5</td><td>Pasivos, TP4056/MCP73831, AP2112K, USB-C, TVS, fusible, JST-PH, Hall</td><td>0603 o mayor, pitch ≥ 0.8 mm</td><td>Unit / LCSC · 1–10 días</td><td class="num">—</td><td class="num">$70</td><td class="num">$55</td><td>[Estimado]</td></tr>
+            <tr><td class="material-tag">6</td><td>Arco de 18 LED WS2812B + difusor</td><td>Tira 144 LED/m en 3 tramos de 6; difusor PETG</td><td>Unit / Mercado Libre · 1–5 días</td><td class="num">—</td><td class="num">$60</td><td class="num">$48</td><td>[Estimado]</td></tr>
+            <tr><td class="material-tag">7</td><td>Celda 18650 protegida con pestañas</td><td>≥ 2,000 mAh, con PCM</td><td>Steren / Mercado Libre · 1–5 días</td><td class="num">—</td><td class="num">$150</td><td class="num">$120</td><td>[Estimado]</td></tr>
+            <tr><td class="material-tag">8</td><td>Conector pogo magnético (frontal y trasero)</td><td>Rehundido a las 6 en punto</td><td>Amazon MX / Mercado Libre · 2–7 días</td><td class="num">—</td><td class="num">$80</td><td class="num">$60</td><td>[Estimado]</td></tr>
+            <tr><td class="material-tag">9</td><td>PCB de 2 capas + ensamble parcial (2 CI Extended)</td><td>Prorrateado con envío</td><td>JLCPCB · 7–12 días</td><td class="num">USD 4.86</td><td class="num">$91</td><td class="num">$45</td><td>Sem. 5: $90 a 18.5 → USD 4.86 [Estimado]</td></tr>
+            <tr><td class="material-tag">10</td><td>Plato flotante de aluminio 6061-T6</td><td>Ø 118 × 3 mm, ≈ 89 g</td><td>Taller de corte local · 3–7 días</td><td class="num">—</td><td class="num">$80</td><td class="num">$55</td><td>[Estimado]</td></tr>
+            <tr><td class="material-tag">11</td><td>Topes M4, tornillos de hombro, insertos de latón, arandelas, fijador</td><td>M3/M4, fijador medio</td><td>Ferretería / Unit · 1–3 días</td><td class="num">—</td><td class="num">$60</td><td class="num">$45</td><td>[Estimado]</td></tr>
+            <tr><td class="material-tag">12</td><td>Carcasa PETG/ASA (cuerpo, labio, tapa, aro tensor)</td><td>Ø 160 × 75 mm, ≈ 320 g</td><td>Filamento Unit / Amazon MX · 1–5 días</td><td class="num">—</td><td class="num">$115</td><td class="num">$105</td><td>[Estimado]</td></tr>
+            <tr><td class="material-tag">13</td><td>Pad Ø 120: vinipiel + EVA en 2 capas + diafragma</td><td>Cóncavo, flecha ≈ 4 mm</td><td>Tapicería / EVA / refaccionaria · mismo día</td><td class="num">—</td><td class="num">$55</td><td class="num">$42</td><td>[Estimado]</td></tr>
+            <tr><td class="material-tag">14</td><td>Burlete EPDM + botón</td><td>Mitad frontal del canto</td><td>Ferretería / Unit · mismo día</td><td class="num">—</td><td class="num">$20</td><td class="num">$15</td><td>[Estimado]</td></tr>
+            <tr><td class="material-tag">15</td><td>Placa de pared Ø 120</td><td>MDF o acrílico de 6 mm, corte láser</td><td>Corte láser local · 2–5 días</td><td class="num">—</td><td class="num">$45</td><td class="num">$28</td><td>[Estimado]</td></tr>
+            <tr class="tot"><td></td><td>BOM por pod</td><td></td><td>Lote completo en ≤ 12 días</td><td></td><td class="num">$1,467</td><td class="num">$1,173</td><td>−20.0 % a 100 unidades</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <ul>
+        <li><b>Contra la semana 5:</b> $1,467 contra $1,460. La diferencia de +$7 es solo el tipo de cambio (18.50 → 18.70) en el ADXL375, el ESP32 y la PCB.</li>
+        <li><b>Contra el límite del PDS:</b> RR-03 pide BOM ≤ $1,500 a 10 unidades. Quedan <b>$33</b> de margen: con el dólar a 19.8 el BOM pasa el límite.</li>
+        <li><b>Inventario del componente crítico:</b> LCSC tiene 64 ADXL375 hoy. Alcanza para el lote de 10 y para el año 1 (40 pods), pero no para el año 2 (100 pods) sin reservar.</li>
+    </ul>
+    <h5 class="subtitulo">Taller en clase: los 10 componentes de mayor costo</h5>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>#</th><th>Componente</th><th class="num">Costo a 10</th><th class="num">% del BOM</th></tr></thead>
+        <tbody><tr><td class="material-tag">1</td><td>ADXL375BCCZ (CI, ensamblado por JLCPCB)</td><td class="num">$425</td><td class="num">29.0 %</td></tr><tr><td class="material-tag">2</td><td>Celda 18650 protegida con pestañas</td><td class="num">$150</td><td class="num">10.2 %</td></tr><tr><td class="material-tag">3</td><td>Carcasa PETG/ASA (cuerpo, labio, tapa, aro tensor)</td><td class="num">$115</td><td class="num">7.8 %</td></tr><tr><td class="material-tag">4</td><td>ADS1220IPWR</td><td class="num">$95</td><td class="num">6.5 %</td></tr><tr><td class="material-tag">5</td><td>PCB de 2 capas + ensamble parcial (2 CI Extended)</td><td class="num">$91</td><td class="num">6.2 %</td></tr><tr><td class="material-tag">6</td><td>Conector pogo magnético (frontal y trasero)</td><td class="num">$80</td><td class="num">5.5 %</td></tr><tr><td class="material-tag">7</td><td>Plato flotante de aluminio 6061-T6</td><td class="num">$80</td><td class="num">5.5 %</td></tr><tr><td class="material-tag">8</td><td>Pasivos, TP4056/MCP73831, AP2112K, USB-C, TVS, fusible, JST-PH, Hall</td><td class="num">$70</td><td class="num">4.8 %</td></tr><tr><td class="material-tag">9</td><td>ESP32-WROOM-32E-N4 (módulo)</td><td class="num">$61</td><td class="num">4.2 %</td></tr><tr><td class="material-tag">10</td><td>4 celdas de carga 50 kg SEN-10245</td><td class="num">$60</td><td class="num">4.1 %</td></tr></tbody>
+    </table>
+    </div>
 </div>
 
 <!-- ===================== 5. COSTO DE LA IA ===================== -->
@@ -284,91 +419,172 @@ Métricas de la sesión (JSON):
 "objetivo_usuario":"mejorar velocidad del gancho de derecha","dolor_reportado":false}</div>
     <br>
     <ul>
-        <li><b>Input:</b> 1,471 caracteres. Con 3–4 caracteres por token da 370–490 tokens; el JSON tokeniza peor que el texto y los modelos recientes usan ≈ 30 % más tokens, así que se toman <b>600 tokens</b> <b>[Estimado por Claude]</b>.</li>
-        <li><b>Output:</b> 120 palabras en español ≈ 160–200 tokens; se toman <b>250</b> con margen.</li>
-        <li><b>Precio:</b> Claude Haiku 5.5: USD 0.10 por millón de tokens de entrada y USD 0.50 por millón de salida <b>[Confirmado, anthropic.com/pricing, 8 oct 2026]</b>.</li>
+        <li><b>Medición de tokens (método de la clase: se le pidió a Claude contarlos):</b> 1,471 caracteres. Con 3–4 caracteres por token da 370–490 tokens; el JSON tokeniza peor que el texto y los modelos recientes usan ≈ 30 % más tokens, así que se toman <b>600 de entrada</b>. La respuesta de 120 palabras en español son ≈ 160–200 tokens; se toman <b>250 de salida</b> <b>[Estimado por Claude]</b>.</li>
+        <li><b>Precio:</b> Claude Haiku 5.5: USD 0.10 por millón de tokens de entrada y USD 0.50 por millón de salida (prompts ≤ 100K tokens) <b>[Confirmado, claude.com/pricing, 22 oct 2026]</b>.</li>
         <li><b>Uso:</b> un gimnasio con 40 sesiones al día × 30 días, más 10 % de reintentos cuando el verificador rechaza una cifra = <b>1,320 llamadas al mes</b> <b>[Hipótesis]</b>.</li>
     </ul>
-    <div class="calc">Costo por llamada = 600 × 0.10/1,000,000 + 250 × 0.50/1,000,000
-                  = 0.000060 + 0.000125 = USD 0.000185
+    <div class="calc">Costo mensual por usuario = llamadas/día × (tokens in × precio in + tokens out × precio out) × 30
 
-Costo mensual por gimnasio = 0.000185 × 1,320 = USD 0.244 × 18.5 = $4.52 MXN/mes
-Costo mensual por pod (4 por kit)               = $1.13 MXN/mes
-Costo mensual por usuario individual (2 al día) = 0.000185 × 66 × 18.5 = $0.23 MXN/mes</div>
+Costo por llamada = 600 × 0.10/1,000,000 + 250 × 0.50/1,000,000
+                  = 0.000060 + 0.000125                  = USD 0.000185
+
+Por gimnasio  = 0.000185 × 1,320 = USD 0.2442 × 18.70    = $4.57 MXN/mes
+Por pod (4 por kit)                                    = $1.14 MXN/mes
+Por usuario individual (2 sesiones/día)                = $0.23 MXN/mes
+Como % de la suscripción de $499                       = 0.9 %</div>
     <br>
+    <h5 class="subtitulo">Tabla del entregable: llamadas/día × tokens × precio × usuarios objetivo</h5>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Usuarios objetivo</th><th class="num">Llamadas/día por gimnasio</th><th class="num">Tokens por llamada</th><th class="num">Precio (in/out por millón)</th><th class="num">Llamadas/mes</th><th class="num">Costo al mes</th><th class="num">Costo al año</th></tr></thead>
+        <tbody><tr><td class="material-tag">1 gimnasio</td><td class="num">40</td><td class="num">850</td><td class="num">USD 0.10 / 0.50</td><td class="num">1,320</td><td class="num">$4.57</td><td class="num">$54.80</td></tr><tr><td class="material-tag">10 gimnasios</td><td class="num">40</td><td class="num">850</td><td class="num">USD 0.10 / 0.50</td><td class="num">13,200</td><td class="num">$45.67</td><td class="num">$547.98</td></tr><tr><td class="material-tag">25 gimnasios</td><td class="num">40</td><td class="num">850</td><td class="num">USD 0.10 / 0.50</td><td class="num">33,000</td><td class="num">$114.16</td><td class="num">$1,369.96</td></tr><tr><td class="material-tag">35 gimnasios</td><td class="num">40</td><td class="num">850</td><td class="num">USD 0.10 / 0.50</td><td class="num">46,200</td><td class="num">$159.83</td><td class="num">$1,917.95</td></tr></tbody>
+    </table>
+    </div>
+    <p style="font-size:0.9rem;">10 gimnasios = año 1; 35 gimnasios = fin del año 2. Llamadas/día incluye los reintentos (40 × 1.1 = 44).</p>
     <div class="tabla-scroll">
     <table class="material-table">
         <thead><tr><th>Modelo</th><th class="num">Costo por gimnasio al mes</th><th>% de una suscripción de $499</th></tr></thead>
         <tbody>
-            <tr><td class="material-tag">Haiku 5.5 (elegido)</td><td class="num">$4.52</td><td>0.9 %</td></tr>
-            <tr><td class="material-tag">Sonnet 5.5 (USD 2 / 10 por millón)</td><td class="num">$90.35</td><td>18 %</td></tr>
+            <tr><td class="material-tag">Haiku 5.5 (elegido)</td><td class="num">$4.57</td><td>0.9 %</td></tr>
+            <tr><td class="material-tag">Sonnet 5.5 (USD 2 / 10 por millón)</td><td class="num">$91.33</td><td>18.3 %</td></tr>
         </tbody>
     </table>
     </div>
-    <p><b>Conclusión:</b> con la arquitectura híbrida la IA no amenaza el margen. Lo que la mantiene barata es la decisión de la semana 5: medir en el pod y analizar en el teléfono, y mandar a la nube solo la redacción. Si se usara Sonnet "porque escribe mejor", la IA se comería casi una quinta parte de la suscripción. Antes de producción se mide el valor exacto con <code>usage.input_tokens</code> en las respuestas de la API.</p>
+    <p><b>Conclusión:</b> con la arquitectura híbrida la IA no amenaza el margen. Lo que la mantiene barata es la decisión de la semana 5: medir en el pod (edge, costo de inferencia cero), analizar con reglas en el teléfono y mandar a la nube solo la redacción. Si se usara Sonnet "porque escribe mejor", la IA se comería casi una quinta parte de la suscripción. En producción el valor exacto se lee de <code>usage.input_tokens</code> y <code>usage.output_tokens</code> en cada respuesta de la API.</p>
+</div>
+
+<!-- ===================== CICLOS ===================== -->
+    <h2 id="CICLOS">Costo de desarrollo: ciclos de aprendizaje por subsistema</h2>
+    <h3>¿Cuánto cuesta llegar a la primera unidad vendible?</h3>
+
+   <div class="command-block">
+    <p>Método de la clase (Smith y Merritt): <b>costo de desarrollo = fijos directos + variables directos + indirectos (10–20 %) + contingencias (25–40 %)</b>, por ciclo de diseño → construcción → prueba → aprender. En lugar de un solo ciclo genérico, Lumetriq se divide en <b>15 subsistemas</b>, cada uno con sus propios ciclos, y la hora se paga a lo que gana en promedio un ingeniero en México.</p>
+</div>
+
+   <div class="command-block">
+    <h4 id="CICLOS-1">1. Costo de la hora de ingeniería</h4>
+    <div class="calc">Salario promedio mensual del campo "Electrónica, automatización
+y aplicaciones de la mecánica-eléctrica" (IMCO, Compara Carreras)       = $25,203   [Confirmado]
+Horas trabajadas: 40.3 h/sem × 52 / 12 (Data México, ENOE 2026-T1)      = 174.6 h/mes
+Salario por hora = 25,203 / 174.6                                       = $144.3/h
+Costo para el empleador × 1.35 (IMSS, INFONAVIT, SAR, aguinaldo,
+prima vacacional e impuesto estatal sobre nómina)                       = $194.8/h  [Estimado]
+TARIFA DE INGENIERÍA                                                    = <b>$195/h</b>  (2.4 × los $80 del ejemplo de clase)</div>
+    <ul>
+        <li><b>Por qué este campo:</b> el IMCO agrupa mecatrónica en "Electrónica, automatización y aplicaciones de la mecánica-eléctrica". Desarrollo de software ($24,063) y mecánica ($24,140) quedan a menos de 5 %, así que una sola tarifa sirve para hardware, firmware y app.</li>
+        <li><b>Técnico ($80/h):</b> el ensamble y el soporte no son ingeniería. $80/h equivale a ≈ $10,300 al mes de salario con el mismo factor, arriba del promedio de los técnicos en electrónica que reporta Data México (≈ $7k, con baja precisión estadística) <b>[Estimado]</b>.</li>
+    </ul>
+</div>
+
+   <div class="command-block">
+    <h4 id="CICLOS-2">2. Subsistemas y sus componentes</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Subsistema</th><th>Componentes</th><th>Qué debe demostrar cada ciclo (requisito del PDS)</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag"><b>S1. Estructura del pod</b></td><td><b>Carcasa</b> Ø 160 × 75 (cuerpo Ø 154, labio R 61.5–77, tapa trasera Ø 122) · <b>estructura de golpe</b> (plato flotante 6061-T6 Ø 118 × 3, 4 topes M4, guía lateral, retención anti-levantamiento) · <b>superficie de golpeo</b> (vinipiel, EVA en 2 capas + anillo de 4 mm, aro tensor Ø 120/108, diafragma) · <b>hardpoints</b> (costillas radiales, insertos de latón, cuna de la batería, montaje del ADXL375, postes de la PCB, apoyos con hueco bajo cada celda) · <b>amortiguación</b> (aisladores de silicona, espuma de la batería, burlete EPDM) · <b>cierre</b> (bayoneta de ¼ de vuelta con seguro, o-ring, fijador de rosca)</td><td>Que aguante ≥ 3,500 N y 10,000 golpes sin aflojarse, que mida ≤ 78 mm y ≤ 0.7 kg y que el pad no toque fondo (RD-02, RD-04)</td></tr>
+            <tr><td class="material-tag"><b>S2. Montaje y fijación</b></td><td>Placa de pared Ø 120 embutida · receptáculo de bayoneta con 3 orejas · disco antiderrapante para piso · adaptador semicurvo con correas para costal · taquetes · plantilla de instalación</td><td>Que no gire ni se suelte con ganchos descentrados y que se instale en menos de 10 min (RI-04)</td></tr>
+            <tr><td class="material-tag"><b>S3. Sensado de impacto</b></td><td>ADXL375 · 4 celdas de 50 kg en puente completo · ADS1220 + adaptador TSSOP · filtro RC y TVS · cableado con alivio de tensión · banco de calibración (pesas y péndulo)</td><td>Fuerza 50–1,750 N con ±15 % en el pico y ≤ 10 % entre montajes (RF-03)</td></tr>
+            <tr><td class="material-tag"><b>S4. Interfaz luminosa</b></td><td>Arco de 120° con 18 LED WS2812B (3 tramos de 6) · difusor PETG rehundido 1 mm · línea de datos por RMT · límite de brillo al 40 %</td><td>Estímulo visible a 3 m con luz de gimnasio y desfase entre pods ≤ 10 ms (RF-01, RD-04)</td></tr>
+            <tr><td class="material-tag"><b>S5. Electrónica de control</b></td><td>ESP32-WROOM-32E · PCB de 2 capas · LDO AP2112K · pasivos y conectores JST-PH · botón rehundido · puerto de programación</td><td>Que la PCB arranque sin retrabajo y no se reinicie con golpes ni caídas de voltaje (RR-01)</td></tr>
+            <tr><td class="material-tag"><b>S6. Batería y energía</b></td><td>Celda 18650 protegida · fusible reseteable · TVS · medición de voltaje · modos de sueño</td><td>≥ 3 h por carga con el perfil de uso (≈ 263 mA) y seguridad ante golpes (RD-01)</td></tr>
+            <tr><td class="material-tag"><b>S7. Cargador y apilamiento</b></td><td>TP4056 USB-C con protección (500 mA) · conector pogo magnético + imanes · sensor Hall · interruptor con límite de corriente · hombro de apilamiento · cargador multipuerto</td><td>Carga estable ≥ 30 min con 2–3 pods apilados, contactos &lt; 45 °C, carga completa ≤ 3 h (RI-04)</td></tr>
+            <tr><td class="material-tag"><b>S8. Firmware del pod</b></td><td>Drivers SPI (ADXL375 modo 3 y ADS1220 modo 1) · detección de impacto y tiempo de reacción en µs · fusión de fuerza y saturación · LED por RMT · motor de rutinas del gateway · sueño · registro en LittleFS · diagnóstico · OTA</td><td>Tiempo de reacción dentro de ±5 ms y F1 ≥ 0.90 contra toques y vibración (RF-02, RD-03)</td></tr>
+            <tr><td class="material-tag"><b>S9. Comunicación</b></td><td>ESP-NOW (SYNC, CFG, STIM, CANCEL, EVT, ACK, STATUS, ELECT) · BLE GATT con NimBLE · sincronía con HMAC · elección de gateway · emparejamiento LESC · coexistencia Wi-Fi/BLE</td><td>Pérdida &lt; 1 % tras ACK y 100 % de eventos con cortes de 60 s (RF-04, RI-01, RI-02)</td></tr>
+            <tr><td class="material-tag"><b>S10. App móvil</b></td><td>Conexión BLE y emparejamiento · sesión en vivo · biblioteca y editor de rutinas · historial y gráficas · SQLite + cola de sincronización · perfiles de alumno y entrenador · ranking · publicación en Android 8+ e iOS 15.1+</td><td>Que un entrenador arme y corra una rutina sin ayuda, también sin internet (RR-04)</td></tr>
+            <tr><td class="material-tag"><b>S11. Backend y nube</b></td><td>Supabase: autenticación, Postgres con RLS, tablas devices/sessions/impacts, inserción idempotente, almacenamiento de firmware, respaldos</td><td>Mismo lote enviado 2 veces → 0 duplicados (RI-03)</td></tr>
+            <tr><td class="material-tag"><b>S12. Análisis e IA</b></td><td>Reglas y estadística en el teléfono (fatiga, asimetría, tendencia) · prompt del LLM · Edge Function con Claude Haiku 5.5 · verificador de cifras · plantillas sin conexión</td><td>Toda cifra del texto existe en el JSON; nada personal sale hacia el LLM (RI-03)</td></tr>
+            <tr><td class="material-tag"><b>S13. Página web</b></td><td>Sitio estático (React/Vite) · propuesta de valor y video · formulario y WhatsApp · preventa o lista de espera · aviso de privacidad · dominio y analítica</td><td>Cuántas visitas piden contacto o apartan un kit</td></tr>
+            <tr><td class="material-tag"><b>S14. Empaque, manual e instalación</b></td><td>Caja del kit · protección de los pods · guía rápida e instalación · etiqueta con clave BLE e IDs de certificación</td><td>Que el kit llegue sin daño y se instale sin llamar a soporte</td></tr>
+            <tr><td class="material-tag"><b>S15. Integración y validación del kit</b></td><td>Lote de 5 pods de la semana 13 · prueba de 10,000 impactos · autonomía de 3 h · compatibilidad Android/iOS · prueba en un gimnasio real</td><td>Que todo funcione junto, fuera del laboratorio y usado por un tercero</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+   <div class="command-block">
+    <h4 id="CICLOS-3">3. Costo por ciclo de cada subsistema</h4>
+    <div class="calc">Costo por ciclo = (horas × $195 + materiales) × 1.15 (indirectos) × (1 + contingencia)
+Contingencia: 30 % en subsistemas de riesgo alto (estructura, sensado, PCB, batería,
+carga, firmware, comunicación, integración) y 25 % en el resto.</div>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Subsistema</th><th class="num">h/ciclo</th><th class="num">Materiales/ciclo</th><th>Qué incluyen</th><th class="num">Contingencia</th><th class="num">Costo por ciclo</th><th class="num">Ciclos mín · <b>prom</b> · máx</th><th class="num">Total promedio</th><th class="num">%</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">S1. Estructura del pod</td><td class="num">60</td><td class="num">$1,040</td><td>2 carcasas Ø 160, 2 platos Ø 118, 2 pads Ø 120, tornillería e insertos</td><td class="num">30 %</td><td class="num">$19,046</td><td class="num">3 · <b>5</b> · 7</td><td class="num"><b>$95,232</b></td><td class="num">10.5 %</td></tr>
+            <tr><td class="material-tag">S2. Montaje y fijación</td><td class="num">20</td><td class="num">$320</td><td>Placas Ø 120, bases y adaptador de costal impresos, taquetes</td><td class="num">25 %</td><td class="num">$6,066</td><td class="num">2 · <b>3</b> · 4</td><td class="num"><b>$18,199</b></td><td class="num">2.0 %</td></tr>
+            <tr><td class="material-tag">S3. Sensado de impacto</td><td class="num">50</td><td class="num">$1,500</td><td>2 juegos de sensores (ADXL375, 4 celdas, ADS1220) + pesas y péndulo</td><td class="num">30 %</td><td class="num">$16,819</td><td class="num">3 · <b>4</b> · 6</td><td class="num"><b>$67,275</b></td><td class="num">7.4 %</td></tr>
+            <tr><td class="material-tag">S4. Interfaz luminosa</td><td class="num">20</td><td class="num">$270</td><td>Tiras de 144 LED/m (18 LED) y difusores</td><td class="num">25 %</td><td class="num">$5,994</td><td class="num">2 · <b>3</b> · 4</td><td class="num"><b>$17,983</b></td><td class="num">2.0 %</td></tr>
+            <tr><td class="material-tag">S5. Electrónica de control</td><td class="num">60</td><td class="num">$1,700</td><td>5 PCB con envío + componentes para 2 placas</td><td class="num">30 %</td><td class="num">$20,033</td><td class="num">3 · <b>4</b> · 5</td><td class="num"><b>$80,132</b></td><td class="num">8.8 %</td></tr>
+            <tr><td class="material-tag">S6. Batería y energía</td><td class="num">25</td><td class="num">$500</td><td>2 celdas 18650 + protecciones</td><td class="num">30 %</td><td class="num">$8,036</td><td class="num">2 · <b>3</b> · 4</td><td class="num"><b>$24,107</b></td><td class="num">2.7 %</td></tr>
+            <tr><td class="material-tag">S7. Cargador y apilamiento</td><td class="num">40</td><td class="num">$900</td><td>2 pares de pogo, imanes, Hall, cargador multipuerto, base</td><td class="num">30 %</td><td class="num">$13,006</td><td class="num">3 · <b>4</b> · 6</td><td class="num"><b>$52,026</b></td><td class="num">5.7 %</td></tr>
+            <tr><td class="material-tag">S8. Firmware del pod</td><td class="num">80</td><td class="num">$300</td><td>DevKits ESP32 y consumibles</td><td class="num">30 %</td><td class="num">$23,770</td><td class="num">4 · <b>6</b> · 8</td><td class="num"><b>$142,623</b></td><td class="num">15.7 %</td></tr>
+            <tr><td class="material-tag">S9. Comunicación</td><td class="num">50</td><td class="num">$450</td><td>3 DevKits ESP32</td><td class="num">30 %</td><td class="num">$15,249</td><td class="num">3 · <b>4</b> · 6</td><td class="num"><b>$60,996</b></td><td class="num">6.7 %</td></tr>
+            <tr><td class="material-tag">S10. App móvil</td><td class="num">100</td><td class="num">$200</td><td>Incentivos para pruebas con usuarios</td><td class="num">25 %</td><td class="num">$28,319</td><td class="num">4 · <b>6</b> · 8</td><td class="num"><b>$169,912</b></td><td class="num">18.7 %</td></tr>
+            <tr><td class="material-tag">S11. Backend y nube</td><td class="num">30</td><td class="num">$468</td><td>1 mes de Supabase Pro</td><td class="num">25 %</td><td class="num">$9,082</td><td class="num">2 · <b>3</b> · 5</td><td class="num"><b>$27,246</b></td><td class="num">3.0 %</td></tr>
+            <tr><td class="material-tag">S12. Análisis e IA</td><td class="num">30</td><td class="num">$100</td><td>Tokens de prueba</td><td class="num">25 %</td><td class="num">$8,553</td><td class="num">3 · <b>4</b> · 6</td><td class="num"><b>$34,212</b></td><td class="num">3.8 %</td></tr>
+            <tr><td class="material-tag">S13. Página web</td><td class="num">25</td><td class="num">$100</td><td>Fotos y hosting de prueba</td><td class="num">25 %</td><td class="num">$7,152</td><td class="num">2 · <b>3</b> · 4</td><td class="num"><b>$21,455</b></td><td class="num">2.4 %</td></tr>
+            <tr><td class="material-tag">S14. Empaque, manual e instalación</td><td class="num">20</td><td class="num">$400</td><td>Muestras de caja e impresión del manual</td><td class="num">25 %</td><td class="num">$6,181</td><td class="num">2 · <b>2</b> · 3</td><td class="num"><b>$12,362</b></td><td class="num">1.4 %</td></tr>
+            <tr><td class="material-tag">S15. Integración y validación del kit</td><td class="num">80</td><td class="num">$3,234</td><td>4 pods (50 % de piezas reutilizadas) + traslado al gimnasio</td><td class="num">30 %</td><td class="num">$28,157</td><td class="num">2 · <b>3</b> · 5</td><td class="num"><b>$84,470</b></td><td class="num">9.3 %</td></tr>
+            <tr class="tot"><td>Total mínimo · promedio · máximo</td><td colspan="6"></td><td class="num">$627,813 · <b>$908,231</b> · $1,285,697</td><td class="num">100 %</td></tr>
+            <tr class="tot"><td>Horas de ingeniería</td><td colspan="6"></td><td class="num">2,030 · <b>2,940</b> · 4,150 h</td><td></td></tr>
+            <tr class="tot"><td>Personas-mes (174.6 h)</td><td colspan="6"></td><td class="num">11.6 · <b>16.8</b> · 23.8</td><td></td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p>Horas, materiales y número de ciclos son <b>[Estimado]</b>. Los materiales de la estructura, el montaje y la integración ya usan las medidas de Ø 160 mm y el BOM de $1,467.</p>
+    <ul>
+        <li><b>Firmware y app (6 ciclos):</b> el software se itera en sprints de 1–2 semanas y cada prueba con un entrenador genera cambios. Son los dos rubros más caros.</li>
+        <li><b>Estructura (5 ciclos):</b> imprimir, golpear 1,000–10,000 veces y corregir. Sus fallas solo aparecen con golpes reales.</li>
+        <li><b>PCB, sensado, carga y comunicación (4):</b> perfboard, PCB v1, PCB v2 y ajuste final; carga y comunicación tienen hito de descarte.</li>
+        <li><b>Integración (3):</b> el kit completo en un gimnasio encuentra lo que ningún banco muestra.</li>
+    </ul>
+</div>
+
+   <div class="greencommand-block">
+    <h4 id="CICLOS-4">4. Lo que hay que presentar</h4>
+    <div class="calc">Método anterior (5 ciclos × 120 h × $80 + materiales)        = $  111,378
+Mismo método con la tarifa de $195/h                         = $  214,532
+Por subsistema, escenario promedio (2,940 h)                = $  908,231
+  · mano de obra (costo de oportunidad del equipo)           = $  845,366   (93 %)
+  · efectivo: materiales, indirectos y contingencia          = $   62,865   (7 %)</div>
+    <ul>
+        <li><b>Presupuesto recomendado:</b> el escenario promedio, $908,231. Como dice la clase, no se presenta el mínimo: si algo sale mal, el proyecto se queda sin recursos antes de tener producto.</li>
+        <li><b>La mitad del desarrollo es software</b> (50 %: firmware, comunicación, app, nube, IA y web); los subsistemas físicos son el 39 %.</li>
+        <li><b>Efectivo contra costo de oportunidad:</b> mientras el equipo sean estudiantes sin sueldo, sale de la bolsa ≈ $62,865. Ese efectivo es la inversión inicial del flujo de caja (escenario A); el desarrollo completo se evalúa en el escenario C.</li>
+    </ul>
 </div>
 
 <!-- ===================== 6. PASO 1 ===================== -->
     <h2 id="SEIS">Paso 1: costo unitario real</h2>
-    <h3>Prompt de Claude: modelo económico (pasos 1 a 3)</h3>
+    <h3>Prompt de Claude: modelo económico del producto</h3>
 
    <div class="command-block">
     <div class="nota">
-        <p><i><b>Entradas del prompt:</b> producto Lumetriq Reflejo Fijo; modelo hardware + suscripción por sede; BOM de la semana 5; IA con Haiku 5.5; nube Supabase Pro; volumen <b>año 1: 10 gimnasios (40 pods)</b> y <b>año 2: 25 gimnasios (100 pods)</b>. Es más conservador que el SOM de la semana 4 (15 y 30 clientes) porque el equipo aún no tiene vendedor. Overhead del 15 % y contingencias del 25 %, ambos sobre el costo directo (BOM + mano de obra + empaque).</i></p>
+        <p><i><b>Entradas del prompt:</b> producto Lumetriq Reflejo Fijo; modelo hardware + suscripción por sede; BOM cotizado de esta página; IA con Haiku 5.5 ($4.57 al mes por gimnasio); nube Supabase Pro (USD 25 = $467.50 al mes); volumen <b>año 1: 10 gimnasios (40 pods)</b> y <b>año 2: 25 gimnasios (100 pods)</b>, más conservador que el SOM de la semana 4 (15 y 30) porque el equipo aún no tiene vendedor. Overhead 15 % y contingencias 25 %, sobre el costo directo.</i></p>
     </div>
-</div>
-
-   <div class="command-block">
-    <h4 id="SEIS-1">BOM por pod a 10 y a 100 unidades</h4>
-    <div class="tabla-scroll">
-    <table class="material-table">
-        <thead><tr><th>Componente</th><th class="num">A 10</th><th class="num">A 100</th><th>Por qué baja a 100</th></tr></thead>
-        <tbody>
-            <tr><td class="material-tag">ADXL375BCCZ</td><td class="num">420</td><td class="num">390</td><td>Escalón de precio de LCSC <b>[Verificar]</b></td></tr>
-            <tr><td class="material-tag">Celda 18650 protegida</td><td class="num">150</td><td class="num">120</td><td>Compra por caja</td></tr>
-            <tr><td class="material-tag">ADS1220</td><td class="num">95</td><td class="num">80</td><td>LCSC en lugar de tienda local</td></tr>
-            <tr><td class="material-tag">PCB + ensamble JLCPCB</td><td class="num">90</td><td class="num">45</td><td>El costo de preparación se reparte entre más placas</td></tr>
-            <tr><td class="material-tag">Carcasa PETG</td><td class="num">90</td><td class="num">85</td><td>Filamento por kilo</td></tr>
-            <tr><td class="material-tag">Conector pogo magnético</td><td class="num">80</td><td class="num">60</td><td>Lote de AliExpress/LCSC</td></tr>
-            <tr><td class="material-tag">Pasivos, carga, USB-C, Hall</td><td class="num">70</td><td class="num">55</td><td>Carretes</td></tr>
-            <tr><td class="material-tag">ESP32-WROOM-32E</td><td class="num">60</td><td class="num">55</td><td>Escalón de 100</td></tr>
-            <tr><td class="material-tag">4 celdas de carga</td><td class="num">60</td><td class="num">55</td><td>Lote de 400</td></tr>
-            <tr><td class="material-tag">Plato de aluminio</td><td class="num">60</td><td class="num">40</td><td>Corte por lote</td></tr>
-            <tr><td class="material-tag">Tornillería e insertos</td><td class="num">60</td><td class="num">45</td><td>Por caja</td></tr>
-            <tr><td class="material-tag">Arco de LED + difusor</td><td class="num">50</td><td class="num">40</td><td>Rollos completos</td></tr>
-            <tr><td class="material-tag">Pad (vinipiel + EVA + diafragma)</td><td class="num">45</td><td class="num">35</td><td>Rollo de vinipiel</td></tr>
-            <tr><td class="material-tag">Placa de pared</td><td class="num">40</td><td class="num">25</td><td>Corte láser por lámina</td></tr>
-            <tr><td class="material-tag">Burlete + botón</td><td class="num">20</td><td class="num">15</td><td>Por metro</td></tr>
-            <tr class="tot"><td>BOM por pod</td><td class="num">$1,390</td><td class="num">$1,145</td><td>−18 %; los precios a 100 son <b>[Estimado]</b></td></tr>
-        </tbody>
-    </table>
-    </div>
-</div>
-
-   <div class="command-block">
-    <h4 id="SEIS-2">Costo unitario completo</h4>
     <div class="tabla-scroll">
     <table class="material-table">
         <thead><tr><th>Concepto</th><th class="num">A 10 pods</th><th class="num">A 100 pods</th><th>Cálculo</th></tr></thead>
         <tbody>
-            <tr><td class="material-tag">BOM</td><td class="num">1,390.00</td><td class="num">1,145.00</td><td>Tabla anterior</td></tr>
-            <tr><td class="material-tag">Ensamble, calibración y prueba</td><td class="num">120.00</td><td class="num">80.00</td><td>1.5 h y 1.0 h × $80/h</td></tr>
-            <tr><td class="material-tag">Empaque (kit de 4)</td><td class="num">40.00</td><td class="num">25.00</td><td>$160 y $100 por kit ÷ 4</td></tr>
-            <tr><td class="material-tag"><b>Costo directo</b></td><td class="num"><b>1,550.00</b></td><td class="num"><b>1,250.00</b></td><td></td></tr>
-            <tr><td class="material-tag">Overhead (15 %)</td><td class="num">232.50</td><td class="num">187.50</td><td>0.15 × directo</td></tr>
-            <tr><td class="material-tag">Contingencias (25 %)</td><td class="num">387.50</td><td class="num">312.50</td><td>0.25 × directo</td></tr>
-            <tr class="tot"><td>Costo del hardware por pod</td><td class="num">2,170.00</td><td class="num">1,750.00</td><td></td></tr>
-            <tr><td class="material-tag">Porción de nube (12 meses)</td><td class="num">138.75</td><td class="num">55.50</td><td>$462.50/mes ÷ 10 o 25 gimnasios ÷ 4 pods × 12</td></tr>
-            <tr><td class="material-tag">Porción de IA (12 meses)</td><td class="num">13.56</td><td class="num">13.56</td><td>$4.52/mes ÷ 4 pods × 12</td></tr>
-            <tr class="tot"><td>Costo unitario total del primer año</td><td class="num">$2,322</td><td class="num">$1,819</td><td></td></tr>
-            <tr class="tot"><td>Costo del kit de 4 (solo hardware)</td><td class="num">$8,680</td><td class="num">$7,000</td><td>4 × costo del hardware</td></tr>
+            <tr><td class="material-tag">BOM</td><td class="num">$1,467.00</td><td class="num">$1,173.00</td><td>BOM cotizado</td></tr>
+            <tr><td class="material-tag">Ensamble, calibración y prueba (manufactura)</td><td class="num">$120.00</td><td class="num">$80.00</td><td>1.5 h y 1.0 h × $80/h</td></tr>
+            <tr><td class="material-tag">Empaque</td><td class="num">$40.00</td><td class="num">$25.00</td><td>$160 y $100 por kit ÷ 4</td></tr>
+            <tr class="tot"><td>Costo directo</td><td class="num">$1,627.00</td><td class="num">$1,278.00</td><td></td></tr>
+            <tr><td class="material-tag">Overhead (15 %)</td><td class="num">$244.05</td><td class="num">$191.70</td><td>0.15 × directo</td></tr>
+            <tr><td class="material-tag">Contingencias (25 %)</td><td class="num">$406.75</td><td class="num">$319.50</td><td>0.25 × directo</td></tr>
+            <tr class="tot"><td>Costo del hardware por pod</td><td class="num">$2,277.80</td><td class="num">$1,789.20</td><td></td></tr>
+            <tr><td class="material-tag">Porción de nube (12 meses)</td><td class="num">$140.25</td><td class="num">$56.10</td><td>$467.50 × 12 ÷ 40 o 100 pods</td></tr>
+            <tr><td class="material-tag">Porción de IA (12 meses)</td><td class="num">$13.70</td><td class="num">$13.70</td><td>$4.57 × 12 ÷ 4 pods</td></tr>
+            <tr class="tot"><td>COSTO UNITARIO TOTAL DEL PRIMER AÑO</td><td class="num">$2,432</td><td class="num">$1,859</td><td></td></tr>
+            <tr class="tot"><td>Costo del kit de 4 (solo hardware)</td><td class="num">$9,111</td><td class="num">$7,157</td><td>4 × costo del hardware</td></tr>
         </tbody>
     </table>
     </div>
     <ul>
-        <li><b>Componente de mayor costo:</b> el ADXL375, $420 = 30 % del BOM y 18 % del costo unitario total a 10 pods.</li>
-        <li><b>La IA representa</b> el 0.6 % del costo unitario a 10 pods. La nube pesa 10 veces más que la IA mientras haya pocos clientes, porque es un costo fijo que se reparte entre 10 gimnasios.</li>
-        <li><b>Si se conserva el diámetro de 160 mm</b> de la última revisión de la semana 6 en lugar de los 140 mm del PDS v1.0: ≈ +$60–80 por pod y ≈ +$85–110 de costo de hardware con overhead y contingencias.</li>
+        <li><b>Componente de mayor costo:</b> el ADXL375, $425 = 29 % del BOM y 17.5 % del costo unitario total a 10 pods.</li>
+        <li><b>La IA representa</b> el 0.56 % del costo unitario. La nube pesa 10 veces más mientras haya pocos clientes, porque es un costo fijo que se reparte entre 40 pods.</li>
+        <li><b>Contra la versión anterior</b> ($2,322 a 10 pods): +$110 por el tamaño de Ø 160 mm y el tipo de cambio.</li>
     </ul>
 </div>
 
@@ -379,22 +595,22 @@ Costo mensual por usuario individual (2 al día) = 0.000185 × 66 × 18.5 = $0.2
    <div class="command-block">
     <h4 id="SIETE-1">Método 1: cost-plus con margen del 40 %</h4>
     <div class="calc">HARDWARE (kit de 4 pods)
-  A 10:  8,680 × 1.40 = $12,152      A 100:  7,000 × 1.40 = $9,800
+  A 10:  9,111.20 × 1.40 = $12,756      A 100:  7,156.80 × 1.40 = $10,020
 
-SUSCRIPCIÓN POR SEDE, costo mensual por gimnasio (10 gimnasios):
-  Nube              462.50 ÷ 10  = 46.25
-  IA (Haiku 5.5)                 =  4.52
-  Soporte (1 h × $80)            = 80.00
-  Fundas de repuesto             = 13.33
-  Subtotal                       = 144.10
-  + comisión de pasarela 4.2 % del precio P
-  P = 1.40 × (144.10 + 0.042 P)  →  P = 201.74 / 0.9412 = $214 → piso $219/mes</div>
+SUSCRIPCIÓN POR SEDE · costo mensual por gimnasio (10 gimnasios)
+  Nube                467.50 ÷ 10        = 46.75
+  IA (Haiku 5.5)                         = 4.57
+  Soporte (1 h × $80)                    = 80.00
+  Fundas (4 × $10 cada 3 meses)          = 13.33
+  Subtotal operativo                     = 144.65
+  Comisión: (3.49 % × P + $4) × 1.16
+  P = 1.40 × (144.65 + 4.64 + 0.040484 P)  →  P = 209.01 / 0.94332 = $221.56 → piso $222/mes</div>
     <br>
-    <p><b>Variante con hardware subsidiado</b> (el método de la clase: la suscripción recupera el kit en 12 meses con 20 % de costo financiero):</p>
-    <div class="calc">Recuperación del kit: 8,680 × 1.20 ÷ 12 = 868.00/mes
-+ operativos                              = 144.10/mes
-P = 1.40 × (1,012.10 + 0.042 P) → P ≈ $1,505/mes</div>
-    <p>$1,505 al mes está muy por encima de lo que cobran FightCamp ($740) o Liteboxer ($555), y del Studio Pro de $899 que propuso la semana 4. <b>El subsidio no cierra; el kit se vende a precio completo.</b></p>
+    <p><b>Variante con hardware subsidiado</b> (método de la clase: la suscripción recupera el kit en 12 meses con 20 % de costo financiero):</p>
+    <div class="calc">Recuperación del kit: 9,111.20 × 1.20 ÷ 12 = 911.12/mes
++ operativos y comisión fija          = 149.29/mes
+P = 1.40 × (1,060.41 + 0.040484 P) → P ≈ $1,574/mes</div>
+    <p>$1,574 al mes está muy por encima de FightCamp ($748) y Liteboxer ($561), y del Studio Pro de $899 de la semana 4. <b>El subsidio no cierra; el kit se vende a precio completo.</b></p>
 </div>
 
    <div class="command-block">
@@ -405,8 +621,8 @@ P = 1.40 × (1,012.10 + 0.042 P) → P ≈ $1,505/mes</div>
   Valor mensual:                                       2 × 850 = $1,700
   Gasto que el dueño justifica si lo recupera en 12 meses:      $20,400
 
-Techo del primer año (kit + 12 meses de suscripción) = $20,400
-Con suscripción de $499: techo del kit = 20,400 − 12 × 499 = $14,412</div>
+Techo del kit = 20,400 − 11 meses × $499 (el primer mes es gratis) = $14,911
+Techo de la suscripción si el gimnasio ya tuviera el hardware = 60 % × 1,700 = $1,020/mes</div>
     <br>
 
     <figure class="figura">
@@ -417,32 +633,29 @@ Con suscripción de $499: techo del kit = 20,400 − 12 × 499 = $14,412</div>
                 .lbs { font: 11px Arial, sans-serif; fill: #5a5a5a; }
                 .lbb { font: bold 12px Arial, sans-serif; fill: #032472; }
             </style>
-            <!-- escala: x = 40 + (MXN/30000)*820 -->
             <line class="ax" x1="40" y1="120" x2="860" y2="120"></line>
             <text class="lbs" x="36" y="140">$0</text>
             <text class="lbs" x="304" y="140">$10k</text>
             <text class="lbs" x="577" y="140">$20k</text>
             <text class="lbs" x="840" y="140">$30k</text>
             <line class="ax" x1="313" y1="115" x2="313" y2="125"></line><line class="ax" x1="587" y1="115" x2="587" y2="125"></line><line class="ax" x1="860" y1="115" x2="860" y2="125"></line>
-            <!-- rango piso-techo -->
-            <rect x="372" y="98" width="62" height="22" fill="#0d48d2" opacity="0.18"></rect>
-            <line x1="372" y1="92" x2="372" y2="126" stroke="#0b7a3b" stroke-width="3"></line>
-            <text class="lb" x="300" y="86">Piso $12,152</text>
-            <line x1="434" y1="92" x2="434" y2="126" stroke="#b10a0a" stroke-width="3"></line>
-            <text class="lb" x="440" y="86">Techo $14,412</text>
-            <circle cx="395" cy="109" r="7" fill="#0d48d2"></circle>
-            <text class="lbb" x="330" y="60">Recomendado $12,990</text>
-            <line x1="395" y1="64" x2="395" y2="101" stroke="#0d48d2"></line>
-            <!-- mercado -->
-            <rect x="237" y="155" width="74" height="14" fill="#c9cfdc"></rect>
-            <text class="lbs" x="190" y="186">BlazePod 4 pods $7.2–9.9k</text>
-            <rect x="141" y="198" width="352" height="6" fill="#e6c79b"></rect>
-            <text class="lbs" x="141" y="219">FightCamp $3.7–16.6k</text>
-            <rect x="797" y="155" width="10" height="14" fill="#c9cfdc"></rect>
-            <text class="lbs" x="720" y="186">Liteboxer $27.7k+</text>
+            <rect x="388.7" y="98" width="58.9" height="22" fill="#0d48d2" opacity="0.18"></rect>
+            <line x1="388.7" y1="92" x2="388.7" y2="126" stroke="#0b7a3b" stroke-width="3"></line>
+            <text class="lb" x="296.7" y="86">Piso $12,756</text>
+            <line x1="447.6" y1="92" x2="447.6" y2="126" stroke="#b10a0a" stroke-width="3"></line>
+            <text class="lb" x="453.6" y="86">Techo $14,911</text>
+            <circle cx="408.7" cy="109" r="7" fill="#0d48d2"><title>Recomendado $13,490</title></circle>
+            <text class="lbb" x="338.7" y="60">Recomendado $13,490</text>
+            <line x1="408.7" y1="64" x2="408.7" y2="101" stroke="#0d48d2"></line>
+            <rect x="238.8" y="155" width="74.1" height="14" fill="#c9cfdc"></rect>
+            <text class="lbs" x="208.8" y="186">BlazePod 4 pods $7.3–$10.0k</text>
+            <rect x="141.7" y="198" width="357.8" height="6" fill="#e6c79b"></rect>
+            <text class="lbs" x="141.7" y="219">FightCamp $3.7–$16.8k</text>
+            <rect x="804.1" y="155" width="55.9" height="14" fill="#c9cfdc"></rect>
+            <text class="lbs" x="734.1" y="186">Liteboxer $28.0k+</text>
             <text class="lbs" x="40" y="240">Precio del kit de 4 pods, MXN sin IVA. Barras grises y ocre: equipo de la competencia (sin suscripción).</text>
         </svg>
-        <figcaption>El precio vive entre el piso cost-plus a 10 unidades y el techo value-based. El rango es estrecho: apenas $2,260.</figcaption>
+        <figcaption>El precio vive entre el piso cost-plus a 10 unidades y el techo value-based. El rango es estrecho: $2,155.</figcaption>
     </figure>
 </div>
 
@@ -452,141 +665,377 @@ Con suscripción de $499: techo del kit = 20,400 − 12 × 499 = $14,412</div>
     <table class="material-table">
         <thead><tr><th>Producto</th><th class="num">Piso cost-plus</th><th class="num">Techo value-based</th><th class="num">Recomendado</th><th>Por qué</th></tr></thead>
         <tbody>
-            <tr><td class="material-tag">Kit Studio (4 pods + placas + estuche)</td><td class="num">$12,152</td><td class="num">$14,412</td><td class="num"><b>$12,990</b></td><td>Margen bruto de 33 % a 10 pods y 46 % a 100. Más caro que BlazePod, pero es el único que mide fuerza y va en pared; menos de la mitad que Liteboxer</td></tr>
-            <tr><td class="material-tag">Suscripción Studio por sede</td><td class="num">$219/mes</td><td class="num">≈ $1,000/mes*</td><td class="num"><b>$499/mes</b> o $4,990/año</td><td>Por debajo de FightCamp y Liteboxer, que son por hogar; deja 67 % de margen después de nube, IA, soporte y comisión</td></tr>
-            <tr><td class="material-tag">Primer año para el gimnasio</td><td class="num">—</td><td class="num">$20,400</td><td class="num"><b>$18,978</b></td><td>Se recupera en ≈ 11 meses si se cumplen los 2 alumnos retenidos</td></tr>
+            <tr><td class="material-tag">Kit Studio (4 pods + placas + estuche)</td><td class="num">$12,756</td><td class="num">$14,911</td><td class="num"><b>$13,490</b></td><td>5.8 % arriba del piso y 9.5 % abajo del techo. Margen bruto de 32 % a 10 pods y 47 % a 100. Más caro que BlazePod, pero es el único que mide fuerza y va en pared; menos de la mitad que Liteboxer</td></tr>
+            <tr><td class="material-tag">Suscripción Studio por sede</td><td class="num">$222/mes</td><td class="num">$1,020/mes</td><td class="num"><b>$499/mes</b> o $4,990/año</td><td>Por debajo de FightCamp y Liteboxer, que son por hogar; deja 66 % de margen después de nube, IA, soporte, fundas y comisión</td></tr>
+            <tr><td class="material-tag">Primer año para el gimnasio</td><td class="num">—</td><td class="num">$20,400</td><td class="num"><b>$18,979</b></td><td>Kit + 11 meses. Se recupera en ≈ 11 meses si se cumplen los 2 alumnos retenidos</td></tr>
         </tbody>
     </table>
     </div>
-    <p style="font-size:0.9rem;">* Techo si el gimnasio ya tuviera el hardware: ≈ 60 % del valor mensual de $1,700.</p>
-    <div class="nota">
-        <p><i><b>Corrección a la semana 4:</b> el paquete Studio de 6 pods a $7,990 ($1,332 por pod) queda <b>por debajo del BOM</b> ($1,390). Ese precio se retira. Para 6 pods, el piso cost-plus a 10 unidades es $18,228.</i></p>
-    </div>
+    <ul>
+        <li><b>¿El segmento pagaría ese precio?</b> Solo si se confirma el valor: con 1 alumno retenido en lugar de 2, el techo del kit cae a $4,711 y ningún precio arriba del piso se justifica. Es la hipótesis que más pesa en todo el modelo.</li>
+        <li><b>Por qué no $12,990 (precio anterior):</b> quedaba apenas 1.8 % arriba del nuevo piso; cualquier alza del dólar lo dejaba abajo.</li>
+        <li><b>Corrección a la semana 4:</b> el paquete de 6 pods a $7,990 da $1,332 por pod, <b>por debajo del BOM</b> ($1,467). Ese precio se retira; para 6 pods, el piso cost-plus a 10 unidades es $19,134.</li>
+    </ul>
 </div>
 
 <!-- ===================== 8. PASO 3 ===================== -->
     <h2 id="OCHO">Paso 3: punto de equilibrio</h2>
     <h3>¿Cuántos gimnasios hay que cerrar en el año 1?</h3>
 
-   <div class="command-block">
-    <h4 id="OCHO-1">Margen de contribución por gimnasio</h4>
-    <div class="calc">HARDWARE (kit a $12,990)
-  Costo variable en efectivo: costo directo 6,200 + pasarela 546 + envío 250 = $6,996
-  Margen de contribución del kit = 12,990 − 6,996                             = $5,994
-  (overhead y contingencias no son salidas por unidad: son reserva)
-
-SUSCRIPCIÓN ($499/mes)
-  Costo variable: IA 4.52 + soporte 80 + fundas 13.33 + pasarela 20.96 = $118.81/mes
-  Margen de contribución = 499 − 118.81                                 = $380.19/mes
-  Meses promedio en el año 1 (altas repartidas en el año):                6
-  Aporte de la suscripción en el año 1 = 380.19 × 6                     = $2,281
-
-Margen de contribución por gimnasio en el año 1 = 5,994 + 2,281 = $8,275</div>
-</div>
-
    <div class="purpcommand-block">
-    <h4 id="OCHO-2">Costos fijos del primer año y equilibrio</h4>
+    <div class="calc">Punto de equilibrio = costos fijos ÷ margen de contribución por gimnasio
+
+KIT a $13,490
+  Costo variable en efectivo: directo 6,508.00 + overhead 976.20
+                              + comisión 550.77 + envío 250.00 = $8,284.97
+  Margen de contribución del kit = 13,490 − 8,284.97       = $5,205.03
+  (las contingencias son reserva: no salen por cada unidad)
+
+SUSCRIPCIÓN a $499/mes
+  Costo variable: IA 4.57 + soporte 80 + fundas 13.33 + comisión 24.84 = $122.74/mes
+  Margen de contribución = 499 − 122.74                         = $376.26/mes
+  Meses pagados por gimnasio en el año 1 (altas en los meses 3–12, 1 mes gratis) = 4.5
+  Aporte de la suscripción = 376.26 × 4.5                       = $1,693.16
+  Servicio del mes gratis                                       = −$97.90
+
+MARGEN DE CONTRIBUCIÓN POR GIMNASIO EN EL AÑO 1                 = $6,800.29</div>
+    <br>
     <div class="tabla-scroll">
     <table class="material-table">
-        <thead><tr><th>Costo fijo</th><th class="num">A. Operativo</th><th class="num">B. + medio tiempo</th><th class="num">C. + desarrollo</th></tr></thead>
+        <thead><tr><th>Costo fijo del año 1</th><th class="num">A. Operativo</th><th class="num">A'. + efectivo del desarrollo</th><th class="num">B. + medio tiempo</th><th class="num">C. + desarrollo completo</th></tr></thead>
         <tbody>
-            <tr><td class="material-tag">Nube (12 × $462.50)</td><td class="num">5,550</td><td class="num">5,550</td><td class="num">5,550</td></tr>
-            <tr><td class="material-tag">Cuentas de tiendas, dominio y correo</td><td class="num">2,894</td><td class="num">2,894</td><td class="num">2,894</td></tr>
-            <tr><td class="material-tag">Herramental: banco de calibración y plantillas de ensamble</td><td class="num">3,000</td><td class="num">3,000</td><td class="num">3,000</td></tr>
-            <tr><td class="material-tag">Kit demo + marketing digital</td><td class="num">18,200</td><td class="num">18,200</td><td class="num">18,200</td></tr>
-            <tr><td class="material-tag">Legal y contabilidad</td><td class="num">17,000</td><td class="num">17,000</td><td class="num">17,000</td></tr>
-            <tr><td class="material-tag">Una persona a medio tiempo para ventas y soporte (20 h/sem × $80)</td><td class="num">—</td><td class="num">83,136</td><td class="num">83,136</td></tr>
-            <tr><td class="material-tag">Recuperar el desarrollo: 5 ciclos de aprendizaje × $22,276</td><td class="num">—</td><td class="num">—</td><td class="num">111,378</td></tr>
-            <tr class="tot"><td>Costos fijos del año 1</td><td class="num">$46,644</td><td class="num">$129,780</td><td class="num">$241,158</td></tr>
-            <tr class="tot"><td>Punto de equilibrio (÷ $8,275)</td><td class="num">5.6 → <b>6 gimnasios</b></td><td class="num">15.7 → <b>16 gimnasios</b></td><td class="num">29.1 → <b>30 gimnasios</b></td></tr>
-            <tr class="tot"><td>Pods</td><td class="num">24</td><td class="num">64</td><td class="num">120</td></tr>
-            <tr><td class="material-tag">¿Alcanzable con el plan de 10 gimnasios?</td><td class="num"><span class="ok">✅ Sí</span></td><td class="num"><span class="mid">⚠️ Solo con el SOM de la semana 4</span></td><td class="num"><span class="no">❌ No en el año 1</span></td></tr>
+            <tr><td class="material-tag">Nube (12 × $467.50)</td><td class="num">5,610</td><td class="num">5,610</td><td class="num">5,610</td><td class="num">5,610</td></tr>
+            <tr><td class="material-tag">Cuentas de Apple y Google, dominio y correo</td><td class="num">2,919</td><td class="num">2,919</td><td class="num">2,919</td><td class="num">2,919</td></tr>
+            <tr><td class="material-tag">Herramental: banco de calibración y plantillas</td><td class="num">3,000</td><td class="num">3,000</td><td class="num">3,000</td><td class="num">3,000</td></tr>
+            <tr><td class="material-tag">Kit demo (4 pods a costo directo)</td><td class="num">6,508</td><td class="num">6,508</td><td class="num">6,508</td><td class="num">6,508</td></tr>
+            <tr><td class="material-tag">Marketing digital (12 × $1,000)</td><td class="num">12,000</td><td class="num">12,000</td><td class="num">12,000</td><td class="num">12,000</td></tr>
+            <tr><td class="material-tag">Legal y contabilidad</td><td class="num">17,000</td><td class="num">17,000</td><td class="num">17,000</td><td class="num">17,000</td></tr>
+            <tr><td class="material-tag">Desarrollo: solo el efectivo</td><td class="num">—</td><td class="num">62,865</td><td class="num">—</td><td class="num">—</td></tr>
+            <tr><td class="material-tag">Persona a medio tiempo (20 h/sem × 52 × $80)</td><td class="num">—</td><td class="num">—</td><td class="num">83,200</td><td class="num">83,200</td></tr>
+            <tr><td class="material-tag">Desarrollo completo, escenario promedio</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">908,231</td></tr>
+            <tr class="tot"><td>Costos fijos del año 1</td><td class="num">$47,037</td><td class="num">$109,902</td><td class="num">$130,237</td><td class="num">$1,038,468</td></tr>
+            <tr class="tot"><td>Punto de equilibrio (÷ $6,800)</td><td class="num">6.9 → <b>7 gimnasios</b></td><td class="num">16.2 → <b>17</b></td><td class="num">19.2 → <b>20</b></td><td class="num">152.7 → <b>153</b></td></tr>
+            <tr class="tot"><td>Pods</td><td class="num">28</td><td class="num">68</td><td class="num">80</td><td class="num">612</td></tr>
+            <tr><td class="material-tag">¿Alcanzable con el plan de 10 gimnasios?</td><td class="num"><span class="ok">✅ Sí</span></td><td class="num"><span class="mid">⚠️ Solo arriba del SOM (15)</span></td><td class="num"><span class="no">❌ No</span></td><td class="num"><span class="no">❌ No</span></td></tr>
         </tbody>
     </table>
     </div>
-    <br>
-    <h5 class="subtitulo">Costo de un ciclo de aprendizaje (método de la clase):</h5>
-    <div class="calc">Fijos directos:     120 h de ingeniería × $80 + licencias $300   =  9,900
-Variables directos: 2 prototipos × $1,900 + PCB de prueba $900
-                    + consumibles $300                             =  5,000
-Indirectos (15 %):  (9,900 + 5,000) × 0.15                          =  2,235
-Base del ciclo                                                     = 17,135
-Contingencias (30 %)                                               =  5,141
-COSTO POR CICLO                                                    = $22,276
-
-Mínimo 3 ciclos = $66,827 · Promedio 5 = $111,378 · Máximo 8 = $178,204</div>
-    <p>Se usan 120 h por ciclo en lugar de las 80 del ejemplo de clase porque cada ciclo de Lumetriq toca hardware, firmware, app y nube <b>[Estimado]</b>.</p>
-    <br>
-    <p><b>Lectura del equilibrio:</b></p>
     <ul>
-        <li><b>A:</b> si el equipo no se paga sueldo (situación de estudiantes), 6 gimnasios cubren los costos fijos de operar. Con 10 gimnasios sobran ≈ $36,000 de contribución.</li>
-        <li><b>B:</b> pagar a una persona a medio tiempo exige 16 gimnasios, más que el plan y en el límite del SOM de la semana 4 (15 en el año 1).</li>
-        <li><b>C:</b> recuperar el desarrollo en el primer año exige 30 gimnasios. No es realista: el desarrollo se recupera en el año 2, cuando la suscripción ya se cobra 12 meses por cliente ($4,562 por gimnasio al año) y el costo del kit baja a $7,000.</li>
-        <li><b>Sensibilidad clave:</b> si el kit se vendiera a $9,900 (precio de BlazePod), el margen del kit caería a ≈ $3,034 y el escenario A pediría 9 gimnasios en lugar de 6.</li>
+        <li><b>A:</b> si el equipo no se paga sueldo, 7 gimnasios cubren los costos de operar el primer año. El plan de 10 deja ≈ $20,966 de contribución libre.</li>
+        <li><b>A':</b> recuperar además el efectivo del desarrollo ($62,865) en el año 1 pide 17 gimnasios: más que el SOM. Por eso el flujo de caja (paso 4) se mira a 24 meses.</li>
+        <li><b>B:</b> pagar a una persona a medio tiempo pide 20 gimnasios. Con el equipo actual no es alcanzable en el año 1.</li>
+        <li><b>C:</b> recuperar todo el desarrollo a $195/h pide 153 gimnasios; aun repartido en 3 años son 64 al año. El desarrollo necesita inversión externa o que el equipo aporte su tiempo como capital.</li>
+        <li><b>Certificación:</b> cada $10,000 de homologación sube el equilibrio A en 1.5 gimnasios.</li>
     </ul>
 </div>
 
-<!-- ===================== 9. RESUMEN ===================== -->
-    <h2 id="NUEVE">Resumen del modelo económico (pasos 1 a 3)</h2>
+<!-- ===================== PASO 4 ===================== -->
+    <h2 id="P4">Paso 4: flujo de caja a 12 meses</h2>
+    <h3>¿En qué mes el flujo de caja es positivo?</h3>
+
+   <div class="command-block">
+    <p><b>Supuestos:</b> mes 0 = lanzamiento comercial, después del lote de 5 pods de la semana 13. Un gimnasio nuevo por mes del mes 3 al 12 (10 en el año 1). Los materiales de cada kit se compran un mes antes de venderlo (la entrega del lote es ≤ 12 días). El primer mes de suscripción es gratis. <b>Inversión inicial (mes 0):</b> efectivo del desarrollo $62,865 + herramental $3,000 + kit demo $6,508 + aviso de privacidad y contrato $5,000 + cuentas y dominio $2,919 = <b>$80,292</b>. Escenario A: el equipo no cobra sueldo; B agrega una persona a medio tiempo.</p>
+    <div class="calc">Flujo de caja operativo = entradas − salidas
+Entradas = kits × $13,490 + gimnasios que pagan × $499
+Salidas  = materiales (kits del mes siguiente × 4 × 1,627 × 1.15) + comisiones + envío
+           + (IA + soporte + fundas) × gimnasios activos + nube + marketing + contabilidad</div>
+    <div class="tabla-scroll">
+    <table class="material-table flujo">
+        <thead><tr><th>Mes</th><th class="num">0</th><th class="num">1</th><th class="num">2</th><th class="num">3</th><th class="num">4</th><th class="num">5</th><th class="num">6</th><th class="num">7</th><th class="num">8</th><th class="num">9</th><th class="num">10</th><th class="num">11</th><th class="num">12</th></tr></thead>
+        <tbody>
+<tr><td class="material-tag">Kits vendidos</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td></tr>
+<tr><td class="material-tag">Gimnasios que pagan</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">4</td><td class="num">5</td><td class="num">6</td><td class="num">7</td><td class="num">8</td><td class="num">9</td></tr>
+<tr><td class="material-tag">Venta de kits</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">13,490</td><td class="num">13,490</td><td class="num">13,490</td><td class="num">13,490</td><td class="num">13,490</td><td class="num">13,490</td><td class="num">13,490</td><td class="num">13,490</td><td class="num">13,490</td><td class="num">13,490</td></tr>
+<tr><td class="material-tag">Suscripciones</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">499</td><td class="num">998</td><td class="num">1,497</td><td class="num">1,996</td><td class="num">2,495</td><td class="num">2,994</td><td class="num">3,493</td><td class="num">3,992</td><td class="num">4,491</td></tr>
+<tr class="tot"><td class="material-tag">ENTRADAS</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">13,490</td><td class="num">13,989</td><td class="num">14,488</td><td class="num">14,987</td><td class="num">15,486</td><td class="num">15,985</td><td class="num">16,484</td><td class="num">16,983</td><td class="num">17,482</td><td class="num">17,981</td></tr>
+<tr><td class="material-tag">Materiales, ensamble y overhead*</td><td class="num">0</td><td class="num">0</td><td class="num">7,484</td><td class="num">7,484</td><td class="num">7,484</td><td class="num">7,484</td><td class="num">7,484</td><td class="num">7,484</td><td class="num">7,484</td><td class="num">7,484</td><td class="num">7,484</td><td class="num">7,484</td><td class="num">11,758</td></tr>
+<tr><td class="material-tag">Comisión de kits</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">551</td><td class="num">551</td><td class="num">551</td><td class="num">551</td><td class="num">551</td><td class="num">551</td><td class="num">551</td><td class="num">551</td><td class="num">551</td><td class="num">551</td></tr>
+<tr><td class="material-tag">Envío</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">250</td><td class="num">250</td><td class="num">250</td><td class="num">250</td><td class="num">250</td><td class="num">250</td><td class="num">250</td><td class="num">250</td><td class="num">250</td><td class="num">250</td></tr>
+<tr><td class="material-tag">Comisión de suscripciones</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">25</td><td class="num">50</td><td class="num">75</td><td class="num">99</td><td class="num">124</td><td class="num">149</td><td class="num">174</td><td class="num">199</td><td class="num">224</td></tr>
+<tr><td class="material-tag">IA, soporte y fundas</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">98</td><td class="num">196</td><td class="num">294</td><td class="num">392</td><td class="num">489</td><td class="num">587</td><td class="num">685</td><td class="num">783</td><td class="num">881</td><td class="num">979</td></tr>
+<tr><td class="material-tag">Nube</td><td class="num">0</td><td class="num">468</td><td class="num">468</td><td class="num">468</td><td class="num">468</td><td class="num">468</td><td class="num">468</td><td class="num">468</td><td class="num">468</td><td class="num">468</td><td class="num">468</td><td class="num">468</td><td class="num">468</td></tr>
+<tr><td class="material-tag">Marketing</td><td class="num">0</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td></tr>
+<tr><td class="material-tag">Contabilidad</td><td class="num">0</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td></tr>
+<tr><td class="material-tag">Cuentas y dominio</td><td class="num">2,919</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">2,451</td></tr>
+<tr><td class="material-tag">Inversión inicial</td><td class="num">77,373</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+<tr class="tot"><td class="material-tag">SALIDAS</td><td class="num">80,292</td><td class="num">2,468</td><td class="num">9,952</td><td class="num">10,850</td><td class="num">10,973</td><td class="num">11,096</td><td class="num">11,219</td><td class="num">11,341</td><td class="num">11,464</td><td class="num">11,587</td><td class="num">11,710</td><td class="num">11,832</td><td class="num">18,680</td></tr>
+<tr class="tot"><td class="material-tag">FLUJO NETO A</td><td class="num neg">−80,292</td><td class="num neg">−2,468</td><td class="num neg">−9,952</td><td class="num">2,640</td><td class="num">3,016</td><td class="num">3,392</td><td class="num">3,768</td><td class="num">4,145</td><td class="num">4,521</td><td class="num">4,897</td><td class="num">5,273</td><td class="num">5,650</td><td class="num neg">−699</td></tr>
+<tr><td class="material-tag">Acumulado A</td><td class="num neg">−80,292</td><td class="num neg">−82,759</td><td class="num neg">−92,711</td><td class="num neg">−90,071</td><td class="num neg">−87,055</td><td class="num neg">−83,663</td><td class="num neg">−79,895</td><td class="num neg">−75,750</td><td class="num neg">−71,229</td><td class="num neg">−66,332</td><td class="num neg">−61,059</td><td class="num neg">−55,409</td><td class="num neg">−56,108</td></tr>
+<tr><td class="material-tag">Factor de descuento</td><td class="num">1.0000</td><td class="num">0.9884</td><td class="num">0.9770</td><td class="num">0.9657</td><td class="num">0.9545</td><td class="num">0.9434</td><td class="num">0.9325</td><td class="num">0.9217</td><td class="num">0.9110</td><td class="num">0.9005</td><td class="num">0.8901</td><td class="num">0.8798</td><td class="num">0.8696</td></tr>
+<tr><td class="material-tag">Valor presente A</td><td class="num neg">−80,292</td><td class="num neg">−2,439</td><td class="num neg">−9,723</td><td class="num">2,549</td><td class="num">2,879</td><td class="num">3,200</td><td class="num">3,514</td><td class="num">3,820</td><td class="num">4,119</td><td class="num">4,410</td><td class="num">4,694</td><td class="num">4,970</td><td class="num neg">−608</td></tr>
+<tr><td class="material-tag">Medio tiempo (B)</td><td class="num">0</td><td class="num">6,933</td><td class="num">6,933</td><td class="num">6,933</td><td class="num">6,933</td><td class="num">6,933</td><td class="num">6,933</td><td class="num">6,933</td><td class="num">6,933</td><td class="num">6,933</td><td class="num">6,933</td><td class="num">6,933</td><td class="num">6,933</td></tr>
+<tr class="tot"><td class="material-tag">FLUJO NETO B</td><td class="num neg">−80,292</td><td class="num neg">−9,401</td><td class="num neg">−16,885</td><td class="num neg">−4,294</td><td class="num neg">−3,917</td><td class="num neg">−3,541</td><td class="num neg">−3,165</td><td class="num neg">−2,789</td><td class="num neg">−2,412</td><td class="num neg">−2,036</td><td class="num neg">−1,660</td><td class="num neg">−1,284</td><td class="num neg">−7,632</td></tr>
+<tr><td class="material-tag">Acumulado B</td><td class="num neg">−80,292</td><td class="num neg">−89,692</td><td class="num neg">−106,578</td><td class="num neg">−110,871</td><td class="num neg">−114,789</td><td class="num neg">−118,330</td><td class="num neg">−121,495</td><td class="num neg">−124,283</td><td class="num neg">−126,696</td><td class="num neg">−128,732</td><td class="num neg">−130,392</td><td class="num neg">−131,676</td><td class="num neg">−139,308</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p style="font-size:0.9rem;">* En el mes 12 se compran los materiales de los 2 kits del mes 13 (a costo de lote de 100) y se renueva la cuenta de Apple; por eso ese mes es negativo. La extensión al mes 24 está en la pestaña <i>Flujo</i> de la hoja.</p>
+    
+    <figure class="figura">
+        <svg viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flujo de caja acumulado de los escenarios A y B en 24 meses">
+            <style>.lbs { font: 11px Arial, sans-serif; fill: #5a5a5a; } .lbl { font: bold 12px Arial, sans-serif; fill: #1b1f2a; }</style>
+            <line x1="60" x2="860" y1="280.0" y2="280.0" stroke="#e6e9ef" stroke-width="1"></line><text x="54" y="284.0" text-anchor="end" class="lbs">−$150k</text><line x1="60" x2="860" y1="242.9" y2="242.9" stroke="#e6e9ef" stroke-width="1"></line><text x="54" y="246.9" text-anchor="end" class="lbs">−$100k</text><line x1="60" x2="860" y1="205.7" y2="205.7" stroke="#e6e9ef" stroke-width="1"></line><text x="54" y="209.7" text-anchor="end" class="lbs">−$50k</text><line x1="60" x2="860" y1="168.6" y2="168.6" stroke="#9aa3b5" stroke-width="1"></line><text x="54" y="172.6" text-anchor="end" class="lbs">$0k</text><line x1="60" x2="860" y1="131.4" y2="131.4" stroke="#e6e9ef" stroke-width="1"></line><text x="54" y="135.4" text-anchor="end" class="lbs">$50k</text><line x1="60" x2="860" y1="94.3" y2="94.3" stroke="#e6e9ef" stroke-width="1"></line><text x="54" y="98.3" text-anchor="end" class="lbs">$100k</text><line x1="60" x2="860" y1="57.1" y2="57.1" stroke="#e6e9ef" stroke-width="1"></line><text x="54" y="61.1" text-anchor="end" class="lbs">$150k</text><line x1="60" x2="860" y1="20.0" y2="20.0" stroke="#e6e9ef" stroke-width="1"></line><text x="54" y="24.0" text-anchor="end" class="lbs">$200k</text>
+            <line x1="460.0" x2="460.0" y1="20" y2="280" stroke="#9aa3b5" stroke-dasharray="4 4"></line>
+            <text x="464.0" y="32" class="lbs">fin del año 1</text>
+            <path d="M60.0,228.2 L93.3,235.2 L126.7,247.7 L160.0,250.9 L193.3,253.8 L226.7,256.5 L260.0,258.8 L293.3,260.9 L326.7,262.7 L360.0,264.2 L393.3,265.4 L426.7,266.4 L460.0,272.1 L493.3,266.3 L526.7,259.9 L560.0,253.0 L593.3,245.6 L626.7,241.9 L660.0,224.0 L693.3,214.6 L726.7,204.6 L760.0,194.0 L793.3,183.0 L826.7,171.3 L860.0,159.1" fill="none" stroke="#c2410c" stroke-width="2"></path>
+            <path d="M60.0,228.2 L93.3,230.0 L126.7,237.4 L160.0,235.5 L193.3,233.2 L226.7,230.7 L260.0,227.9 L293.3,224.8 L326.7,221.5 L360.0,217.8 L393.3,213.9 L426.7,209.7 L460.0,210.3 L493.3,199.3 L526.7,187.8 L560.0,175.8 L593.3,163.2 L626.7,154.4 L660.0,131.3 L693.3,116.7 L726.7,101.6 L760.0,85.9 L793.3,69.6 L826.7,52.8 L860.0,35.5" fill="none" stroke="#0d48d2" stroke-width="2"></path>
+            <circle cx="860.0" cy="35.5" r="4" fill="#0d48d2"></circle>
+            <circle cx="860.0" cy="159.1" r="4" fill="#c2410c"></circle>
+            <text x="854.0" y="25.5" text-anchor="end" class="lbl">A sin sueldos $179,170</text>
+            <text x="854.0" y="147.1" text-anchor="end" class="lbl">B con medio tiempo $12,770</text>
+            <circle cx="593.3" cy="163.2" r="4" fill="#fff" stroke="#0d48d2" stroke-width="2"></circle>
+            <text x="583.3" y="153.2" text-anchor="end" class="lbs">se recupera en el mes 16</text>
+            <text x="60.0" y="300" text-anchor="middle" class="lbs">0</text><text x="160.0" y="300" text-anchor="middle" class="lbs">3</text><text x="260.0" y="300" text-anchor="middle" class="lbs">6</text><text x="360.0" y="300" text-anchor="middle" class="lbs">9</text><text x="460.0" y="300" text-anchor="middle" class="lbs">12</text><text x="560.0" y="300" text-anchor="middle" class="lbs">15</text><text x="660.0" y="300" text-anchor="middle" class="lbs">18</text><text x="760.0" y="300" text-anchor="middle" class="lbs">21</text><text x="860.0" y="300" text-anchor="middle" class="lbs">24</text>
+            <text x="460" y="316" text-anchor="middle" class="lbs">Mes</text>
+            <circle cx="60.0" cy="228.2" r="5" fill="transparent"><title>Mes 0 · A: −$80,292 · B: −$80,292</title></circle><circle cx="93.3" cy="230.0" r="5" fill="transparent"><title>Mes 1 · A: −$82,759 · B: −$89,692</title></circle><circle cx="126.7" cy="237.4" r="5" fill="transparent"><title>Mes 2 · A: −$92,711 · B: −$106,578</title></circle><circle cx="160.0" cy="235.5" r="5" fill="transparent"><title>Mes 3 · A: −$90,071 · B: −$110,871</title></circle><circle cx="193.3" cy="233.2" r="5" fill="transparent"><title>Mes 4 · A: −$87,055 · B: −$114,789</title></circle><circle cx="226.7" cy="230.7" r="5" fill="transparent"><title>Mes 5 · A: −$83,663 · B: −$118,330</title></circle><circle cx="260.0" cy="227.9" r="5" fill="transparent"><title>Mes 6 · A: −$79,895 · B: −$121,495</title></circle><circle cx="293.3" cy="224.8" r="5" fill="transparent"><title>Mes 7 · A: −$75,750 · B: −$124,283</title></circle><circle cx="326.7" cy="221.5" r="5" fill="transparent"><title>Mes 8 · A: −$71,229 · B: −$126,696</title></circle><circle cx="360.0" cy="217.8" r="5" fill="transparent"><title>Mes 9 · A: −$66,332 · B: −$128,732</title></circle><circle cx="393.3" cy="213.9" r="5" fill="transparent"><title>Mes 10 · A: −$61,059 · B: −$130,392</title></circle><circle cx="426.7" cy="209.7" r="5" fill="transparent"><title>Mes 11 · A: −$55,409 · B: −$131,676</title></circle><circle cx="460.0" cy="210.3" r="5" fill="transparent"><title>Mes 12 · A: −$56,108 · B: −$139,308</title></circle><circle cx="493.3" cy="199.3" r="5" fill="transparent"><title>Mes 13 · A: −$41,387 · B: −$131,521</title></circle><circle cx="526.7" cy="187.8" r="5" fill="transparent"><title>Mes 14 · A: −$25,915 · B: −$122,981</title></circle><circle cx="560.0" cy="175.8" r="5" fill="transparent"><title>Mes 15 · A: −$9,690 · B: −$113,690</title></circle><circle cx="593.3" cy="163.2" r="5" fill="transparent"><title>Mes 16 · A: $7,288 · B: −$103,645</title></circle><circle cx="626.7" cy="154.4" r="5" fill="transparent"><title>Mes 17 · A: $19,139 · B: −$98,727</title></circle><circle cx="660.0" cy="131.3" r="5" fill="transparent"><title>Mes 18 · A: $50,214 · B: −$74,586</title></circle><circle cx="693.3" cy="116.7" r="5" fill="transparent"><title>Mes 19 · A: $69,825 · B: −$61,908</title></circle><circle cx="726.7" cy="101.6" r="5" fill="transparent"><title>Mes 20 · A: $90,189 · B: −$48,478</title></circle><circle cx="760.0" cy="85.9" r="5" fill="transparent"><title>Mes 21 · A: $111,306 · B: −$34,294</title></circle><circle cx="793.3" cy="69.6" r="5" fill="transparent"><title>Mes 22 · A: $133,175 · B: −$19,359</title></circle><circle cx="826.7" cy="52.8" r="5" fill="transparent"><title>Mes 23 · A: $155,796 · B: −$3,670</title></circle><circle cx="860.0" cy="35.5" r="5" fill="transparent"><title>Mes 24 · A: $179,170 · B: $12,770</title></circle>
+            <rect x="72" y="34" width="14" height="3" fill="#0d48d2"></rect><text x="92" y="39" class="lbs">A · sin sueldos</text>
+            <rect x="200" y="34" width="14" height="3" fill="#c2410c"></rect><text x="220" y="39" class="lbs">B · + medio tiempo</text>
+        </svg>
+        <figcaption>Flujo de caja acumulado (MXN). Pase el cursor sobre la línea para ver cada mes. La tabla de arriba y la pestaña <i>Flujo</i> de la hoja tienen los valores.</figcaption>
+    </figure>
+    <div class="chips">
+        <div class="chip"><b>Mes 3</b><span>primer flujo mensual positivo (A)</span></div>
+        <div class="chip"><b>Mes 13</b><span>desde aquí el flujo mensual A ya no vuelve a ser negativo</span></div>
+        <div class="chip"><b>Mes 16</b><span>el acumulado A se recupera</span></div>
+        <div class="chip"><b>$92,711</b><span>inversión acumulada máxima antes del equilibrio (mes 2)</span></div>
+    </div>
+    <ul>
+        <li><b>Año 1:</b> entran $157,355, de los cuales $22,455 son suscripciones (45 meses pagados). Al mes 12 el acumulado A sigue en −$56,108: la venta de kits paga la operación, pero no alcanza a recuperar la inversión inicial.</li>
+        <li><b>Año 2</b> (25 gimnasios más, BOM a 100 unidades): el flujo mensual sube a ≈ $15,000–21,000 y el acumulado A cierra el mes 24 en $179,170. Con sueldo de medio tiempo (B) apenas se recupera en el mes 24 ($12,770).</li>
+    </ul>
+</div>
+
+<!-- ===================== PASO 5 ===================== -->
+    <h2 id="P5">Paso 5: VPN del proyecto al 15 %</h2>
+    <h3>¿El proyecto crea valor en 12 meses?</h3>
+
+   <div class="command-block">
+    <div class="calc">VPN = −A + Σ Ft / (1 + r)^t        (flujos mensuales del paso 4)
+Tasa mensual equivalente: r = (1.15)^(1/12) − 1 = 1.171 %
+
+VPN 12 meses · A (sin sueldos)           = −$58,906
+VPN 12 meses · B (+ medio tiempo)        = −$136,102
+VPN 12 meses · C (B + desarrollo a $195/h) = −$981,469
+
+Extensión a 24 meses
+VPN 24 meses · A                         = $129,817     TIR anual equivalente = 121 %
+VPN 24 meses · B                         = −$14,506     TIR anual equivalente = 6.3 %
+VPN 24 meses · C                         = −$859,873</div>
+    <br>
+    <p class="frase">A 12 meses el proyecto no crea valor (−$58,906). A 24 meses sí, mientras el equipo no cobre sueldo ($129,817).</p>
+    <ul>
+        <li><b>Por qué no cierra en 12 meses:</b> la inversión inicial ($80,292) entra completa en el mes 0 y las ventas empiezan en el mes 3, a un gimnasio por mes. La suscripción, que es el ingreso con más margen (66 %), apenas suma 45 meses pagados en el año.</li>
+        <li><b>B</b> casi empata a 24 meses: su TIR (6.3 %) queda abajo del 15 %, así que pagar sueldo desde el inicio no se justifica con este volumen.</li>
+        <li><b>C</b> (valorando las 2,940 h de ingeniería a $195) no es viable en 2 años con ningún escenario realista: el desarrollo completo es una inversión de capital de riesgo, no algo que paguen las primeras ventas.</li>
+    </ul>
+</div>
+
+   <div class="purpcommand-block">
+    <h4 id="P5-1">Sensibilidad: qué mueve el VPN</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Escenario (un cambio a la vez, salvo los combinados)</th><th class="num">VPN 12 m · A</th><th class="num">VPN 24 m · A</th><th class="num">VPN 24 m · B</th><th class="num">Equilibrio A (gimnasios)</th><th class="num">Mes de recuperación A</th></tr></thead>
+        <tbody><tr><td class="material-tag">Caso base</td><td class="num"><span class="no">−$58,906</span></td><td class="num"><span class="ok">$129,817</span></td><td class="num"><span class="no">−$14,506</span></td><td class="num">7</td><td class="num">16</td></tr><tr><td class="material-tag">Kit a $12,990 (precio anterior)</td><td class="num"><span class="no">−$63,305</span></td><td class="num"><span class="ok">$115,739</span></td><td class="num"><span class="no">−$28,584</span></td><td class="num">8</td><td class="num">17</td></tr><tr><td class="material-tag">Kit a $14,490</td><td class="num"><span class="no">−$50,109</span></td><td class="num"><span class="ok">$157,972</span></td><td class="num"><span class="ok">$13,649</span></td><td class="num">7</td><td class="num">15</td></tr><tr><td class="material-tag">Suscripción a $399</td><td class="num"><span class="no">−$62,780</span></td><td class="num"><span class="ok">$106,244</span></td><td class="num"><span class="no">−$38,080</span></td><td class="num">8</td><td class="num">17</td></tr><tr><td class="material-tag">Suscripción a $699</td><td class="num"><span class="no">−$51,157</span></td><td class="num"><span class="ok">$176,964</span></td><td class="num"><span class="ok">$32,641</span></td><td class="num">7</td><td class="num">15</td></tr><tr><td class="material-tag">15 gimnasios en el año 1 (SOM)</td><td class="num"><span class="no">−$27,307</span></td><td class="num"><span class="ok">$179,630</span></td><td class="num"><span class="ok">$35,307</span></td><td class="num">7</td><td class="num">14</td></tr><tr><td class="material-tag">Solo 5 gimnasios en el año 1</td><td class="num"><span class="no">−$88,522</span></td><td class="num"><span class="ok">$81,987</span></td><td class="num"><span class="no">−$62,336</span></td><td class="num">7</td><td class="num">18</td></tr><tr><td class="material-tag">Versión sin ADXL375 (−$425 por pod)</td><td class="num"><span class="no">−$32,379</span></td><td class="num"><span class="ok">$189,769</span></td><td class="num"><span class="ok">$45,445</span></td><td class="num">6</td><td class="num">14</td></tr><tr><td class="material-tag">Dólar a $20</td><td class="num"><span class="no">−$62,038</span></td><td class="num"><span class="ok">$123,327</span></td><td class="num"><span class="no">−$20,996</span></td><td class="num">8</td><td class="num">16</td></tr><tr><td class="material-tag">Se gasta toda la contingencia (overhead 40 %)</td><td class="num"><span class="no">−$89,887</span></td><td class="num"><span class="ok">$73,041</span></td><td class="num"><span class="no">−$71,283</span></td><td class="num">10</td><td class="num">18</td></tr><tr><td class="material-tag">Sin ADXL375 + 15 gimnasios</td><td class="num"><span class="ok">$8,340</span></td><td class="num"><span class="ok">$248,702</span></td><td class="num"><span class="ok">$104,378</span></td><td class="num">6</td><td class="num">11</td></tr><tr><td class="material-tag">20 gimnasios en el año 1</td><td class="num"><span class="ok">$2,308</span></td><td class="num"><span class="ok">$227,460</span></td><td class="num"><span class="ok">$83,137</span></td><td class="num">7</td><td class="num">12</td></tr></tbody>
+    </table>
+    </div>
+    <p style="font-size:0.9rem;">Cada fila se calculó cambiando un dato azul de la hoja <i>Supuestos</i> y recalculando todo el modelo.</p>
+    <ul>
+        <li><b>Volumen es la palanca más fuerte:</b> con 20 gimnasios en el año 1 el VPN a 12 meses ya es positivo.</li>
+        <li><b>Quitar el ADXL375</b> es la mejor palanca de costo: baja el piso del kit a $9,424. Junto con el SOM de 15 gimnasios, el VPN a 12 meses pasa a $8,340 y se recupera en el mes 11.</li>
+        <li><b>Subir la suscripción $200 al mes vale más que subir el kit $1,000</b>, porque se cobra cada mes: $699 en lugar de $499 suma ≈ $47,147 de VPN a 24 meses; el kit a $14,490 suma $28,155.</li>
+        <li><b>El mayor riesgo a la baja</b> es gastar toda la contingencia: el equilibrio sube a 10 gimnasios y la recuperación se va al mes 18.</li>
+    </ul>
+</div>
+
+<!-- ===================== EJERCICIOS ===================== -->
+    <h2 id="EJ">Ejercicios de matemáticas financieras</h2>
+    <h3>Ejercicios 1 a 9, paso a paso</h3>
+
+   <div class="command-block">
+    <p>La tarea pide los ejercicios 4 a 9; se incluyen también 1 a 3 porque usan las mismas fórmulas. Todos están en la pestaña <i>Ejercicios</i> de la hoja.</p>
+</div>
+
+   <div class="command-block">
+    <h4 id="EJ-1">Ejercicio 1 · Valor futuro con capitalización trimestral</h4>
+    <p>USD 45,000 al 7.5 % anual capitalizable trimestralmente durante 5 años y 6 meses.</p>
+    <div class="calc">VF = P × (1 + i/m)^(m·n)    i/m = 0.075/4 = 0.01875    m·n = 4 × 5.5 = 22 trimestres
+VF = 45,000 × (1.01875)^22 = 45,000 × 1.504831 = <b>USD 67,717.39</b></div>
+</div>
+
+   <div class="command-block">
+    <h4 id="EJ-2">Ejercicio 2 · Valor presente de una obligación</h4>
+    <p>$125,000 MXN a pagar en 48 meses, 12 % anual compuesto mensualmente.</p>
+    <div class="calc">VP = VF / (1 + i/12)^48 = 125,000 / (1.01)^48 = 125,000 / 1.612226 = <b>$77,532.55 MXN</b></div>
+</div>
+
+   <div class="command-block">
+    <h4 id="EJ-3">Ejercicio 3 · Flujos irregulares al 9 %</h4>
+    <div class="calc">VP = 10,000/1.09 + 15,000/1.09³ + 8,000/1.09⁵
+   = 9,174.31 + 11,582.75 + 5,199.45 = <b>$25,956.52</b></div>
+</div>
+
+   <div class="command-block">
+    <h4 id="EJ-4">Ejercicio 4 · Anualidad: InnovaTech</h4>
+    <p>Inversión USD 250,000; USD 60,000 al año durante 6 años; tasa 11 %.</p>
+    <div class="calc">Factor de anualidad = [1 − (1.11)^−6] / 0.11 = 4.2305
+VPN = −250,000 + 60,000 × 4.2305 = −250,000 + 253,832.27 = <b>USD 3,832.27</b>
+TIR = 11.53 % &gt; 11 %  →  <span class="ok">viable</span>, pero con poco margen: con una tasa de 11.5 % el VPN ya sería cero</div>
+</div>
+
+   <div class="command-block">
+    <h4 id="EJ-5">Ejercicio 5 · VPN con flujos variables</h4>
+    <p>Inversión USD 50,000; flujos 7,500 / 12,000 / 20,000 / 25,000; tasa 4 %.</p>
+    <div class="calc">VPN = −50,000 + 7,500/1.04 + 12,000/1.04² + 20,000/1.04³ + 25,000/1.04⁴
+    = −50,000 + 7,211.54 + 11,094.67 + 17,779.93 + 21,370.10
+    = <b>USD 7,456.24</b>  →  <span class="ok">viable</span></div>
+</div>
+
+   <div class="command-block">
+    <h4 id="EJ-6">Ejercicio 6 · Con valor residual</h4>
+    <p>Maquinaria de USD 1,000,000; flujos 300K / 350K / 375K / 300K + salvamento de 150K; tasa 10 %.</p>
+    <div class="calc">VPN = −1,000,000 + 300,000/1.1 + 350,000/1.1² + 375,000/1.1³ + (300,000 + 150,000)/1.1⁴
+    = −1,000,000 + 272,727.27 + 289,256.20 + 281,743.05 + 307,356.05
+    = <b>USD 151,082.58</b>  →  <span class="ok">viable</span>
+Sin el valor de salvamento: USD 48,630.56. El salvamento aporta 68 % del VPN.</div>
+</div>
+
+   <div class="command-block">
+    <h4 id="EJ-7">Ejercicio 7 · Comparación de proyectos</h4>
+    <div class="calc">VPN X = −50,000 + 25,000 × [1 − 1.08^−3]/0.08          = <b>USD 14,427.42</b>   TIR 23.4 %
+VPN Y = −50,000 + 10,000/1.08 + 20,000/1.08² + 45,000/1.08³ = <b>USD 12,128.49</b>   TIR 18.2 %
+Diferencia Y − X por año: −15,000 · −5,000 · +20,000 → suma 0: empatan solo al 0 %.</div>
+    <p><b>X es más rentable</b>: tiene mayor VPN al 8 % y mayor TIR. Y entrega la mayor parte del dinero hasta el año 3, y cada peso que tarda pierde valor; con cualquier tasa positiva, X gana.</p>
+</div>
+
+   <div class="purpcommand-block">
+    <h4 id="EJ-8">Ejercicio 8 · Sensibilidad a la tasa (proyecto X)</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Tasa</th><th class="num">VPN (USD)</th><th>Decisión</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">8 %</td><td class="num">14,427.42</td><td><span class="ok">Aceptar</span></td></tr>
+            <tr><td class="material-tag">15 %</td><td class="num">7,080.63</td><td><span class="ok">Aceptar</span></td></tr>
+            <tr><td class="material-tag">20 %</td><td class="num">2,662.04</td><td><span class="ok">Aceptar</span>, con poco margen</td></tr>
+            <tr><td class="material-tag">25 %</td><td class="num neg">-1,200.00</td><td><span class="no">Rechazar</span></td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p>El cambio de decisión ocurre en la TIR de X, 23.4 %. Un emprendedor que se financia al 25 % debe rechazar el mismo proyecto que otro acepta al 8 %.</p>
+</div>
+
+   <div class="command-block">
+    <h4 id="EJ-9">Ejercicio 9 · TIR por interpolación lineal</h4>
+    <p>Global Solutions: USD 500,000; flujos 180K / 200K / 190K / 170K; costo de capital 14 %.</p>
+    <div class="calc">r₁ = 14 %:  VPN₁ = −500,000 + 157,894.74 + 153,893.51 + 128,244.59 + 100,653.65 = +40,686.48
+r₂ = 22 %:  VPN₂ = −500,000 + 147,540.98 + 134,372.48 + 104,634.31 +  76,737.84 = -36,714.38
+
+TIR = 14 % + (22 % − 14 %) × 40,686 / (40,686 + 36,714) = <b>18.21 %</b>
+TIR exacta (función TIR de la hoja)                               = 17.95 %
+TIR &gt; 14 %  →  <span class="ok">proyecto viable</span></div>
+    <ul>
+        <li><b>Diferencia con la presentación:</b> la clase reporta VPN₁ = +40,732 y VPN₂ = −36,560. Recalculando, el año 3 a 14 % da 128,245 (no 128,384), el año 4 da 100,654 (no 100,560) y a 22 % los años 2–4 dan 134,372 / 104,634 / 76,738. La TIR casi no cambia (18.2 %).</li>
+        <li><b>Por qué la interpolación sobreestima:</b> la curva del VPN contra la tasa es convexa, así que la recta entre 14 % y 22 % la corta a la derecha del cero real. Con dos tasas más cercanas, 17 % (VPN +9,300) y 18 % (VPN -497), la interpolación da 17.95 %, igual que la exacta.</li>
+    </ul>
+</div>
+
+<!-- ===================== RESUMEN ===================== -->
+    <h2 id="NUEVE">Resumen del modelo económico</h2>
    <div class="greencommand-block">
-    <div class="prompt-box resultado">════════════════════════════════════════════════════════
+    <div class="prompt-box">════════════════════════════════════════════════════════
 MODELO ECONÓMICO
 Producto: Lumetriq Reflejo Fijo · Modelo de ingresos: hardware + suscripción por sede (B2B)
 ════════════════════════════════════════════════════════
 
-COSTO UNITARIO (por pod, primer año)
-A 10 unidades: $2,322 · A 100 unidades: $1,819
-Componente de mayor costo: ADXL375 ($420, 30 % del BOM, 18 % del costo total)
+COSTO UNITARIO
+A 10 unidades: $2,432 · A 100 unidades: $1,859
+Componente de mayor costo: ADXL375 ($425 = 29 % del BOM, 17.5 % del costo total)
 El costo de la IA representa: 0.6 % del costo unitario
 
 PRECIO DE VENTA
-Cost-plus (40 %): $12,152 kit de 4 + $219/mes suscripción
-Value-based: hasta $14,412 kit + ≈ $1,000/mes suscripción
-Precio recomendado: $12,990 + $499/mes — el kit queda arriba del piso
-  y la suscripción paga nube, IA y soporte con 67 % de margen
+Cost-plus (40 %): $12,756 hardware + $222/mes suscripción
+Value-based: hasta $14,911 hardware + $1,020/mes suscripción
+Precio recomendado: $13,490 + $499/mes — por qué: queda 6 % arriba
+  del piso y 10 % abajo del techo; la suscripción deja 66 % de margen
 
 PUNTO DE EQUILIBRIO
-Gimnasios necesarios año 1: 6 (operativo) · 16 (con medio tiempo)
-¿Alcanzable? ✅ el operativo / ⚠️ con sueldo — el plan es 10 gimnasios
+Unidades necesarias año 1: 7 gimnasios (28 pods) sin sueldos
+¿Alcanzable? ✅ — el plan es 10 gimnasios. Con medio tiempo
+  serían 20 (❌) y con el desarrollo completo 153 (❌)
+
+FLUJO DE CAJA (resumen)
+Mes de flujo positivo: mes 3 (primera venta); sostenido desde el mes 13;
+  el acumulado se recupera en el mes 16
+Inversión acumulada antes de break-even: $92,711
+
+VPN A 12 MESES (tasa 15 %)
+VPN = −$58,906 → Proyecto inviable a 12 meses
+  (a 24 meses: $129,817 → viable sin sueldos)
 
 ────────────────────────────────────────────────────────
 ALERTAS:
-· El margen del hardware a 10 unidades es delgado (33 %); el
-  precio del paquete Studio de la semana 4 ($7,990 por 6 pods)
-  está por debajo del BOM y se retira.
-· El techo value-based depende de una hipótesis no validada
-  (2 alumnos retenidos al mes). Con 1 alumno, el techo del
-  primer año baja a $10,200 y el precio no cierra.
-· Subsidiar el hardware no cierra: llevaría la suscripción a
-  ≈ $1,505/mes.
-· El desarrollo (≈ $111,000) no se recupera en el año 1.
+· El precio depende de una hipótesis no validada: 2 alumnos
+  retenidos al mes. Con 1, el techo del kit cae a $4,711
+  y ningún precio arriba del costo se justifica.
+· El BOM ($1,467) queda a $33 del límite del PDS ($1,500):
+  con el dólar arriba de ≈ 19.8 lo rebasa.
+· LCSC tiene 64 ADXL375; el año 2 necesita 100.
+· Con sueldo de medio tiempo el VPN a 24 meses es negativo
+  (−$14,506). El desarrollo completo ($908,231)
+  no lo pagan las ventas: necesita inversión o tiempo del equipo.
+· La homologación de radio para vender no está cotizada.
+· El paquete de 6 pods a $7,990 de la semana 4 queda bajo el BOM.
 
 PALANCAS DISPONIBLES:
-· Versión "Reacción" sin ADXL375: −$420 por pod, la fuerza
-  la siguen midiendo las celdas.
-· Diferir el conector pogo (−$80 por pod) y bajar el
-  ensamble a 1 h con plantillas (−$40 por pod).
-· Validar el valor antes de producir: preventa de 3 kits
-  con anticipo del 30 % en gimnasios de Puebla.
+· Versión sin ADXL375 (−$425 por pod): las celdas siguen
+  midiendo la fuerza. Con 15 gimnasios, VPN 12 m = $8,340.
+· Subir la suscripción a $699 cuando el ranking y el reporte
+  mensual estén probados: +$47,147 de VPN a 24 meses.
+· Preventa de 3 kits con anticipo del 30 % en gimnasios de
+  Puebla: valida el valor y reduce la inversión del mes 0.
 ════════════════════════════════════════════════════════</div>
-    <p>Los pasos 4 (flujo de caja a 12 meses) y 5 (VPN al 15 %) se construyen sobre estos números.</p>
+</div>
+
+<!-- ===================== SALIDA ===================== -->
+    <h2 id="SALIDA">Lo que el equipo debe poder responder al salir</h2>
+   <div class="greencommand-block">
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Pregunta</th><th>Respuesta</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">¿Cuál es el costo unitario real a 10 unidades?</td><td><b>$2,432</b> por pod en el primer año ($2,278 de hardware con overhead y contingencias, más nube e IA). El kit de 4 cuesta $9,111.</td></tr>
+            <tr><td class="material-tag">¿Qué modelo de ingresos y qué desafío de diseño?</td><td>Hardware a precio completo + suscripción por sede, con el alumno gratis. Desafío: que el valor de la suscripción se vea en la clase (ranking, reporte mensual, evaluaciones con historial) antes de que termine el mes gratis.</td></tr>
+            <tr><td class="material-tag">¿Cuánto cuesta la IA por usuario activo al mes?</td><td><b>$4.57</b> por gimnasio (1,320 llamadas a Haiku 5.5) y <b>$0.23</b> por usuario con 2 sesiones al día: 0.9 % de la suscripción.</td></tr>
+            <tr><td class="material-tag">¿El VPN a 12 meses es positivo con el BOM real?</td><td><span class="no">No</span>: −$58,906 sin sueldos. Es positivo a 24 meses ($129,817), o a 12 meses si se venden 20 gimnasios, o con la versión sin ADXL375 y 15 gimnasios.</td></tr>
+        </tbody>
+    </table>
+    </div>
 </div>
 
    <div class="yellowcommand-block">
-    <h4 id="NUEVE-1">Fuentes consultadas el 8 de octubre de 2026</h4>
+    <h4 id="SALIDA-1">Fuentes consultadas</h4>
     <ul style="font-size:0.9rem;">
-        <li>Anthropic, precios de la API: <a href="https://claude.com/pricing">claude.com/pricing</a></li>
-        <li>Supabase, planes Free y Pro: <a href="https://supabase.com/pricing">supabase.com/pricing</a></li>
-        <li>BlazePod, bundles y membresía: <a href="https://www.blazepod.com/products/ultimate-pt-bundle">blazepod.com</a> · <a href="https://www.blazepod.com/pages/membership">membresías</a></li>
-        <li>FightCamp, equipo y membresía: <a href="https://fightcamp.com/shop">fightcamp.com/shop</a></li>
-        <li>Liteboxer, reseñas de precio: <a href="https://www.thezoereport.com/wellness/liteboxer-at-home-boxing-gym-review">The Zoe Report</a> · <a href="https://connectthewatts.com/?p=12012">Connect The Watts</a></li>
-        <li>Tipo de cambio de referencia (DOF/SAT ≈ 18.13): <a href="https://playersoflife.com/saltillo/peso-mexicano-se-fortalece-cual-es-el-precio-del-dolar-en-mexico-hoy-6-de-octubre/">nota del 6 de octubre de 2026</a></li>
-        <li>BOM, PDS v1.0 y concepto: semanas 5 (<a href="../semana5/index.html">PDS v1.0</a> y <a href="../semana5-v2/index.html">anexo v2</a>) y 6 (<a href="../semana6/index.html">concepto</a>) de este sitio</li>
+        <li>Instrucciones del curso: <a href="https://aristarco.github.io/Proyectos4/semana7/">Semana 7 — Viabilidad técnica y económica</a></li>
+        <li>Anthropic, precios de la API (22/10/2026): <a href="https://claude.com/pricing">claude.com/pricing</a></li>
+        <li>Supabase, planes Free y Pro (22/10/2026): <a href="https://supabase.com/pricing">supabase.com/pricing</a></li>
+        <li>Banxico, tipo de cambio FIX: <a href="https://www.banxico.org.mx/tipcamb/tipCamMIAction.do?idioma=sp">banxico.org.mx</a></li>
+        <li>LCSC, ADXL375BCCZ-RL (C662206): <a href="https://www.lcsc.com/product-detail/C662206.html">lcsc.com</a></li>
+        <li>Mercado Pago, comisiones de link de pago: <a href="https://www.mercadopago.com.mx/herramientas-para-vender/link-de-pago">mercadopago.com.mx</a></li>
+        <li>Cuotas de Apple Developer y Google Play: <a href="https://magora-systems.com/apple-developer-fee/">Magora (Apple)</a> · <a href="https://magora-systems.com/google-play-developer-account-cost/">Magora (Google Play)</a></li>
+        <li>Salarios: IMCO Compara Carreras en <a href="https://www.luznoticias.mx/2026-08-25/mexico/las-10-carreras-mejor-pagadas-en-mexico-este-2026-conoce-el-ranking/302315">Luz Noticias</a> y <a href="https://expansion.mx/carrera/2026/02/08/carreras-mejor-pagadas-del-ipn-2026">Expansión</a>; Data México: <a href="https://www.economia.gob.mx/datamexico/es/profile/occupation/ingenieros-electronicos">ingenieros electrónicos</a> · <a href="https://www.economia.gob.mx/datamexico/es/profile/occupation/tecnicos-electricos-en-electronica-y-de-equipos-en-telecomunicaciones-y-electromecanicos">técnicos en electrónica</a></li>
+        <li>Homologación: <a href="https://www.ift.org.mx/industria/preguntas-frecuentes-en-materia-de-homologacion">IFT, preguntas frecuentes (archivo)</a> · <a href="https://globalvalidity.com/mexico-regulatory-transition-from-ifetel-to-crt/">transición del IFT a la CRT</a></li>
+        <li>Datos personales: <a href="https://www.garrigues.com/es_ES/noticia/mexico-nueva-ley-federal-proteccion-datos-personales-posesion-particulares-introduce">Garrigues, nueva LFPDPPP (2025)</a></li>
+        <li>Seguridad eléctrica: <a href="https://platiica.economia.gob.mx/normalizacion/nom-001-scfi-2018/">NOM-001-SCFI-2018</a></li>
+        <li>Benchmarking (8/10/2026): <a href="https://www.blazepod.com/products/ultimate-pt-bundle">BlazePod</a> · <a href="https://fightcamp.com/shop">FightCamp</a> · <a href="https://www.thezoereport.com/wellness/liteboxer-at-home-boxing-gym-review">Liteboxer (reseña)</a></li>
+        <li>Brealey, Myers y Allen (2020), <i>Principles of Corporate Finance</i>; Smith y Merritt (2002), <i>Proactive Risk Management</i>; IDEO (2015), <i>The Field Guide to Human-Centered Design</i>.</li>
+        <li>PDS v1.0, anexo de componentes y comunicación v2 (semana 5: <a href="../semana5/index.html">PDS v1.0</a> y <a href="../semana5-v2/index.html">anexo v2</a>) y concepto Reflejo Fijo (semana 6: <a href="../semana6/index.html">concepto</a>) de este sitio.</li>
     </ul>
 </div>
 
     <h2 id="Learning">Reflexión sobre aprendizajes</h2>
-    <p>Esta semana comprendí que un buen diseño todavía puede ser un mal negocio. Al hacer las cuentas con el BOM real descubrí que el precio del paquete de 6 pods que propusimos en la semana 4 quedaba por debajo de lo que cuesta solo fabricarlo, algo que no se notaba hasta sumar el overhead y las contingencias. También me sorprendió que la IA, que parecía el costo más arriesgado, representa menos del 1 % gracias a la decisión de arquitectura de medir en el pod y enviar a la nube únicamente la redacción; lo que realmente pesa es la nube fija y las horas del equipo. Calcular el precio mínimo y el máximo me mostró que el margen es estrecho y que depende de una hipótesis que arrastramos desde la semana 4 y que seguimos sin validar: cuánto vale Lumetriq para el dueño de un gimnasio. Por eso el siguiente paso no es fabricar más unidades, sino salir a preguntar y lanzar una preventa.</p>
+   <div class="greencommand-block reflexion">
+    <p>
+            Esta semana comprendí que un buen diseño todavía puede ser un mal negocio. Al hacer las cuentas con el BOM real descubrí que el precio del paquete de 6 pods que propusimos en la semana 4 quedaba por debajo de lo que cuesta solo fabricarlo, algo que no se notaba hasta sumar el overhead y las contingencias. También me sorprendió que la IA, que parecía el costo más arriesgado, representa menos del 1 % gracias a la decisión de arquitectura de medir en el pod y enviar a la nube únicamente la redacción; lo que realmente pesa es la nube fija y las horas del equipo. Calcular el precio mínimo y el máximo me mostró que el margen es estrecho y que depende de una hipótesis que arrastramos desde la semana 4 y que seguimos sin validar: cuánto vale Lumetriq para el dueño de un gimnasio. Por eso el siguiente paso no es fabricar más unidades, sino salir a preguntar y lanzar una preventa.
+           </p>
 </div>
 
                     </div>
