@@ -12,6 +12,71 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="../../css/styles.css" rel="stylesheet">
     <link href="../../css/faces.css" rel="stylesheet">
+    <!-- Estilos propios de la semana 6-->
+    <style>
+        /* Menú lateral: cabe en pantalla y marca las subsecciones */
+        .week-menu { flex-shrink: 0; max-height: calc(100vh - 160px); overflow-y: auto; gap: 6px; padding-right: 4px; }
+        .menu-link { padding: 10px 14px; }
+        .week-paper { flex: 1; min-width: 0; }
+        .menu-link.menu-sub { padding: 6px 14px 6px 28px; font-size: 0.88rem; font-weight: 400; }
+        .week-paper h2 { margin-top: 30px; padding-bottom: 6px; border-bottom: 2px solid #2c3e50; }
+        .week-paper h4 { scroll-margin-top: 120px; font-weight: 700; color: #2c3e50; margin-bottom: 12px; }
+        .week-paper h5.subtitulo { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 0.98rem; font-weight: 600; color: #a2680b; margin: 18px 0 8px; }
+        .week-paper h5.subtitulo::before { content: "⦿ "; }
+
+        /* Bloques: separación entre párrafos (faces.css los deja en 0) */
+        .command-block p, .yellowcommand-block p, .purpcommand-block p,
+        .greencommand-block p, .redcommand-block p { margin-bottom: 10px; }
+        .command-block p:last-child, .yellowcommand-block p:last-child, .purpcommand-block p:last-child,
+        .greencommand-block p:last-child, .redcommand-block p:last-child { margin-bottom: 0; }
+
+        /* Código en línea (faces.css lo pone en bloque) */
+        .week-paper p code, .week-paper li code, .week-paper td code {
+            display: inline; font-family: 'JetBrains Mono', Consolas, monospace; font-size: 0.9em;
+            color: #a2680b; background: rgba(210, 134, 13, 0.08); padding: 1px 5px; border-radius: 5px; margin: 0;
+        }
+
+        /* Diagramas de texto */
+        .code-area { margin: 12px 0 16px; overflow-x: auto; }
+        .code-area pre { font-size: 13px; line-height: 1.45; color: #2c3e50; white-space: pre; }
+
+        .nota p { font-size: 0.95rem; }
+        .tabla-scroll { width: 100%; overflow-x: auto; }
+
+        @media (max-width: 900px) {
+            .week-layout { flex-direction: column; }
+            .week-menu { position: static; width: 100%; max-height: none; flex-direction: row; flex-wrap: wrap; }
+            .menu-link.menu-sub { display: none; }
+            .week-paper { padding: 30px 20px; }
+        }
+
+        /* Notas, figuras y frases */
+        .nota { background: rgba(255, 196, 4, 0.08); padding: 12px 16px; border-left: 4px solid #ffc404; border-radius: 10px; margin: 12px 0 16px; }
+        .figura { margin: 18px 0; text-align: center; }
+        .figura svg { width: 100%; height: auto; background: #ffffff; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .figura figcaption { font-size: 0.9rem; font-style: italic; color: #555; margin-top: 10px; }
+        .frase { font-style: italic; font-size: 1.1rem; text-align: center; color: #2c3e50 !important; padding: 14px 18px; margin: 12px 0 18px !important; border-radius: 12px; background: rgba(112, 210, 13, 0.08); }
+
+        /* Prompts para generar imágenes */
+        .prompt-box {
+            font-family: 'JetBrains Mono', Consolas, monospace; font-size: 13px; line-height: 1.6; color: #2c3e50;
+            padding: 16px 18px; margin: 10px 0 14px; border-radius: 16px; background: rgba(255,255,255,0.55);
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.08), inset 0 -4px 10px rgba(255,255,255,0.6), 0 10px 25px rgba(0,0,0,0.05);
+        }
+        .prompt-box::before { content: "PROMPT"; display: block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: #a2680b; margin-bottom: 6px; }
+
+        /* Matriz de Pugh */
+        .material-table td.pugh-plus, .material-table td.pugh-minus, .material-table td.pugh-same { text-align: center; font-weight: 700; font-size: 1.05rem; }
+        .pugh-plus  { color: #2d7a0b; background: rgba(112, 210, 13, 0.14); }
+        .pugh-minus { color: #ae2f0b; background: rgba(210, 56, 13, 0.12); }
+        .pugh-same  { color: #7a7a7a; }
+        .material-table th.pugh-win { background-color: #3d7a0b; }
+        .material-table td.pugh-win { box-shadow: inset 3px 0 0 #70d20d, inset -3px 0 0 #70d20d; }
+        .material-table tr.pugh-total td { background: #eef2f6; font-weight: 600; }
+        .material-table tr.pugh-total:last-child td { background: #2c3e50; color: #fff; }
+
+        .reflexion p { line-height: 1.8; }
+    </style>
 </head>
 
 <body class="d-flex flex-column h-100" style="background-color:#fffffe">
@@ -35,8 +100,8 @@
 
         <section class="week-header">
             <div class="week-glass">
-                <h1>Semana 4: Mercado, valor y propuesta de valor</h1>
-                <div>En esta fase, utilizamos IA generativa (Claude y Perplexity) para generar nombres de marca, realizar una búsqueda fonética de marcas registradas (IMPI), analizar el ecosistema tecnológico y llevar a cabo entrevistas estructuradas a usuarios con el fin de validar la demanda de mercado de BRIS, un dispositivo de hardware de entrenamiento deportivo y reacción basado en el Internet de las cosas (IoT).</div>
+                <h1>SEMANA 6: Generación y selección de concepto de diseño</h1>
+                <div>En esta fase pasamos de <i>qué problema resolvemos</i> a <i>cómo se ve, se maneja y se usa</i> Lumetriq. Con IA generativa (Claude e Imagen 3) construimos la tabla morfológica, buscamos analogías tecnológicas, generamos tres conceptos, los evaluamos con una matriz de Pugh y dejamos el concepto elegido listo para CAD en la semana 7.</div>
             </div>
         </section>
 
@@ -44,852 +109,751 @@
         <section class="week-content">
             <div class="week-layout">
                 <aside class="week-menu">
-                    
-                    <a href="#UNO" class="menu-link">Conclusión de entrevistas</a>
-                    <a href="#DOS" class="menu-link">Oportunidad de mercado</a>
-                    <a href="#TRES" class="menu-link">Piramide de Bain</a>
-                    <a href="#CUATRO" class="menu-link">TAM/SAM/SOM</a>
-                    <a href="#CINCO" class="menu-link">Análisis competitivo y Blue Ocean</a>
-                                       
+                    <a href="#UNO" class="menu-link">Tabla morfológica</a>
+                    <a href="#UNO-1" class="menu-link menu-sub">Pausa de reflexión</a>
+                    <a href="#DOS" class="menu-link">Analogías tecnológicas</a>
+                    <a href="#TRES" class="menu-link">Tres conceptos</a>
+                    <a href="#CUATRO" class="menu-link">Renders con IA</a>
+                    <a href="#CUATRO-1" class="menu-link menu-sub">Los renders como filtro rápido antes de Pugh</a>
+                    <a href="#CINCO" class="menu-link">Matriz de Pugh</a>
+                    <a href="#SEIS" class="menu-link">Concepto elegido</a>
+                    <a href="#SEIS-1" class="menu-link menu-sub">Cambios de esta revisión</a>
+                    <a href="#SEIS-2" class="menu-link menu-sub">Justificación del tamaño</a>
+                    <a href="#SEIS-3" class="menu-link menu-sub">Material del pad</a>
+                    <a href="#SEIS-4" class="menu-link menu-sub">Arco de luz de 120°</a>
+                    <a href="#SEIS-5" class="menu-link menu-sub">Mejoras de diseño del concepto</a>
+                    <a href="#SEIS-6" class="menu-link menu-sub">Factibilidad y durabilidad</a>
+                    <a href="#SEIS-7" class="menu-link menu-sub">Los siete principios de diseño aplicados</a>
+                    <a href="#SEIS-8" class="menu-link menu-sub">Costo-beneficio de cada decisión</a>
+                    <a href="#SEIS-9" class="menu-link menu-sub">Prompt para el render del concepto elegido</a>
+                    <a href="#SIETE" class="menu-link">Boceto técnico</a>
+                    <a href="#SIETE-1" class="menu-link menu-sub">Especificación para CAD</a>
+                    <a href="#OCHO" class="menu-link">Wireframe de la app</a>
+                    <a href="#NUEVE" class="menu-link">Crítica técnica</a>
+                    <a href="#DIEZ" class="menu-link">Defensa del concepto</a>
+                    <a href="#DIEZ-1" class="menu-link menu-sub">Preguntas de autoevaluación</a>
+                    <a href="#Learning" class="menu-link">Reflexión</a>
                 </aside>
 
                 <div class="week-paper">
-                    
-                    
 
-    <h2 id="UNO">Conclusión de entrevistas</h2>
-    <div class="command-block">
-    <p><code>Revisión y Ajuste de Hipótesis</code></p>
-    <br>
 
-    <h4>Hipótesis Originales</h4>
-    <p><code style="display:inline;">⦿ H1 (Modelo de negocio):</code> Los dueños de estudios HIIT/funcional pagarían $1,500-2,000 MXN/mes por el software (adquiriendo los pods a costo), porque automatiza la dirección del circuito y aumenta retención. <b>Si es falso:</b> el SaaS muere y quedan atrapados en guerra de precios de hardware.</p>
-    <p><code style="display:inline;">⦿ H2 (Experiencia de usuario):</code> Los clientes de clases grupales prefieren guiarse por LEDs y rankear tiempos de reacción, porque la gamificación distrae mejor del agotamiento que un circuito tradicional. <b>Si es falso:</b> las luces no añaden valor sobre un cronómetro de pared.</p>
-    <p><code style="display:inline;">⦿ H3 (Viabilidad técnica):</code> La arquitectura ESP32 + tap sensors + acelerómetro resiste cientos de impactos diarios en pared, piso y costal sin fallar ni perder conexión durante un mes de uso comercial. <b>Si es falso:</b> el formato portátil es inviable y toca volver a una estación fija cableada.</p>
-    <br>
+    <!-- ===================== 1. TABLA MORFOLÓGICA ===================== -->
+    <h2 id="UNO">Tabla morfológica</h2>
+    <h3>Prompt 1: exploración de alternativas por parámetro</h3>
 
-    <h4>Hipótesis Reformuladas</h4>
-    <p><code style="display:inline;">⦿ H1 reformulada:</code> "Creemos que un dueño de estudio HIIT/funcional paga hoy por alguna herramienta o proceso para dirigir sus circuitos (instructor extra, cronómetro, app), y que reconoce un problema operativo lo bastante caro como para aceptar una suscripción institucional de $X MXN/mes por encima de lo que pagaría un usuario individual por una app de entrenamiento.<br>
-    <b>Si es falso:</b> no hay diferencial de valor entre 'para el estudio' y 'para mí', y el precio tiene que anclarse al rango de apps de consumo (60-150 MXN), obligando a un modelo B2C de bajo ticket en vez de B2B."</p>
-    
-    <p><code style="display:inline;">⦿ H2 reformulada:</code> "Creemos que agregar estímulo visual y ranking a un ejercicio de reacción aumenta la motivación y el número de repeticiones/toques frente a hacer el mismo ejercicio sin retroalimentación visual — sin importar si es en grupo, en casa o en una sesión individual con entrenador.<br>
-    <b>Si es falso:</b> la gamificación no cambia el comportamiento medible y el valor del producto se reduce a ser un cronómetro con luces."</p>
-    
-    <p><code style="display:inline;">⦿ H3:</code> Se mantiene igual.</p>
-    <br>
-
-    <h4>Hipótesis Nueva: Precio de suscripción individual vs. institucional</h4>
-    <p><i>"Creemos que, si el producto se vende como suscripción individual (no institucional), el precio que un usuario de gimnasio aceptará pagar está en el rango de $79-149 MXN/mes — el mismo rango que pagan hoy por Spotify, apps de streaming de entrenamiento (tipo Peloton Digital, Adidas Training) o wearables con app premium — y que un gimnasio estaría dispuesto a subsidiar o revender esa suscripción si el precio por usuario no supera ese techo, o pagar una suscripción con un precio más elevado pero que sea el gimnasio el que ofrece el servicio.<br>
-    <b>Si es falso:</b> los usuarios de gimnasio no valoran una app de reacción al mismo nivel que una app de streaming o fitness general, y el precio de equilibrio real es menor (freemium con upsell de hardware) o mayor solo si se reposiciona como herramienta profesional para el entrenador, no para el alumno."</i></p>
-    <br>
-
-    <h4>Síntesis de Validación (Preguntas y Respuestas)</h4>
-    <p><code style="display:inline;">⦿ 1. ¿Qué hipótesis pusieron a prueba?</code><br>
-    H1 (¿el dueño de estudio pagaría una suscripción SaaS de $1,500-2,000 MXN/mes?), H2 (¿los LEDs y el ranking mejoran la experiencia en clases grupales?) y H3 (¿el hardware resiste el uso comercial diario?), a través de 4 entrevistas de validación.</p>
-    
-    <p><code style="display:inline;">⦿ 2. ¿Qué encontraron — confirmó, ajustó o pivotó?</code><br>
-    <b>H1 se ajustó/pivota:</b> el único dato de precio disponible (60-100 MXN, tipo apps de consumo) contradice el ticket de $1,500-2,000, y ninguna entrevista fue con el comprador real (dueño de estudio HIIT).<br>
-    <b>H2 se ajustó parcialmente:</b> hay interés genuino en la gamificación, pero ninguna evidencia específica de "clases grupales" — el interés apareció más en uso individual/en casa.<br>
-    <b>H3 no se probó:</b> ninguna entrevista pudo evaluar durabilidad.</p>
-    
-    <p><code style="display:inline;">⦿ 3. La cita textual más importante de sus usuarios</code><br>
-    <i>"Es gratis. Todo es gratis, no hay como poner una parte económica."</i> — el administrador del gimnasio, respondiendo sobre el costo de no tener una buena solución de medición de reflejos.</p>
-    
-    <p><code style="display:inline;">⦿ 4. Qué cambió en el concepto (o por qué se mantuvo igual)</code><br>
-    <b>El concepto se ajusta:</b> de "medir tiempo de reacción" como propuesta de valor central a "hacer más divertido y motivante un circuito", con la medición como parte del juego, no como la promesa principal. El modelo de negocio se reposiciona de SaaS institucional de alto ticket hacia posible venta de hardware o suscripción individual de bajo ticket, mientras no se valide con el comprador correcto. La interacción tecnológica (estímulo + toque + ranking) se mantiene sin cambios, porque sigue teniendo resonancia en todas las entrevistas.</p>
-</div>
-
-    <h2 id="DOS">Oportunidad de mercado</h2>
    <div class="command-block">
-    <h3><code>PERFIL DE SEGMENTO ACCIONABLE</code></h3>
-    <br>
+    <p><b>Herramienta:</b> Claude, con el rol de diseñador industrial especializado en hardware conectado para Latinoamérica. Toda variante debía ser fabricable con impresora 3D, CNC básica y componentes disponibles en México.</p>
 
-    <h4>CAPA 1 — DEMOGRÁFICA</h4>
-    <p><i>¿Quién es con suficiente detalle para encontrarlo?</i></p>
-    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> <b>Estudio boutique, gimnasio HIIT, box de CrossFit o centro de entrenamiento funcional ubicado en México.</b> Es el segmento definido por el equipo, pero ninguna entrevista confirmó que sea el comprador prioritario.</p>
-    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> <b>Negocio que ofrece clases grupales de alta intensidad, cardio-boxeo, artes marciales, agilidad o circuitos.</b> Las entrevistas mencionaron boxeo, artes marciales y agilidad como posibles aplicaciones, pero no validaron esta combinación como un nicho comercial homogéneo.</p>
-    <p><code style="display:inline;">⦿ VERIFICADO:</code> <b>Establecimiento privado de acondicionamiento físico identificable por ubicación, actividad y tamaño en el DENUE.</b> Funciona como criterio de localización, no como evidencia de necesidad. El DENUE permite filtrar establecimientos, reportando más de 6 millones de unidades económicas en total.</p>
-    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> <b>Negocio ubicado en una ciudad grande o zona con concentración de estudios premium.</b> La evidencia secundaria muestra oferta boutique y precios premium en CDMX, Monterrey, GDL y Mérida, pero no demuestra que esas plazas sean las mejores para este producto.</p>
-    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> <b>Operación con suficiente volumen de clases o alumnos para beneficiarse de rankings.</b> No se conoce todavía el número mínimo de alumnos, clases o entrenadores que hace económicamente atractivo el producto.</p>
-    <p><b>Hueco principal:</b> Aún no está identificado el rol comprador con suficiente precisión: propietario, administrador, head coach, entrenador o alumno.</p>
-    <br>
+    <div class="nota">
+        <p><i><b>Restricciones de entrada:</b> resistencia a sudor, vibración y entornos con muchas señales de 2.4 GHz; instalación en pocos pasos (sacar del estuche, colocar, encender, sincronizar con la app y entrenar); dimensiones máximas de 14 × 14 cm. Se pidieron 7 parámetros con 3 variantes cada uno y la implicación de manufactura más importante. En una segunda iteración se cambió la forma A para incluir una cara posterior semicurva para costal, y la variante B de material para evaluar aluminio inyectado.</i></p>
+    </div>
 
-    <h4>CAPA 2 — CONDUCTUAL</h4>
-    <p><i>¿Qué hace hoy para resolver el problema?</i></p>
-    <p><code style="display:inline;">⦿ VERIFICADO:</code> El entrenador entrevistado utiliza un semáforo y silbatos para trabajar estímulos y reacción.</p>
-    <p><code style="display:inline;">⦿ VERIFICADO:</code> El atleta de boxeo recibe el entrenamiento y la medición como parte de la mensualidad de su coach; no paga por separado.</p>
-    <p><code style="display:inline;">⦿ VERIFICADO:</code> El atleta de atletismo usa un reloj Garmin que le da datos de desempeño, pero suele olvidar revisarlos y debe pedírselos al entrenador.</p>
-    <p><code style="display:inline;">⦿ VERIFICADO:</code> El administrador conoce pruebas gratuitas de velocidad de reacción y mencionó una máquina de estímulos sonoros para taekwondo.</p>
-    <p><code style="display:inline;">⦿ VERIFICADO:</code> El administrador identificó un dispositivo similar de Kigo con ranking y escaneo de código en Plaza Solesta (requiere verificación directa posterior).</p>
-    <p><code style="display:inline;">⦿ VERIFICADO:</code> El problema observable es la fricción para convertir mediciones existentes en entrenamiento frecuente, seguimiento y motivación; no la ausencia de instrumentos de medición.</p>
-    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El segmento objetivo ya utiliza wearables, pantallas, leaderboards o software de desempeño. (Solo se confirmó un Garmin en un atleta, no una práctica generalizada B2B).</p>
-    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El negocio realiza mediciones con frecuencia suficiente para justificar un dispositivo dedicado.</p>
-    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> La solución actual incluye reportar resultados a alumnos, crear rankings o administrar retos dentro de clase.</p>
-    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El estudio tiene un problema de retención que intenta resolver mediante gamificación y datos.</p>
-    <br>
-
-    <h4>CAPA 3 — PSICOGRÁFICA</h4>
-    <p><i>¿Qué le preocupa y qué lo movería a cambiar?</i></p>
-    <p><code style="display:inline;">⦿ VERIFICADO:</code> <i>“Lo que verdaderamente generará el cambio será el entrenamiento diario”</i>, no el aparato en sí (Cita del entrenador).</p>
-    <p><code style="display:inline;">⦿ VERIFICADO:</code> <i>“¿Cómo lo hago divertido? ¿Cómo lo hago desde una app?”</i> El administrador regresó a la motivación y experiencia, no a la precisión.</p>
-    <p><code style="display:inline;">⦿ VERIFICADO:</code> La motivación y el enganche parecen tener más peso que aumentar la precisión del dato (patrón preliminar).</p>
-    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El segmento podría valorar una experiencia que convierta una medición en práctica diaria, reto o ranking.</p>
-    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El comprador cambiaría si el sistema reduce el trabajo del entrenador, facilita la consulta de resultados y aumenta la asistencia.</p>
-    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> La exactitud técnica por sí sola no sería una razón suficiente para comprar.</p>
-    <p><code style="display:inline;">⦿ EMERGENTE (Hipótesis comercial):</code> La inclusión de personas ciegas o con discapacidad visual podría ser una línea de valor relevante (planteado espontáneamente por el administrador).</p>
-    <p><b>Hueco principal:</b> No existe evidencia suficiente sobre actitudes, criterios de confianza, percepción de IA, privacidad de datos o disposición a sustituir procesos actuales. No conviene afirmar que este segmento es “innovador” o “premium” sin observar conductas concretas.</p>
-    <br>
-
-    <h4>CAPA 4 — ECONÓMICA</h4>
-    <p><i>¿Cuánto le cuesta el problema, cuánto podría pagar y quién decide?</i></p>
-    <p><code style="display:inline;">⦿ VERIFICADO:</code> Los entrevistados no pagan hoy específicamente por medir el tiempo de reacción.</p>
-    <p><code style="display:inline;">⦿ VERIFICADO:</code> El atleta de boxeo tiene la medición incluida en la mensualidad del coach.</p>
-    <p><code style="display:inline;">⦿ VERIFICADO:</code> El uso del Garmin y herramientas gratuitas reduce el costo monetario directo del problema.</p>
-    <p><code style="display:inline;">⦿ VERIFICADO:</code> El costo actual parece estar más relacionado con tiempo, olvido y seguimiento manual que con la compra de medición.</p>
-    <p><code style="display:inline;">⦿ VERIFICADO:</code> El único ancla de precio mencionada fue de 60–100 MXN mensuales (percepción de gasto personal B2C, no empresarial).</p>
-    <p><code style="display:inline;">⦿ VERIFICADO:</code> Una clase boutique puede costar aprox. 250–300 MXN (referencia secundaria, no presupuesto disponible).</p>
-    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El estudio objetivo tiene presupuesto para comprar el dispositivo o pagar la app.</p>
-    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El precio viable está entre 60–100 MXN mensuales por usuario (no transferible a un esquema B2B/HaaS).</p>
-    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El propietario/administrador decide la compra y el entrenador influye en ella.</p>
-    <p><code style="display:inline;">⦿ HIPÓTESIS:</code> El alumno pagaría una suscripción individual o el negocio pagaría por sede/dispositivo.</p>
-    <p><b>Hueco crítico:</b> No se conoce el costo económico de la fricción ni el valor de resolverla (horas del entrenador, alumnos afectados, retención, ingresos por clase, disposición de pago B2B).</p>
-    <br>
-
-    <h4>Nivel de Conocimiento del Segmento</h4>
+    <div class="tabla-scroll">
     <table class="material-table">
         <thead>
-            <tr>
-                <th>Estado de Validación</th>
-                <th>Capas y Observaciones</th>
-            </tr>
+            <tr><th>Parámetro</th><th>Variante A</th><th>Variante B</th><th>Variante C</th></tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="material-tag">Mayoría VERIFICADA</td>
-                <td><b>Capa 2 (Conductual)</b> y <b>Capa 3 (Psicográfica)</b>, pero <i>únicamente</i> respecto a las cuatro personas entrevistadas. La motivación, diversión y uso de herramientas gratuitas actuales son hechos documentados.<br>Algunos datos de la <b>Capa 4</b> (ausencia de pago específico y ancla de 60-100 MXN).</td>
-            </tr>
-            <tr>
-                <td class="material-tag">Mayoría de HIPÓTESIS</td>
-                <td><b>Capa 1 (Demográfica):</b> No está validado que estudios boutique/HIIT sean el comprador con mayor dolor.<br><b>Capa 4 (Económica):</b> No hay disposición de pago empresarial ni retorno cuantificado.<br><b>Capa 2:</b> Faltan frecuencias y operativas reales del negocio B2B.</td>
-            </tr>
+            <tr><td class="material-tag">Forma de carcasa</td>
+                <td>Cuerpo con cara posterior semicurva para costal y base plana desmontable <i>(impresión 3D en dos piezas)</i></td>
+                <td>Hexágono de bordes redondeados que se ensambla en mosaico <i>(impresión 3D)</i></td>
+                <td>Cúpula semiesférica sobre base ancha, resistente al vuelco <i>(impresión 3D con relleno variable)</i></td></tr>
+            <tr><td class="material-tag">Instalación / montaje</td>
+                <td>Apoyo libre sobre tapete de hule antiderrapante <i>(corte láser o troquel)</i></td>
+                <td>Parche de velcro industrial con contraparte adherible en piso o pared <i>(lámina doblada)</i></td>
+                <td>Anillo perimetral de silicona tipo ventosa <i>(molde de silicona u o-ring comercial)</i></td></tr>
+            <tr><td class="material-tag">Indicador de estado sin app</td>
+                <td>Anillo LED perimetral con código de colores <i>(difusor impreso translúcido)</i></td>
+                <td>Ventana con 3–5 LEDs discretos tipo semáforo <i>(mecanizado simple o inserto impreso)</i></td>
+                <td>Los mismos LEDs de estímulo muestran el estado con patrones especiales <i>(solo firmware)</i></td></tr>
+            <tr><td class="material-tag">Material y acabado</td>
+                <td>PETG o ABS impreso; ABS sellado con vapor de acetona <i>(impresión 3D + post-proceso)</i></td>
+                <td>Aluminio inyectado con anodizado o pintura en polvo <i>(maquila externa)</i></td>
+                <td>Tapa de policarbonato mecanizada en CNC sobre base impresa <i>(CNC + impresión 3D)</i></td></tr>
+            <tr><td class="material-tag">Interfaz física</td>
+                <td>Superficie táctil capacitiva bajo tapa translúcida <i>(PCB capacitiva comercial)</i></td>
+                <td>Membrana de silicona sobre switch de domo <i>(molde de silicona + domo metálico)</i></td>
+                <td>Superficie rígida con sensor piezoeléctrico o de fuerza debajo <i>(sensor pegado internamente)</i></td></tr>
+            <tr><td class="material-tag">Fuente de energía</td>
+                <td>Batería interna con carga por pogo pins <i>(pogo pins soldados)</i></td>
+                <td>Batería con USB-C protegido por tapa de silicona <i>(tapa moldeada o comprada)</i></td>
+                <td>Carga inductiva Qi en el estuche <i>(módulo Qi comercial)</i></td></tr>
+            <tr><td class="material-tag">Resistencia ambiental y sellado</td>
+                <td>O-ring entre tapa y base con tornillos, IP54 básico <i>(o-ring comprado)</i></td>
+                <td>Carcasa monobloque pegada, sin tornillos expuestos <i>(pegado estructural)</i></td>
+                <td>Doble carcasa con electrónica encapsulada en resina <i>(potting epóxico)</i></td></tr>
         </tbody>
     </table>
-    <br>
+    </div>
+</div>
 
-    <h4>Agenda de Investigación Prioritaria</h4>
-    <table class="material-table">
-        <tbody>
-            <tr>
-                <td class="material-tag">Entrevistar</td>
-                <td>Propietarios y administradores de al menos tres subsegmentos por separado: box/CrossFit, boxeo-artes marciales y estudios HIIT/funcional.</td>
-            </tr>
-            <tr>
-                <td class="material-tag">Observar</td>
-                <td>Una clase completa y medir el proceso actual: preparación, aplicación de estímulos, captura de resultados, comunicación al alumno y tiempo invertido.</td>
-            </tr>
-            <tr>
-                <td class="material-tag">Métricas B2B</td>
-                <td>Preguntar por métricas concretas: asistencia, cancelaciones, retención, número de alumnos, clases por semana y gasto mensual en tecnología.</td>
-            </tr>
-            <tr>
-                <td class="material-tag">Validar Pago</td>
-                <td>Probar una demostración funcional (no conceptual) y solicitar una acción verificable: piloto pagado, depósito, carta de intención o introducción con quien decide.</td>
-            </tr>
-            <tr>
-                <td class="material-tag">Modelos</td>
-                <td>Comparar tres esquemas de precio: cobro por dispositivo, suscripción por sede y suscripción por alumno.</td>
-            </tr>
-            <tr>
-                <td class="material-tag">Inclusión</td>
-                <td>Investigar por separado la oportunidad con personas con discapacidad visual y organizaciones especializadas (no mezclarla con el segmento fitness).</td>
-            </tr>
-        </tbody>
-    </table>
-    <br>
-
-    <h4>Hipótesis Críticas Sin Verificar</h4>
+   <div class="yellowcommand-block">
+    <h4 id="UNO-1">Pausa de reflexión: revisión de la tabla contra el PDS</h4>
+    <p>La tabla se generó antes de cerrar la arquitectura de la semana 5, así que la contrasté con el PDS y con las decisiones vigentes. Varias variantes son fabricables, pero no funcionan en un producto que recibe golpes de boxeo.</p>
+    <div class="tabla-scroll">
     <table class="material-table">
         <thead>
-            <tr>
-                <th>Hipótesis Crítica</th>
-                <th>Estado / Riesgo Principal</th>
-            </tr>
+            <tr><th>Variante</th><th>Problema detectado</th><th>Decisión</th></tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="material-tag">El comprador prioritario son negocios fitness grupales</td>
-                <td>Las entrevistas no convergieron en HIIT/funcional; ninguna persona lo mencionó espontáneamente.</td>
-            </tr>
-            <tr>
-                <td class="material-tag">La gamificación genera valor económico B2B</td>
-                <td>Se validó interés verbal en hacer el entrenamiento "divertido", pero no que esto aumente retención, ingresos o disposición de pago por parte del estudio.</td>
-            </tr>
-            <tr>
-                <td class="material-tag">Diferenciación clara de soluciones actuales</td>
-                <td>Ya existen Kigo, máquinas sonoras y apps gratuitas; "medir con luces" no es todavía una razón de compra única validada.</td>
-            </tr>
-            <tr>
-                <td class="material-tag">Modelo de precio sostenible</td>
-                <td>El ancla de 60–100 MXN es B2C. No se ha probado si soporta hardware, IA, soporte, instalación y margen.</td>
-            </tr>
+            <tr><td class="material-tag">Interfaz A: capacitiva</td><td>Un guante de boxeo (cuero o sintético con espuma) aísla la mano, así que la detección capacitiva a través del guante es poco confiable <b>[Hipótesis fuerte: probar con un guante real]</b>. Tampoco mide aceleración ni fuerza.</td><td><b>Descartada</b></td></tr>
+            <tr><td class="material-tag">Interfaz B: switch de domo</td><td>Es binario (no mide intensidad) y su fatiga no aguanta 10,000 impactos de ≈ 1,600–2,600 N (RD-02 pide 10,000 golpes).</td><td><b>Descartada</b></td></tr>
+            <tr><td class="material-tag">Interfaz C: sensor bajo superficie rígida</td><td>Es la base correcta. Con la lista de componentes v2 evoluciona a <b>ADXL375 + 4 celdas de carga bajo un plato flotante</b>, que mide fuerza sin depender del montaje.</td><td><b>Se conserva y se mejora</b></td></tr>
+            <tr><td class="material-tag">Energía C: Qi</td><td>No encadena pods ni permite carga por apilamiento, y es menos eficiente (contradicción C3 del PDS).</td><td><b>Descartada</b></td></tr>
+            <tr><td class="material-tag">Energía A + B</td><td>No son excluyentes: el PDS pide apilamiento (pogo) y la revisión crítica dejó USB-C como vía base.</td><td><b>Se combinan</b></td></tr>
+            <tr><td class="material-tag">Indicador A + C</td><td>Usar el mismo aro de estímulo para mostrar el estado elimina piezas; la ventana de LEDs (B) duplica hardware.</td><td><b>Se combinan A y C</b></td></tr>
+            <tr><td class="material-tag">Material B: aluminio inyectado</td><td>El molde rebasa presupuesto y plazo, y una carcasa metálica bloquea el 2.4 GHz (sección D.9c de la semana 5).</td><td><b>Solo producción en volumen</b>; aluminio solo en el plato interno</td></tr>
+            <tr><td class="material-tag">Material C: policarbonato en la cara de golpe</td><td>Superficie dura donde llegan los nudillos.</td><td><b>Descartada para la cara de golpe</b>; útil como difusor</td></tr>
+            <tr><td class="material-tag">Sellado B y C</td><td>Impiden abrir el pod para cambiar batería y PCB, y encapsular una celda de litio en resina dificulta disipar el calor.</td><td><b>Descartadas</b>; se queda el o-ring (A)</td></tr>
+            <tr><td class="material-tag">Montaje C: ventosa</td><td>Se despega con golpes laterales y en pisos con polvo o sudor.</td><td><b>Descartada</b></td></tr>
+            <tr><td class="material-tag">Forma B: hexágono</td><td>Exige orientación al apilar; los anillos de contacto concéntricos se eligieron justo para que la rotación no importe.</td><td><b>Descartada</b></td></tr>
+            <tr><td class="material-tag">Faltante</td><td>La tabla no incluye <b>montaje rígido en pared</b>, la posición más realista para boxeo (altura de rostro y torso).</td><td><b>Se agrega como variante D</b></td></tr>
+            <tr><td class="material-tag">Presupuesto de $500–600 por unidad</td><td>No es realista para un pod instrumentado: la lista v2 da ≈ $1,380–1,830. Solo una versión "reacción" (sin acelerómetro ni celdas) se acerca.</td><td><b>Se señala la contradicción</b>; el PDS v1.0 fija BOM ≤ $1,500 por pod a 10 unidades y prototipo ≤ $3,000 (RR-03)</td></tr>
         </tbody>
     </table>
-    <br>
-
-    <h4>Perfil en una Oración &amp; Conclusión Operativa</h4>
-    <p><b>Perfil Provisional:</b> Negocio mexicano de entrenamiento grupal que actualmente puede resolver la medición con herramientas gratuitas, coach, silbatos, semáforos o wearables, pero podría pagar por una solución que convierta esos datos en entrenamiento diario, motivación y seguimiento dentro de una app; <i>sin embargo, todavía no está verificado que los estudios boutique, HIIT, CrossFit o funcional sean el segmento comprador ni que exista disposición de pago empresarial.</i></p>
-    
-    <p><b>Conclusión Operativa:</b> El segmento hipótesis no está validado como segmento de compra. Lo que sí aparece validado es un problema transversal de adopción y seguimiento, no de medición: <i>hacer que el entrenamiento ocurra con mayor frecuencia, sea más atractivo y requiera menos trabajo manual.</i> El siguiente experimento debería vender un <b>piloto de engagement y seguimiento</b> —no un sensor de mayor precisión— a un responsable de negocio claramente identificado.</p>
-</div>
-   
-    <h2 id="TRES">Piramide de Bain</h2>  
-    <div class="command-block">
-    <p><code>Pirámide de Valor de Bain — Ecosistema Portátil de Gamificación para HIIT</code></p>
-    <br>
-
-    <h4>1. Contexto del Segmento (Resumen Crítico)</h4>
-    <p>El segmento planteado (estudios boutique, HIIT, CrossFit, funcional) <b>no está validado:</b> de las 4 entrevistas realizadas, ninguna fue con un dueño/administrador de este tipo de negocio. La evidencia disponible apunta a un problema más amplio de adopción y seguimiento del entrenamiento, no a una carencia de instrumentos de medición.</p>
-    <br>
-
-    <h4>2. Análisis del Valor por Nivel</h4>
-    <div style="overflow-x: auto;">
-        <table class="material-table">
-            <thead>
-                <tr>
-                    <th>Nivel</th>
-                    <th>Valor</th>
-                    <th>Beneficiario</th>
-                    <th>Evidencia</th>
-                    <th>Cómo lo genera</th>
-                    <th>Qué falta validar</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="material-tag">Impacto social</td>
-                    <td>Fomento de hábitos de entrenamiento más frecuentes</td>
-                    <td>Usuario final</td>
-                    <td>🟡 HIPÓTESIS</td>
-                    <td>Al convertir la medición en algo motivador, incentivaría entrenar con más regularidad.</td>
-                    <td>Que el uso del producto realmente aumente la frecuencia de entrenamiento, no solo la percepción de motivación.</td>
-                </tr>
-                <tr>
-                    <td class="material-tag">Impacto social</td>
-                    <td>Mayor accesibilidad al entrenamiento estructurado</td>
-                    <td>Usuario final</td>
-                    <td>🔴 NO VALIDADO</td>
-                    <td>No hay evidencia directa en las entrevistas sobre accesibilidad.</td>
-                    <td>Ninguna entrevista abordó barreras de acceso; requeriría investigación específica.</td>
-                </tr>
-                <tr>
-                    <td class="material-tag">Transformador</td>
-                    <td>Automatización de estímulos (sustituye semáforo/silbatos)</td>
-                    <td>Entrenador</td>
-                    <td>🟢 VERIFICADO (método actual) / 🟡 HIPÓTESIS (mejora)</td>
-                    <td>El entrenador ya usa semáforo y silbatos manualmente; el producto automatizaría ese estímulo.</td>
-                    <td>Que el entrenador perciba una mejora real (tiempo, consistencia) frente a su método actual.</td>
-                </tr>
-                <tr>
-                    <td class="material-tag">Transformador</td>
-                    <td>Conversión de mediciones en entrenamiento recurrente</td>
-                    <td>Negocio / Usuario</td>
-                    <td>🟡 HIPÓTESIS</td>
-                    <td>Es la interpretación central de las entrevistas: el problema no es medir, es sostener el hábito.</td>
-                    <td>Que el producto efectivamente convierta mediciones puntuales en uso recurrente (no solo lo prometa).</td>
-                </tr>
-                <tr>
-                    <td class="material-tag">Transformador</td>
-                    <td>Reducción de trabajo manual del entrenador / atención a más alumnos</td>
-                    <td>Negocio / Entrenador</td>
-                    <td>🔴 NO VALIDADO</td>
-                    <td>No hay evidencia de que el entrenador quiera o necesite delegar esta tarea.</td>
-                    <td>Ninguna entrevista mencionó carga de trabajo como problema.</td>
-                </tr>
-                <tr>
-                    <td class="material-tag">Emocional</td>
-                    <td>Motivación para entrenar</td>
-                    <td>Usuario final</td>
-                    <td>🟢 VERIFICADO</td>
-                    <td>La motivación y la diversión aparecieron como temas relevantes en las entrevistas.</td>
-                    <td>Que el producto específico (no solo la idea general) genere motivación medible.</td>
-                </tr>
-                <tr>
-                    <td class="material-tag">Emocional</td>
-                    <td>Diversión en el entrenamiento</td>
-                    <td>Usuario final</td>
-                    <td>🟢 VERIFICADO</td>
-                    <td>Los entrevistados expresaron interés en que el entrenamiento sea divertido.</td>
-                    <td>Que la gamificación del producto sea percibida como divertida, no como gimmick.</td>
-                </tr>
-                <tr>
-                    <td class="material-tag">Emocional</td>
-                    <td>Sensación de progreso / seguimiento de desempeño</td>
-                    <td>Usuario final</td>
-                    <td>🟡 HIPÓTESIS</td>
-                    <td>El atleta de atletismo usa Garmin para ver datos, aunque a veces no los revisa.</td>
-                    <td>Que el seguimiento visual del producto se use de forma sostenida, a diferencia del caso Garmin.</td>
-                </tr>
-                <tr>
-                    <td class="material-tag">Funcional</td>
-                    <td>Medición de tiempo de reacción y cadencia</td>
-                    <td>Usuario / Entrenador</td>
-                    <td>🟢 VERIFICADO</td>
-                    <td>Existen soluciones similares en uso: semáforo, Garmin, pruebas gratuitas, dispositivo Kigo.</td>
-                    <td>Que esta medición sea diferenciable de las alternativas ya conocidas por los entrevistados.</td>
-                </tr>
-                <tr>
-                    <td class="material-tag">Funcional</td>
-                    <td>Visualización de resultados / rankings</td>
-                    <td>Usuario / Negocio</td>
-                    <td>🟡 HIPÓTESIS</td>
-                    <td>El dispositivo Kigo identificado ya ofrece ranking y escaneo de código (precedente de mercado).</td>
-                    <td>Que los rankings generen valor económico y no solo valor funcional.</td>
-                </tr>
-                <tr>
-                    <td class="material-tag">Funcional</td>
-                    <td>Portabilidad / facilidad de implementación</td>
-                    <td>Negocio</td>
-                    <td>🟡 HIPÓTESIS</td>
-                    <td>Es un atributo de diseño del producto, sin evidencia directa.</td>
-                    <td>Que la portabilidad sea un factor relevante para quien decide comprar.</td>
-                </tr>
-            </tbody>
-        </table>
     </div>
-    <br>
-
-    <h4>3. Construcción de la Pirámide</h4>
-    <p>Solo se colocan los valores con evidencia (🟢) o hipótesis razonable (🟡); los 🔴 NO VALIDADOS se excluyen explícitamente.</p>
-    
-    <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; font-family: monospace; text-align: center; line-height: 1.4; border: 1px solid #ddd; overflow-x: auto;">
-                 ╔══════════════════════╗<br>
-                 ║   IMPACTO SOCIAL     ║<br>
-                 ║  (solo hipótesis —   ║<br>
-                 ║   sin evidencia      ║<br>
-                 ║   sólida todavía)    ║<br>
-                 ╚══════════════════════╝<br>
-<br>
-              ╔════════════════════════════╗<br>
-              ║      TRANSFORMADOR         ║<br>
-              ║  Convertir medición en     ║<br>
-              ║  entrenamiento recurrente  ║<br>
-              ║  (🟡 hipótesis central)    ║<br>
-              ╚════════════════════════════╝<br>
-<br>
-           ╔══════════════════════════════════╗<br>
-           ║             EMOCIONAL            ║<br>
-           ║   Motivación 🟢 · Diversión 🟢   ║<br>
-           ║   Sensación de progreso 🟡       ║<br>
-           ╚══════════════════════════════════╝<br>
-<br>
-        ╔══════════════════════════════════════════╗<br>
-        ║                FUNCIONAL                 ║<br>
-        ║  Medición de reacción/cadencia 🟢        ║<br>
-        ║  Rankings/visualización 🟡               ║<br>
-        ║  Portabilidad 🟡                         ║<br>
-        ╚══════════════════════════════════════════╝
-    </div>
-    <p><i>Nota: el nivel de impacto social no tiene evidencia suficiente para sostener ningún valor sólido; se deja marcado como vacío por diseño, no relleno artificialmente.</i></p>
-    <br>
-
-    <h4>4. Priorización del Valor</h4>
-    
-    <p><b>Top 3 Funcionales:</b></p>
-    <p><code style="display:inline;">⦿ Medición de tiempo de reacción y cadencia:</code> 🟢 VERIFICADO (hay uso real de alternativas: semáforo, Garmin, Kigo).</p>
-    <p><code style="display:inline;">⦿ Visualización de resultados / rankings:</code> 🟡 HIPÓTESIS (precedente de mercado con Kigo, sin evidencia de pago).</p>
-    <p><code style="display:inline;">⦿ Portabilidad / facilidad de implementación:</code> 🟡 HIPÓTESIS (atributo de diseño, no validado como criterio de compra).</p>
-
-    <p><b>Top 3 Emocionales:</b></p>
-    <p><code style="display:inline;">⦿ Motivación:</code> 🟢 VERIFICADO (mencionado directamente por entrevistados).</p>
-    <p><code style="display:inline;">⦿ Diversión:</code> 🟢 VERIFICADO (mencionado directamente por entrevistados).</p>
-    <p><code style="display:inline;">⦿ Sensación de progreso:</code> 🟡 HIPÓTESIS (evidencia mixta: caso Garmin muestra interés parcial, no consistente).</p>
-
-    <p><b>Mayor Potencial Transformador:</b></p>
-    <p><code style="display:inline;">⦿ Conversión de mediciones en entrenamiento recurrente:</code> 🟡 HIPÓTESIS (es la lectura más fuerte de las entrevistas, pero no está demostrada con datos de comportamiento).</p>
-
-    <p><b>Posibles Valores de Impacto Social:</b></p>
-    <p><code style="display:inline;">⦿ Fomento de hábitos de entrenamiento más frecuentes:</code> 🟡 HIPÓTESIS (derivada indirectamente, no mencionada como tal).</p>
-    <br>
-
-    <h4>5. Análisis Crítico</h4>
-    
-    <p><b>A. ¿Dónde está el valor más sólido?</b><br>
-    En el nivel emocional, específicamente motivación y diversión: son los únicos valores mencionados de forma directa y repetida por los entrevistados. El nivel funcional tiene evidencia de que el problema (medir reacción) ya se resuelve de varias formas (semáforo, Garmin, pruebas gratuitas, Kigo), lo cual es una señal de que la medición en sí no es escasa. El nivel transformador y social son, por ahora, interpretación.</p>
-    
-    <p><b>B. ¿Cuál parece ser el verdadero problema?</b><br>
-    Las entrevistas sugieren que el problema no es la falta de medición, sino la cadena <b>medición → entrenamiento frecuente → motivación → seguimiento</b>: el atleta con Garmin tiene datos pero a veces no los revisa; el boxeador recibe medición como parte de un servicio ya existente (el coach), no como algo que compra aparte. Esto apunta a que el reto real es sostener el hábito y el engagement, no instrumentar la medición.</p>
-    
-    <p><b>C. Afirmaciones todavía no demostradas:</b></p>
-    <p><code style="display:inline;">⦿ Retención:</code> 🔴 No hay evidencia de que los rankings aumenten retención o asistencia.</p>
-    <p><code style="display:inline;">⦿ Churn:</code> 🔴 No se identificó un problema de abandono relevante en las entrevistas.</p>
-    <p><code style="display:inline;">⦿ Ahorro de entrenadores:</code> 🔴 No mencionado por ningún entrevistado.</p>
-    <p><code style="display:inline;">⦿ Escalabilidad:</code> 🔴 Atender a más alumnos sin contratar más staff no está validado.</p>
-    <p><code style="display:inline;">⦿ ROI y Disposición de pago:</code> 🔴 Sin datos B2B. El rango 60–100 MXN es gasto personal, no precio institucional.</p>
-    <p><code style="display:inline;">⦿ Segmento comprador:</code> 🟡 Hipótesis sin validar (ningún entrevistado fue dueño/administrador de estudio HIIT).</p>
-    <p><code style="display:inline;">⦿ Diferenciación:</code> 🔴 Existe al menos un competidor identificado (Kigo) y no se ha probado diferenciación frente a él.</p>
-
-    <p><b>D. ¿Qué propuesta de valor debería probarse primero?</b><br>
-    La hipótesis <i>"el negocio no necesita más precisión, necesita convertir la medición en una experiencia de entrenamiento frecuente, motivadora y fácil de seguir"</i> tiene respaldo moderado. Se apoya en los temas de motivación/diversión mencionados y en el patrón de subuso de datos (caso Garmin). Pero sigue siendo una hipótesis: falta evidencia directa de un dueño de gimnasio HIIT que confirme que este es su problema prioritario, y falta evidencia de que resolverlo genere disposición de pago.</p>
-    
-    <p><b>E. ¿Qué debería probar el siguiente experimento comercial?</b><br>
-    El experimento debería apuntar directamente a cerrar los vacíos de la sección C, con foco en <b>quién compra y cuánto valor económico percibe</b>, no solo en validar la experiencia de usuario. Opciones más fuertes que una entrevista de opinión:</p>
-    <p><code style="display:inline;">⦿ 1.</code> Un piloto pagado de bajo costo (o depósito reembolsable) con 2-3 estudios HIIT/CrossFit reales, para probar si el dueño/administrador está dispuesto a comprometer dinero.</p>
-    <p><code style="display:inline;">⦿ 2.</code> Una carta de intención firmada por el decisor de compra, condicionada a resultados del piloto.</p>
-    <p><code style="display:inline;">⦿ 3.</code> Probar dos modelos de cobro en paralelo (por sede vs. por dispositivo) para detectar cuál reduce más la fricción de decisión.</p>
-    <p><i>El objetivo de este experimento no es confirmar que el producto "gusta", sino identificar si existe un comprador real dispuesto a pagar por resolver la cadena medición → hábito → motivación, y a qué precio.</i></p>
 </div>
 
-     <h2 id="CUATRO">TAM/SAM/SOM</h2>
+<!-- ===================== 2. ANALOGÍAS ===================== -->
+    <h2 id="DOS">Analogías tecnológicas</h2>
+    <h3>Prompt 2: soluciones de otros sectores para los parámetros más débiles</h3>
+
    <div class="command-block">
-    <p><code>DIMENSIONAMIENTO DE MERCADO: Lumetriq</code></p>
-    <br>
-
-    <h4>TAM — Mercado Total Direccionable</h4>
-    <p><b>Universo de partida:</b> 30,242 establecimientos privados de acondicionamiento físico en México. Es un escenario provisional que debe validarse extrayendo del DENUE los establecimientos de la clase SCIAN 713943. El DENUE 05/2026 reporta 6,138,075 establecimientos totales y permite filtrarlos por actividad, ubicación y tamaño.</p>
-    
+    <p>Después de la revisión, los parámetros más débiles fueron el montaje, la medición de fuerza, la protección de los contactos y la confirmación al usuario. Para cada uno se buscó un producto de otro sector que ya resolvió un problema equivalente.</p>
+    <div class="tabla-scroll">
     <table class="material-table">
         <thead>
-            <tr>
-                <th>Filtro Aplicado</th>
-                <th>Establecimientos Resultantes</th>
-                <th>Fuente / Justificación</th>
-            </tr>
+            <tr><th>Parámetro débil</th><th>Analogía</th><th>Qué resuelve ahí</th><th>Qué se transfiere a Lumetriq</th></tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="material-tag">Entrenamiento presencial</td>
-                <td>18,145</td>
-                <td>Supuesto de primer principio; no existe un porcentaje público específico.</td>
-            </tr>
-            <tr>
-                <td class="material-tag">Afinidad con HIIT, funcional, CrossFit, combate, atletismo</td>
-                <td>8,165</td>
-                <td>Supuesto de primer principio.</td>
-            </tr>
-            <tr>
-                <td class="material-tag">Utilidad del sistema en clases grupales/sesiones</td>
-                <td>4,899</td>
-                <td>Supuesto de primer principio.</td>
-            </tr>
-            <tr>
-                <td class="material-tag">Disposición de pago (HW MXN 4,490–7,990 + SW B2B)</td>
-                <td>1,715</td>
-                <td>Hipótesis de disposición de pago; requiere validación mediante entrevistas, pilotos y preventas.</td>
-            </tr>
+            <tr><td class="material-tag">Montaje rígido y removible</td><td>Bayoneta de lentes de cámara y soporte de luminaria de techo</td><td>Una pieza pesada se fija con ¼ de vuelta, en una sola orientación, sin herramientas</td><td>Placa fija en la pared y pod que se monta y desmonta con ¼ de vuelta y un seguro</td></tr>
+            <tr><td class="material-tag">Medición de fuerza sin importar dónde esté</td><td>Báscula de baño y plataforma de fuerza de laboratorio</td><td>Celdas bajo un plato miden la carga transmitida, no la aceleración</td><td>4 celdas de 50 kg bajo un plato flotante con topes (lista v2)</td></tr>
+            <tr><td class="material-tag">Superficie que recibe golpes y sensa</td><td>Pad de batería electrónica y parche de tambor con aro tensor</td><td>Una membrana tensada por un aro sobre un plato rígido con sensor; aguanta millones de golpes, mide intensidad y el parche se cambia</td><td>Vinipiel tensada con un aro sobre EVA y plato de aluminio; el sensor nunca recibe el golpe directo y la funda es reemplazable</td></tr>
+            <tr><td class="material-tag">Guiar el golpe al centro</td><td>Manopla de foco del entrenador (<i>focus mitt</i>)</td><td>Vinipiel sobre espuma con cara cóncava: "atrapa" el puño y le indica dónde pegar</td><td>Pad cóncavo (flecha ≈ 4 mm) con los mismos materiales; la concavidad sale de un anillo de EVA bajo la vinipiel</td></tr>
+            <tr><td class="material-tag">Contactos de carga expuestos</td><td>Cargador magnético de smartwatch y de laptop</td><td>Un conector pequeño que los imanes alinean y retienen</td><td>Conector pogo magnético rehundido a las 6 en punto, en la cara frontal y trasera</td></tr>
+            <tr><td class="material-tag">Confirmación al usuario</td><td>Juego <i>Simon</i>, semáforos y direccionales de auto</td><td>Color, patrón y posición comunican estado y dirección sin pantalla</td><td>Tres niveles de confirmación con el mismo arco de LED (ver "Concepto elegido")</td></tr>
         </tbody>
     </table>
-    
-    <p><b>Universo final TAM:</b> 1,715 establecimientos compradores potenciales</p>
-    
-    <p><b>Supuestos de producto:</b></p>
-    <ul>
-        <li><code style="display:inline;">⦿ Distribución:</code> 70% compra Lumetriq Studio (6 disp. por MXN 7,990) y 30% compra Lumetriq Starter (3 disp. por MXN 4,490).</li>
-        <li><code style="display:inline;">⦿ Precio promedio ponderado de hardware:</code> MXN 6,940.</li>
-        <li><code style="display:inline;">⦿ Suscripción para gimnasio Studio Pro:</code> MXN 899 mensuales o MXN 10,788 anuales.</li>
-        <li><code style="display:inline;">⦿ Ticket promedio del primer año:</code> MXN 17,728 por establecimiento.</li>
-    </ul>
-    
-    <p><b>Valor anual TAM:</b> MXN 30,407,520 durante el primer año</p>
-    <ul>
-        <li><code style="display:inline;">⦿ Hardware inicial:</code> 1,715 × MXN 6,940 = MXN 11,902,100.</li>
-        <li><code style="display:inline;">⦿ Suscripción anual (Recurrente):</code> 1,715 × MXN 10,788 = MXN 18,505,420.</li>
-    </ul>
-    <br>
-
-    <h4>SAM — Mercado Alcanzable</h4>
-    <p><i>Filtros aplicados al TAM:</i></p>
-    <table class="material-table">
-        <thead>
-            <tr>
-                <th>Filtro Aplicado</th>
-                <th>Establecimientos Resultantes</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="material-tag">Geografía inicial (CDMX, Edomex, GDL, MTY, PUE)</td>
-                <td>943</td>
-            </tr>
-            <tr>
-                <td class="material-tag">Operación grupal recurrente y capacidad de compra</td>
-                <td>472</td>
-            </tr>
-            <tr>
-                <td class="material-tag">Accesibilidad comercial (venta directa, redes, coaches, alianzas)</td>
-                <td>330</td>
-            </tr>
-            <tr>
-                <td class="material-tag">Capacidad de pago (Paquete prom. MXN 6,940 + suscripción)</td>
-                <td>198</td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <p><b>Universo final SAM:</b> 198 establecimientos</p>
-    <p><b>Valor anual SAM:</b> MXN 3,510,144 durante el primer año</p>
-    <ul>
-        <li><code style="display:inline;">⦿ Hardware inicial:</code> 198 × MXN 6,940 = MXN 1,374,120.</li>
-        <li><code style="display:inline;">⦿ Suscripción anual (Recurrente):</code> 198 × MXN 10,788 = MXN 2,136,024.</li>
-    </ul>
-    <p><i>Nota: El SAM excluye gimnasios públicos, cadenas con procesos corporativos, centros sin clases grupales, usuarios domésticos, atletas individuales y establecimientos que solo aceptarían una app gratuita.</i></p>
-    <br>
-
-    <h4>SOM — Mercado Obtenible (Años 1–2)</h4>
-    <p><b>Meta:</b> 45 gimnasios o estudios pagadores (22.7% del SAM)</p>
-    
-    <p><b>Lógica de Go-To-Market:</b></p>
-    <ul>
-        <li><code style="display:inline;">⦿ Canal específico:</code> Demostraciones presenciales en clases funcionales/HIIT; prospección por IG, WA y alianzas con coaches/distribuidores.</li>
-        <li><code style="display:inline;">⦿ Geografía piloto:</code> CDMX y Edomex (Año 1); GDL y Monterrey (Año 2); Puebla mediante prospección digital.</li>
-        <li><code style="display:inline;">⦿ Capacidad del equipo:</code> 2 personas en ventas/demos, 8–10 demos calificadas por vendedor a la semana, conversión objetivo de 5–8%.</li>
-        <li><code style="display:inline;">⦿ Oferta comercial:</code> Lumetriq Studio (6 dispositivos) a MXN 7,990, con acceso de prueba a la app y renovación a MXN 899/mes.</li>
-        <li><code style="display:inline;">⦿ Trayectoria:</code> 15 clientes (Año 1) y 30 clientes nuevos (Año 2) para alcanzar los 45 clientes acumulados.</li>
-    </ul>
-    
-    <p><b>Valor anual SOM:</b> MXN 797,760 de ingresos del primer año para 45 clientes</p>
-    <ul>
-        <li><code style="display:inline;">⦿ Hardware inicial:</code> 45 × MXN 6,940 = MXN 312,300.</li>
-        <li><code style="display:inline;">⦿ Suscripción anual (Recurrente):</code> 45 × MXN 10,788 = MXN 485,460.</li>
-    </ul>
-    <p><i>Nota: Si los clientes se adquieren gradualmente, el ingreso real del año 2 sería aprox. MXN 693,660, considerando renovaciones, nuevas suscripciones y hardware de los clientes nuevos.</i></p>
-    <br>
-
-    <h4>SEÑAL DE VIABILIDAD</h4>
-    <p><b>SOM × precio anual = MXN 797,760 de ingresos brutos de primera compra</b></p>
-    <p><code style="display:inline;">⦿ ¿Cubre costos operativos básicos de una startup de 4 personas?</code><br> <b>Marginal</b> — El precio revisado mejora el modelo, pero 45 clientes todavía probablemente no cubren cuatro salarios, desarrollo de app, inventario, ventas, soporte, garantía y logística.</p>
-    
-    <p><code style="display:inline;">⦿ Recomendación Estratégica:</code><br> Para una operación más sólida, Lumetriq debería alcanzar aprox. 75–100 sedes, aumentar el plan B2B a MXN 1,199–1,499 mensuales, vender paquetes de 12 dispositivos o agregar instalación, capacitación y contenido premium.</p>
-    
-    <p><code style="display:inline;">⦿ Precios Hipotéticos Recomendados:</code></p>
-    <table class="material-table">
-        <thead>
-            <tr>
-                <th>Producto / Servicio</th>
-                <th>Precio Estimado (MXN)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="material-tag">Lumetriq Starter (3 dispositivos)</td>
-                <td>$4,490</td>
-            </tr>
-            <tr>
-                <td class="material-tag">Lumetriq Studio (6 dispositivos)</td>
-                <td>$7,990</td>
-            </tr>
-            <tr>
-                <td class="material-tag">App Individual Pro</td>
-                <td>$149 / mes (o $1,290 anual)</td>
-            </tr>
-            <tr>
-                <td class="material-tag">App Gimnasio Studio Pro</td>
-                <td>$899 / mes (o $8,990 anual)</td>
-            </tr>
-            <tr>
-                <td class="material-tag"><b>Ticket Promedio 1er Año (Gimnasio)</b></td>
-                <td><b>~ $17,728</b></td>
-            </tr>
-        </tbody>
-    </table>
-    <br>
-
-    <h4>FUENTES UTILIZADAS</h4>
-    <ul>
-        <li><code style="display:inline;">⦿ INEGI, DENUE 05/2026:</code> Reporta 6,138,075 establecimientos totales y permite analizarlos por actividad, ubicación y tamaño. Define el directorio como fuente para identificar unidades económicas activas.</li>
-        <li><code style="display:inline;">⦿ BlazePod:</code> Starter Kit y Bundles (2024–2026). Referencia de paquetes de dispositivos, accesorios y precios internacionales.</li>
-        <li><code style="display:inline;">⦿ BlazePod / Perform Better:</code> Membresía de la aplicación (2026). Referencia de planes gratuitos y Pro.</li>
-        <li><code style="display:inline;">⦿ FITLIGHT:</code> FITLIGHT System (2025–2026). Referencia de sistema profesional y aplicación sin suscripción.</li>
-        <li><code style="display:inline;">⦿ Banco de México:</code> Tipo de cambio FIX, 24 de septiembre de 2026. Utilizado para convertir referencias internacionales a pesos mexicanos.</li>
-    </ul>
-</div>
-
-
-    
-<h2 id="CINCO">Análisis competitivo y Blue Ocean</h2>
-<!--PARTE 1-->
-<div class="command-block">
-    <h3>Parte 1 - Mapa de posicionamiento competitivo</h3>
-    <p><code>MAPA COMPETITIVO</code></p>
-    <p><b>Segmento:</b> Entrenadores independientes y administradores de instalaciones deportivas/universitarias en México, especialmente combate, atletismo y acondicionamiento físico.</p>
-    <p><i>Criterio: “Directo” significa que compite con luces/paneles interactivos controlados por app para entrenar reacción. “Indirecto” resuelve la misma necesidad de mejorar reacción, agilidad o autonomía del circuito mediante otra tecnología. Los precios son referencias públicas internacionales; no necesariamente incluyen importación, IVA, distribución o servicio en México.</i></p>
-    <br>
-
-    <h4>DIRECTOS</h4>
-    <p><code style="display:inline;">⦿ BlazePod:</code> Sistema de pods luminosos inalámbricos controlados por app, con estímulos aleatorios, ejercicios configurables, datos en tiempo real y dinámicas competitivas — opera globalmente; disponible para compra internacional — kits desde US$439, con planes de app gratuitos y membresías Pro alrededor de US$12.99/mes.<br>
-    <b>Debilidad específica:</b> El costo total en México, sumando importación y suscripción Pro, está muy por encima del ancla de software de MX$60–100 mensuales del segmento; además, el entrenador debe administrar la app y colocar varios pods antes de la clase, por lo que no elimina completamente la fricción operativa.</p>
-
-    <p><code style="display:inline;">⦿ FITLIGHT:</code> Luces LED inalámbricas que se desactivan por toque o movimiento, con ejercicios programables, seguimiento de resultados y uso individual o grupal — global, con envío directo desde Estados Unidos — sistema desde US$999, con app sin suscripción; cada luz adicional se ofrece alrededor de US$179.<br>
-    <b>Debilidad específica:</b> Está diseñado y vendido como equipo profesional/elite, lo que lo vuelve financieramente difícil para un gimnasio local o universidad mexicana que prioriza diversión y competencia sobre análisis neurocognitivo avanzado; además, el envío puede generar impuestos y costos de importación, y la garantía anunciada es de un año.</p>
-
-    <p><code style="display:inline;">⦿ Lummic:</code> Sistema de cuatro a ocho luces de reacción con estímulos visuales y auditivos, sensores táctiles, juegos y una app gratuita con más de 40 programas — global, principalmente Europa; no se observa una operación local mexicana documentada — kits de cuatro luces desde aproximadamente €241.88, seis desde €349.69 y ocho desde €459; la app es gratuita de forma permanente.<br>
-    <b>Debilidad específica:</b> Su propuesta es amplia y lúdica, pero la información pública muestra una orientación multisegmento —deporte, niños y adultos mayores— más que una solución enfocada en circuitos de combate o atletismo con flujo de clase, ranking por grupo y configuración rápida para varios atletas.</p>
-
-    <p><code style="display:inline;">⦿ ReactionX / VEGVISIR:</code> Pods de reacción con app, sensores de toque, proximidad, vibración y sonido, modos de batalla y medición con precisión anunciada de 0.01 segundos — global; distribución internacional — paquetes publicados desde US$1,600 para cuatro pods, aunque distribuidores comparativos ubican algunos kits de seis unidades aproximadamente entre US$250 y US$370, lo que sugiere una estructura de precios/distribución inconsistente.<br>
-    <b>Debilidad específica:</b> La inconsistencia entre precios y canales dificulta la compra institucional mexicana y la comparación presupuestaria; tampoco se observa una propuesta localizada para entrenadores mexicanos que necesiten soporte, facturación local, contenido en español y uso sencillo durante clases grupales.</p>
-
-    <p><b>Lectura competitiva:</b> Los tres primeros son los referentes que Lumetriq debe superar en percepción de categoría. BlazePod es el rival más cercano por combinación de hardware, app, aleatoriedad y gamificación; FITLIGHT domina la percepción profesional; Lummic demuestra que existe una alternativa con app gratuita y menor fricción de suscripción.</p>
-    <br>
-
-    <h4>INDIRECTOS</h4>
-    <p><code style="display:inline;">⦿ Quick Board:</code> Panel físico sensible a presión que proporciona retroalimentación en tiempo real para entrenar reacción, velocidad, coordinación, equilibrio y rehabilitación — global, principalmente Estados Unidos — tablero desde US$2,295–2,495, más licencia de software de US$49.99 a US$199.99 mensuales según número de atletas.<br>
-    <b>Debilidad específica:</b> Su formato de tablero fijo concentra el entrenamiento en una estación y exige una inversión y suscripción incompatibles con un gimnasio mexicano que quiere mover a varios atletas por un circuito; además, está más orientado a evaluación, rehabilitación y reporting que a la competencia rápida tipo “el primero que toca gana”.</p>
-
-    <p><code style="display:inline;">⦿ Reaction Light Trainer / apps de reacción en teléfonos:</code> Aplicaciones que convierten los smartphones o tablets disponibles en estímulos luminosos y registran el desempeño sin comprar hardware dedicado — global; disponible en App Store y Google Play — generalmente gratuitas o con compras dentro de la app.<br>
-    <b>Debilidad específica:</b> Reduce la inversión inicial, pero no resuelve bien el cuello de botella físico de BRIS: los atletas siguen teniendo que acercarse a una pantalla pequeña o depender de teléfonos colocados estratégicamente; en una clase de combate o atletismo, los dispositivos pueden moverse, dañarse o distraer y no ofrecen una superficie de toque robusta.</p>
-
-    <p><code style="display:inline;">⦿ QuickPLAY RXTR Pro Coach:</code> Panel de rebote deportivo con luces visuales integradas y ejercicios guiados, diseñado para que el equipo “entrene” al jugador sin instrucciones constantes del coach — global, principalmente Reino Unido/Europa — alrededor de €129.99, con posibilidad de conectar hasta seis luces de reacción.<br>
-    <b>Debilidad específica:</b> Está centrado en pases, fútbol y coordinación con rebote, no en circuitos espaciales configurables para boxeo, atletismo o acondicionamiento institucional; además, un único panel restringe la variedad de trayectorias y la participación simultánea de una clase.</p>
-
-    <p><code style="display:inline;">⦿ Conos y material de agilidad con señales de un compañero:</code> Circuitos con conos donde el coach o compañero grita números, señala un cono o utiliza una luz/señal para indicar el siguiente movimiento — México, LATAM y global; práctica ampliamente accesible — conos básicos desde unos cientos de pesos por set.<br>
-    <b>Debilidad específica:</b> Los conos son baratos y flexibles, pero conservan exactamente el problema que Lumetriq pretende eliminar: el entrenador debe decidir y comunicar cada estímulo, controlar el orden, observar quién respondió primero y reiniciar el circuito.</p>
-    <br>
-
-    <h4>SUSTITUTOS</h4>
-    <p><code style="display:inline;">⦿ Drill manual dirigido por el coach (aplausos, silbato, gritos):</code> El entrenador coloca conos, asigna zonas y da una señal auditiva o verbal impredecible para que el atleta corra, golpee, bloquee o cambie de dirección. Costo monetario bajo (MX$100–500 por silbato y conos); costo operativo alto (preparación, voz, atención continua).<br>
-    <b>Debilidad frente a BRIS:</b> Es el sustituto más arraigado, pero el coach se convierte en el “controlador” del sistema y no puede dirigir simultáneamente técnica, seguridad, intensidad y corrección individual.</p>
-
-    <p><code style="display:inline;">⦿ Pelotas de tenis, pelotas de reacción o estímulos lanzados:</code> Un entrenador o atleta lanza objetos de forma irregular para forzar atrapadas, esquivas y decisiones rápidas. Costo monetario bajo (MX$50–300 por objeto); costo operativo dependiente de un compañero.<br>
-    <b>Debilidad frente a BRIS:</b> Produce una reacción más realista y barata, pero no genera una secuencia reproducible, marcador automático, ranking ni historial de progreso; tampoco permite que un único coach mantenga varios circuitos activos.</p>
-
-    <p><code style="display:inline;">⦿ Cronómetro de intervalos o app de pitidos:</code> El coach usa un teléfono para generar intervalos, sonidos o señales aleatorias mientras los atletas ejecutan un patrón previamente explicado. Costo monetario gratuito o muy bajo.<br>
-    <b>Debilidad frente a BRIS:</b> Automatiza el tiempo, pero no automatiza la dirección espacial ni confirma quién desactivó correctamente el estímulo; sigue requiriendo que el coach verbalice el movimiento y resuelva disputas entre atletas.</p>
-    <br>
-
-    <h4>EL COMPETIDOR MÁS PELIGROSO</h4>
-    <p><b>El circuito manual con conos y silbato</b></p>
-    <p>El competidor más peligroso no es BlazePod: es el comportamiento actual de usar conos, una pelota, un silbato y la voz del entrenador. Tiene costo marginal casi nulo, ya forma parte del lenguaje de entrenamiento, funciona con cualquier deporte y no requiere aprobación presupuestaria, conectividad, carga de baterías ni capacitación tecnológica. Una app puede sustituir una parte de la aleatoriedad, pero no basta para desplazar un método que el coach ya sabe improvisar en segundos.</p>
-    
-    <p>Para lograr que el usuario cambie, BRIS tendría que vender menos “medición avanzada” y más fluidez de clase:</p>
-    <ul>
-        <li><code style="display:inline;">⦿</code> Configurar un circuito en menos de un minuto.</li>
-        <li><code style="display:inline;">⦿</code> Permitir que el coach elija un modo simple: “batalla”, “todos contra todos”, “defensa”, “cambio de dirección” o “sigue la luz”.</li>
-        <li><code style="display:inline;">⦿</code> Activar estímulos impredecibles sin que el entrenador tenga que gritar instrucciones.</li>
-        <li><code style="display:inline;">⦿</code> Identificar automáticamente el toque correcto y mostrar quién ganó cada ronda.</li>
-        <li><code style="display:inline;">⦿</code> Operar a grupos pequeños sin que cada atleta necesite una cuenta.</li>
-        <li><code style="display:inline;">⦿</code> Ofrecer rankings, retos y progresión básica sin forzar una suscripción B2B costosa.</li>
-        <li><code style="display:inline;">⦿</code> Incluir contenido en español y soporte, garantía y facturación adecuados para México.</li>
-        <li><code style="display:inline;">⦿</code> Mantener una experiencia offline o de baja dependencia de internet.</li>
-    </ul>
-    
-    <p>La oportunidad de BRIS está, por tanto, en posicionarse como un asistente de clase que libera al coach, no como otro sistema de evaluación deportiva. Su ventaja tendría que ser: <i>“el circuito se dirige solo, los atletas compiten y el entrenador vuelve a concentrarse en corregir técnica”</i>.</p>
-    <br>
-
-    <h4>Implicación para precio</h4>
-    <p>El precio de Lumetriq todavía no debería fijarse tomando como referencia únicamente el costo de una app de MX$60–100 mensuales. Los competidores directos muestran que el valor percibido se concentra principalmente en el hardware, mientras que la suscripción puede convertirse en una barrera: BlazePod cobra hardware más membresía; FITLIGHT evita la suscripción, pero compensa con un equipo de aproximadamente US$999; Lummic compite con app gratuita y kits de menor precio.</p>
-    
-    <p>Para este segmento, la hipótesis comercial más coherente sería:</p>
-    <ul>
-        <li><code style="display:inline;">⦿</code> Pago único por kit físico como oferta principal.</li>
-        <li><code style="display:inline;">⦿</code> App base gratuita con rutinas, competencia y progreso esencial.</li>
-        <li><code style="display:inline;">⦿</code> Funciones opcionales de pago, solo si el cliente las percibe como útiles: múltiples grupos, historial avanzado, panel institucional, exportación de resultados o administración de varias sedes.</li>
-        <li><code style="display:inline;">⦿</code> Kit inicial pequeño y ampliable, para evitar que un entrenador tenga que comprar desde el principio un sistema de 8–12 unidades.</li>
-    </ul>
-    
-    <p>Ese diseño atacaría simultáneamente las dos barreras observables: el rechazo a SaaS costoso y la percepción de que los sistemas importados son equipos profesionales fuera del presupuesto cotidiano de un gimnasio local.</p>
-</div>
-<div class="week-images">
-                        <img src="../images/Week_17/MAPA.jpeg" alt="Fab ">
- 
-                    </div>
-<!--PARTE 2-->                  
-<div class="command-block">
-    <h3>Parte 2 - Blue Ocean</h3>
-    <p><code>LIENZO ESTRATÉGICO BLUE OCEAN</code></p>
-    <p><b>Concepto:</b> Lumetriq<br>
-    <b>Segmento:</b> Coaches y administradores de estudios boutique, HIIT, CrossFit y funcionales en México, con clases grupales de alta intensidad, que hoy dirigen la reacción de sus atletas con métodos manuales (silbato, conos, cronómetro) y rechazan pagar un SaaS caro.</p>
-    <br>
-
-    <h4>Marco de las Cuatro Acciones</h4>
-    
-    <p><b>ELIMINAR — el concepto no ofrecerá:</b></p>
-    <ul>
-        <li><code style="display:inline;">⦿ Profundidad de analítica neurocognitiva/deportiva de nivel profesional:</code> (Reportes tipo scouting, evaluación clínica de desempeño). La Capa 3 psicográfica del segmento es explícita — valoran motivación, variedad y competencia ("el primero que toca gana") muy por encima del análisis profundo. FITLIGHT ya es dueño de esa percepción profesional/elite; competir ahí es océano rojo puro, y además encarece el producto sin que el segmento lo pida.</li>
-    </ul>
-
-    <p><b>REDUCIR — el concepto ofrecerá muy por debajo del estándar:</b></p>
-    <ul>
-        <li><code style="display:inline;">⦿ Tamaño mínimo del kit inicial requerido para empezar:</code> El estándar de la industria empuja kits de 4 a 8+ unidades (BlazePod vende en paquetes de 6, ReactionX desde 4, FITLIGHT desde 2 pero cara la unidad adicional). La Capa 4 económica del segmento rechaza un compromiso de entrada alto y ancla su disposición real de compra al pago único accesible, no a un sistema completo desde el día uno.</li>
-    </ul>
-
-    <p><b>INCREMENTAR — el concepto ofrecerá muy por encima del estándar:</b></p>
-    <ul>
-        <li><code style="display:inline;">⦿ Velocidad y autonomía de configuración del circuito:</code> (Modos preconfigurados de un toque: "batalla", "todos contra todos", "cambio de dirección"). El propio mapa competitivo señala que ni BlazePod ni FITLIGHT eliminan la fricción operativa del coach — hay que colocar varios pods y administrar la app antes de cada clase. La Capa 2 conductual confirma que el método actual (aplausos, silbato) ya es tedioso; el objetivo es liberar al coach, no darle otra app que administrar.</li>
-        <li><code style="display:inline;">⦿ Localización completa para México (idioma, soporte, garantía, facturación):</code> Ninguno de los cuatro competidores directos documentados opera localmente en México — todos son operación global sin presencia local confirmada. El equipo tiene conocimiento directo del usuario objetivo (coaches y gimnasios mexicanos reales, entrevistados) como capacidad diferencial declarada.</li>
-    </ul>
-
-    <p><b>CREAR — el concepto introducirá por primera vez:</b></p>
-    <ul>
-        <li><code style="display:inline;">⦿ Medición multimodal de impacto:</code> (Fuerza + aceleración/movimiento + proximidad, no solo tiempo de reacción binario). Ningún competidor documentado en el mapa mide intensidad del golpe, solo tiempo/toque. Se basa directamente en la capacidad diferencial declarada del equipo: sensores de contacto, fuerza, acelerómetro y proximidad integrados.</li>
-        <li><code style="display:inline;">⦿ Progreso social persistente entre sesiones:</code> (Comparación con compañeros del grupo a lo largo del tiempo, no solo dentro de una sola clase o "modo batalla"). Siguiendo el patrón validado de Hevy —donde la comparación social sostenida es lo que mantiene el hábito—, ningún competidor de reacción documentado ofrece esto como núcleo de producto; BlazePod solo ofrece competencia dentro de una sesión, no un historial social acumulado.</li>
-    </ul>
-    <br>
-
-    <h4>Atributos del Lienzo &amp; Tabla de Puntuación (1=muy bajo · 5=muy alto)</h4>
-    <table class="material-table">
-        <thead>
-            <tr>
-                <th>Atributo</th>
-                <th>BlazePod</th>
-                <th>FITLIGHT</th>
-                <th>Circuito manual (conos/silbato)</th>
-                <th>Lumetriq</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="material-tag">1. Precio de entrada del hardware</td>
-                <td>2</td>
-                <td>1</td>
-                <td>5</td>
-                <td><b>4</b></td>
-            </tr>
-            <tr>
-                <td class="material-tag">2. Costo recurrente de software/suscripción</td>
-                <td>2</td>
-                <td>5</td>
-                <td>5</td>
-                <td><b>4</b></td>
-            </tr>
-            <tr>
-                <td class="material-tag">3. Velocidad y autonomía de configuración</td>
-                <td>2</td>
-                <td>2</td>
-                <td>5</td>
-                <td><b>4</b></td>
-            </tr>
-            <tr>
-                <td class="material-tag">4. Profundidad de analítica avanzada</td>
-                <td>4</td>
-                <td>5</td>
-                <td>1</td>
-                <td><b>0</b></td>
-            </tr>
-            <tr>
-                <td class="material-tag">5. Medición multimodal de impacto [CREADO]</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td><b>4</b></td>
-            </tr>
-            <tr>
-                <td class="material-tag">6. Localización para México</td>
-                <td>1</td>
-                <td>1</td>
-                <td>5</td>
-                <td><b>4</b></td>
-            </tr>
-            <tr>
-                <td class="material-tag">7. Escalabilidad del kit inicial</td>
-                <td>2</td>
-                <td>2</td>
-                <td>5</td>
-                <td><b>4</b></td>
-            </tr>
-            <tr>
-                <td class="material-tag">8. Progreso social persistente [CREADO]</td>
-                <td>1</td>
-                <td>0</td>
-                <td>0</td>
-                <td><b>4</b></td>
-            </tr>
-        </tbody>
-    </table>
-    <p><i>Nota: Atributo 4 eliminado → 0 para Lumetriq. Atributos 5 y 8 creados → 0 para todos los competidores; atributo 8 se puntuó 1, no 0, para BlazePod porque su producto sí menciona explícitamente "compete against others" dentro de una sesión, aunque no un historial social persistente entre sesiones como el de Hevy — se documenta la diferencia en vez de forzar la regla ciegamente.</i></p>
-    <br>
-
-    <h4>Lectura del Lienzo</h4>
-    <p>La curva de Lumetriq es diferente a la de los competidores en:</p>
-    <ul>
-        <li><code style="display:inline;">⦿ Atributo 4 (Analítica avanzada):</code> Cae a 0 mientras BlazePod y FITLIGHT compiten ahí — es la señal más clara de que Lumetriq no juega el mismo juego que ellos.</li>
-        <li><code style="display:inline;">⦿ Atributo 5 (Medición multimodal):</code> Único punto donde nadie más puntúa arriba de 0 — es el verdadero diferencial técnico.</li>
-        <li><code style="display:inline;">⦿ Atributo 8 (Progreso social persistente):</code> También único, y es el diferencial de producto/experiencia (no solo de hardware).</li>
-        <li><code style="display:inline;">⦿ Atributos 1, 3, 6 y 7:</code> Lumetriq se acerca al circuito manual (el competidor más peligroso) en vez de a BlazePod/FITLIGHT — la curva se dobla hacia "lo simple y accesible" en lugar de "lo profesional y caro".</li>
-    </ul>
-
-    <p><b>El océano azul en una oración:</b><br>
-    Lumetriq no compite por ser el sistema de reacción más preciso ni el más barato, sino por ser el único que combina medición de impacto real (no solo tiempo), progreso social persistente y una fricción de adopción cercana a la del método manual que el segmento ya usa — un espacio que hoy ningún competidor documentado ocupa simultáneamente.</p>
-    <br>
-
-    <h4>Advertencia de Océano Rojo</h4>
-    <p>Los puntajes de 4 en los atributos 1, 2, 3, 6 y 7 son diseño intencionado, no evidencia validada — ninguno de esos números viene de un prototipo funcionando ni de una entrevista con el comprador real (dueño de estudio HIIT/boutique). Si al construir el producto los sensores multimodales encarecen el hardware, o si el circuito tarda más de un minuto en armarse en la práctica, esos puntajes caen hacia el 2 de BlazePod — y ahí Lumetriq queda compitiendo en las mismas dimensiones que su rival más cercano, sin el colchón de precio del circuito manual ni la reputación profesional de FITLIGHT. Además, el propio "Segmento accionable" señala una hipótesis contradictoria sin resolver: que los gimnasios "podrían estar dispuestos a pagar una suscripción mayor" — si eso resulta cierto, el atributo 2 se mueve hacia el modelo SaaS de BlazePod, el mismo que la Capa 4 económica del segmento dice rechazar.</p>
-    <br>
-
-    <h4>Pregunta Clave para el Equipo</h4>
-    <p><i>¿El dueño real de un estudio boutique/HIIT/CrossFit en México (no un administrador de gimnasio universitario ni un coach individual) pagará un precio único accesible por el hardware — y seguirá usando la app gratuita lo suficiente como para generar el progreso social persistente (atributo 8) que sostiene el hábito — o su verdadera disposición de pago está, como insinúa la hipótesis sin resolver, en una suscripción institucional mayor a cambio de gestionar el leaderboard en pantalla de toda la clase?</i><br>
-    <b>Esa respuesta decide si Lumetriq se parece más al circuito manual con un salto tecnológico, o termina pareciéndose a BlazePod con otro nombre.</b></p>
-</div>
-
-<!--PARTE 3-->
-<div class="command-block">
-    <h3>Parte 3 - Propuesta de valor</h3>
-    <p><code>PROPUESTA DE VALOR: Lumetriq</code></p>
-    <br>
-
-    <h4>Nivel en Pirámide de Bain</h4>
-    <p><code style="display:inline;">⦿ Nivel actual:</code> <b>Funcional</b></p>
-    <p><code style="display:inline;">⦿ Justificación:</code> El dolor identificado (monotonía en los drills de reacción) y la ganancia (gamificar el estímulo con luces, sonido y ranking) se describen en términos de qué hace el producto y qué resuelve, no en términos de cómo hace sentir al coach o al atleta respecto de sí mismo.</p>
-    <p><code style="display:inline;">⦿ Oportunidad de subir:</code> <b>Sí, a Emocional</b> — sin exagerar, porque la Capa 3 psicográfica del segmento ya da la puerta abierta: valoran "la competencia" (el primero que toca gana) muy por encima del dato analítico. Ese impulso competitivo y de orgullo grupal es material emocional legítimo, no inventado; subir de nivel es nombrar ese sentimiento, no prometer transformación de vida ni identidad (eso sería saltarse un nivel sin evidencia).</p>
-    <br>
-
-    <h4>Evaluación IDEO</h4>
-    <p><code style="display:inline;">⦿ Insightful ✅:</code> Ningún competidor directo (BlazePod, FITLIGHT) combina estímulo impredecible + progreso social persistente a precio de entrada accesible; el hueco azul ya lo dejó claro.</p>
-    <p><code style="display:inline;">⦿ Unique ⚠️:</code> La ventaja real (sensores multimodales de fuerza/movimiento) es difícil de replicar, pero el precio de 1,332 MXN/unidad en paquetes de 3 y 6 aún no está validado con el comprador real (dueño de estudio boutique/HIIT), así que la unicidad de "accesible" es hipótesis, no hecho confirmado.</p>
-    <p><code style="display:inline;">⦿ Targeted ✅:</code> El segmento tiene las 4 capas bien definidas (quién, qué hace hoy, qué valora, cuánto paga), lo suficientemente preciso para hablarle directo sin sonar genérico.</p>
-    <br>
-
-    <h4>Desarrollo de la Propuesta de Valor</h4>
-    
-    <p><b>VERSIÓN 1 — FUNCIONAL:</b></p>
-    <p><i>"Para coaches de HIIT, box y funcional en México: Lumetriq convierte tus drills de reacción en un reto con luces, sonido y ranking, sin depender del silbato ni de un cronómetro."</i></p>
-    <ul>
-        <li><code style="display:inline;">⦿ Fuerza:</code> Nombra al usuario, el resultado (reto medible) y por qué no el método actual (silbato/cronómetro).</li>
-        <li><code style="display:inline;">⦿ Limitación:</code> Se queda en describir la mecánica del producto; no transmite por qué al atleta le importaría volver a jugarlo la próxima semana.</li>
-    </ul>
-
-    <p><b>VERSIÓN 2 — EMOCIONAL:</b></p>
-    <p><i>"Para coaches de HIIT, box y funcional en México: Lumetriq hace que tus alumnos compitan por ser los más rápidos del grupo, semana tras semana — no solo dentro de una clase."</i></p>
-    <ul>
-        <li><code style="display:inline;">⦿ Fuerza:</code> Apela directo al "el primero que toca gana" que ya validaron en las entrevistas; el gancho es el orgullo de superar a otros, no solo el ejercicio.</li>
-        <li><code style="display:inline;">⦿ Riesgo:</code> Si "semana tras semana" no está respaldado por un historial de progreso real y visible en la app, suena a promesa vacía — depende de que el ranking persistente sí se construya como feature central, no como adorno.</li>
-    </ul>
-
-    <p><b>VERSIÓN 3 — LA MÁS FUERTE:</b></p>
-    <div style="background-color: #f4f8ff; padding: 15px; border-left: 5px solid #0078D7; margin-bottom: 15px;">
-        <b>"Para coaches de HIIT, box y funcional en México: Lumetriq convierte cada drill de reacción en un reto que tus alumnos quieren repetir, con un ranking que compite semana tras semana — no solo el día de la clase."</b>
     </div>
-    <p><b>Por qué esta es la más fuerte:</b> Combina lo funcional (drill de reacción, mecánica clara) con lo emocional (querer repetir, competir entre sesiones) sin perder ninguno de los dos. Además contrasta implícitamente con el competidor más peligroso (el circuito manual no genera ranking ni historial) y con BlazePod (cuya competencia muere al terminar la sesión), sin nombrarlos ni sonar como una lista de features.</p>
-    <br>
+</div>
 
-    <h4>Oferta vs. Propuesta de Valor</h4>
+<!-- ===================== 3. TRES CONCEPTOS ===================== -->
+    <h2 id="TRES">Tres conceptos</h2>
+    <h3>Prompt 3: conceptos completos (objeto, app y landing)</h3>
+
+   <div class="command-block">
+    <p>Los tres conceptos se diferencian en al menos 3 parámetros (forma, montaje, indicador y energía). Todos comparten la arquitectura electrónica de la semana 5 (ESP32, gateway BLE + ESP-NOW, aro WS2812B, 18650, app React Native) para que la comparación sea sobre diseño y no sobre electrónica.</p>
+    <div class="tabla-scroll">
     <table class="material-table">
         <thead>
-            <tr>
-                <th>Concepto</th>
-                <th>Definición en Lumetriq</th>
-            </tr>
+            <tr><th>Aspecto</th><th>1. Reflejo</th><th>2. Golpe fijo</th><th>3. Cadena</th></tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="material-tag">Oferta del producto<br><i>(Qué venden)</i></td>
-                <td>"Dispositivos táctiles con sensores de contacto, fuerza y acelerómetro, sincronizados por app vía luces y sonido, con métricas de tiempo de reacción y leaderboard, vendidos en paquetes de 3 y 6 unidades a 1,332 MXN por unidad."</td>
-            </tr>
-            <tr>
-                <td class="material-tag">Propuesta de valor<br><i>(Por qué lo compran)</i></td>
-                <td>"Para coaches de HIIT, box y funcional en México: Lumetriq convierte cada drill de reacción en un reto que tus alumnos quieren repetir, con un ranking que compite semana tras semana — no solo el día de la clase."</td>
-            </tr>
+            <tr><td class="material-tag">Idea en una frase</td><td>Objetivo luminoso en la pared, a la altura del rival</td><td>Pod de piso robusto con centro cóncavo que "atrapa" el golpe</td><td>Módulos que se apilan, se cargan en torre y se encienden en secuencia</td></tr>
+            <tr><td class="material-tag">Combinación morfológica</td><td>Forma C (cúpula biomórfica) · Montaje D (pared, anclaje rápido) · Indicador A+C · Interfaz C · Energía B</td><td>Forma A modificada (disco con pad hundido) · Montaje A (libre en piso) · Indicador A+C · Interfaz C · Energía A+B</td><td>Cilindro apilable · Montaje A · Indicador A+C · Interfaz C · Energía A (anillos de cobre)</td></tr>
+            <tr><td class="material-tag">Instalación</td><td>Atornillar un soporte en la pared y encajar el pod</td><td>Sacar del estuche y ponerlo en el piso</td><td>Desapilar la torre de carga y repartir los pods</td></tr>
+            <tr><td class="material-tag">Uso diario</td><td>Sombra y combinaciones a la altura del rostro y torso</td><td>Agilidad de pies, patadas y reacción en el piso</td><td>Circuitos de reacción; al terminar, se apilan para cargar</td></tr>
+            <tr><td class="material-tag">Analogía tecnológica</td><td>Dianas reactivas de tiro y soporte de cámara de acción</td><td>Pad de e-drum y botón de máquina arcade</td><td>Torre de carga de radios portátiles y pogo de smartwatch</td></tr>
+            <tr><td class="material-tag">Implicación de manufactura principal</td><td>La unión "sin juntas" hule-plástico exige sobremoldeo o bi-material; soporte metálico aparte</td><td>Simple: pad TPU impreso + carcasa PETG</td><td>Contactos de cobre (PCB ENIG) y tolerancias de apilado estrechas</td></tr>
+            <tr><td class="material-tag">App</td><td>Modo "combinaciones": cada luz es un golpe (jab, cross, gancho)</td><td>Modo "agilidad" y competencia "el primero que toca gana"</td><td>Modo "secuencia": las luces corren de pod en pod</td></tr>
+            <tr><td class="material-tag">Landing</td><td>"Entrena tus reflejos a la altura del rival"</td><td>"Sin instalación: ponlo en el piso y entrena"</td><td>"Se carga en torre, sin cables"</td></tr>
+            <tr><td class="material-tag">Fortaleza</td><td>Mayor realismo y atractivo; la luz queda frente a los ojos</td><td>Protege la electrónica y centra el golpe</td><td>Cumple directo el apilamiento del PDS</td></tr>
+            <tr><td class="material-tag">Debilidad</td><td>Un domo no se apila; la superficie convexa desvía golpes; un anclaje de cámara de acción no aguanta un golpe de boxeo</td><td>En el piso un boxeador no puede golpear con técnica de puño</td><td>Contactos expuestos en la cara de golpe; es más un concepto de almacenamiento que de entrenamiento</td></tr>
         </tbody>
     </table>
-    <p><b>La diferencia en una línea:</b> La oferta describe sensores, precio y paquetes <i>desde el punto de vista del fabricante</i>; la propuesta describe el enganche y la repetición del hábito <i>desde el punto de vista del coach y sus alumnos</i> — pasa de "qué trae la caja" a "por qué van a querer volver a usarlo".</p>
+    </div>
 </div>
+
+<!-- ===================== 4. RENDERS ===================== -->
+    <h2 id="CUATRO">Renders con IA</h2>
+    <h3>Prompt 4: visualización rápida con Imagen 3</h3>
+
+   <div class="command-block">
+    <p><b>Método:</b> Claude, con el rol de director de arte, tradujo cada concepto a un prompt en inglés con materiales concretos (hule mate contra plástico brillante), relaciones espaciales precisas y términos mecánicos. Los prompts se ejecutaron en Imagen 3 (Gemini) y se iteró sobre el resultado: se renombró el concepto 2 a <b>Golpe fijo</b> y se eliminó el halo verde del piso para que la luz solo se vea dentro del hueco del pad.</p>
+
+    <div class="week-images">
+        <img src="img/Prop.jpg" alt="Tríptico de Imagen 3 con los conceptos Reflejo (pared), Golpe fijo (piso, cóncavo) y Cadena (apilable)">
+    </div>
+    <p style="text-align:center;"><i>Tríptico generado con Imagen 3: Reflejo (pared), Golpe fijo (piso, centro cóncavo) y Cadena (apilamiento modular).</i></p>
+
+    <h5 class="subtitulo">Prompt del concepto 1 (Reflejo):</h5>
+    <div class="prompt-box">A photorealistic industrial design product shot of a smart boxing training pod mounted on a textured home gym wall. The device is a soft, biomorphic pebble-like dome, approximately 130mm in diameter. The central striking area features a matte, light-absorbing dark rubber texture, which transitions seamlessly without visible joints into a smooth, glossy hard plastic outer shell. The pod is firmly attached to the wall using a visible, mechanical two-prong quick-release mount made of rigid polymer, similar to action camera accessories. A glowing LED ring at the base of the dome emits a dynamic, bright cyan and white light, casting a crisp gradient glow against the wall. Cinematic studio lighting highlighting the contrast between the matte rubber and the glossy plastic.</div>
+</div>
+
+   <div class="yellowcommand-block">
+    <h4 id="CUATRO-1">Los renders como filtro rápido antes de Pugh</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Criterio</th><th>Lo que comunica bien</th><th>Lo que el render inventa o exagera</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">Affordance del montaje</td><td>Reflejo deja claro que va en la pared; Cadena, que los módulos se apilan</td><td>El soporte de Reflejo es pequeño y lateral: no resistiría un golpe frontal de ≈ 2,500 N</td></tr>
+            <tr><td class="material-tag">Transición de materiales</td><td>Golpe fijo separa con claridad la piel de impacto (mate) de la carcasa dura</td><td>La unión "sin juntas" de Reflejo no es fabricable con FDM ni en un solo proceso</td></tr>
+            <tr><td class="material-tag">Viabilidad de componentes</td><td>Los aros LED y las muescas laterales lucen manufacturables</td><td>Los anillos de cobre de Cadena están expuestos en la cara de golpe, contra la decisión de contactos rehundidos</td></tr>
+            <tr><td class="material-tag">Escala</td><td>Golpe fijo y Cadena son coherentes con Ø 130 × 70 mm</td><td>La cúpula de Reflejo se ve más profunda que los 78 mm permitidos (RD-04)</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p>El render sirve para comunicar y detectar intención estética, pero <b>no valida ingeniería</b>: la IA dibuja con naturalidad soluciones que no se pueden fabricar o que no aguantan la carga. Por eso la selección se hizo con la matriz y no con la imagen más atractiva.</p>
+</div>
+
+<!-- ===================== 5. PUGH ===================== -->
+    <h2 id="CINCO">Matriz de Pugh</h2>
+    <h3>Prompt 5: selección con criterios ponderados</h3>
+
+   <div class="greencommand-block">
+    <div class="nota">
+        <p><i><b>Reglas:</b> el concepto 3 (Cadena) es el <b>datum</b> (todas sus casillas valen S). Cada concepto se califica contra él: <b>+</b> mejor, <b>–</b> peor, <b>S</b> igual. Diez criterios con pesos que suman 100: <b>4 de deseabilidad (40 %)</b> y <b>6 de factibilidad/viabilidad (60 %)</b>. Puntuación = Σ pesos de los + − Σ pesos de los −. La última columna evalúa, con las mismas reglas, el concepto combinado que propone la sección siguiente.</i></p>
+    </div>
+
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Criterio</th><th>Peso</th><th>1. Reflejo</th><th>2. Golpe fijo</th><th>3. Cadena (datum)</th><th class="pugh-win">Reflejo + Golpe fijo</th></tr>
+        </thead>
+        <tbody>
+            <tr><td colspan="6"><b>Deseabilidad (40)</b></td></tr>
+            <tr><td class="material-tag">D1. Golpeo a altura realista (rostro y torso)</td><td>12</td><td class="pugh-plus">+</td><td class="pugh-minus">–</td><td class="pugh-same">S</td><td class="pugh-plus pugh-win">+</td></tr>
+            <tr><td class="material-tag">D2. Visibilidad del estímulo a 2–3 m</td><td>10</td><td class="pugh-plus">+</td><td class="pugh-same">S</td><td class="pugh-same">S</td><td class="pugh-plus pugh-win">+</td></tr>
+            <tr><td class="material-tag">D3. Seguridad y comodidad del golpe</td><td>10</td><td class="pugh-plus">+</td><td class="pugh-same">S</td><td class="pugh-same">S</td><td class="pugh-plus pugh-win">+</td></tr>
+            <tr><td class="material-tag">D4. Instalación y transporte sin herramientas</td><td>8</td><td class="pugh-minus">–</td><td class="pugh-plus">+</td><td class="pugh-same">S</td><td class="pugh-same pugh-win">S</td></tr>
+            <tr><td colspan="6"><b>Factibilidad y viabilidad (60)</b></td></tr>
+            <tr><td class="material-tag">T1. Medición repetible e independiente del montaje</td><td>14</td><td class="pugh-minus">–</td><td class="pugh-plus">+</td><td class="pugh-same">S</td><td class="pugh-plus pugh-win">+</td></tr>
+            <tr><td class="material-tag">T2. Protección de electrónica y contactos</td><td>12</td><td class="pugh-same">S</td><td class="pugh-plus">+</td><td class="pugh-same">S</td><td class="pugh-plus pugh-win">+</td></tr>
+            <tr><td class="material-tag">T3. Carga por apilamiento (requisito del PDS)</td><td>10</td><td class="pugh-minus">–</td><td class="pugh-same">S</td><td class="pugh-same">S</td><td class="pugh-same pugh-win">S</td></tr>
+            <tr><td class="material-tag">T4. Fabricable con impresión 3D y laboratorio</td><td>10</td><td class="pugh-minus">–</td><td class="pugh-same">S</td><td class="pugh-same">S</td><td class="pugh-same pugh-win">S</td></tr>
+            <tr><td class="material-tag">T5. Costo: BOM ≤ $1,500 por pod a 10 unidades (RR-03)</td><td>8</td><td class="pugh-minus">–</td><td class="pugh-same">S</td><td class="pugh-same">S</td><td class="pugh-minus pugh-win">–</td></tr>
+            <tr><td class="material-tag">T6. Riesgo de calendario (8 semanas)</td><td>6</td><td class="pugh-same">S</td><td class="pugh-same">S</td><td class="pugh-same">S</td><td class="pugh-minus pugh-win">–</td></tr>
+            <tr class="pugh-total"><td>Σ + / Σ – / Σ S</td><td>—</td><td>3 / 5 / 2</td><td>3 / 1 / 6</td><td>0 / 0 / 10</td><td>5 / 2 / 3</td></tr>
+            <tr class="pugh-total"><td>Deseabilidad ponderada</td><td>40</td><td>+24</td><td>–4</td><td>0</td><td>+32</td></tr>
+            <tr class="pugh-total"><td>Factibilidad ponderada</td><td>60</td><td>–42</td><td>+26</td><td>0</td><td>+12</td></tr>
+            <tr class="pugh-total"><td><b>Puntuación total</b></td><td>100</td><td><b>–18</b></td><td><b>+22</b></td><td><b>0</b></td><td><b>+44</b></td></tr>
+            <tr class="pugh-total"><td>Lugar</td><td>—</td><td>4</td><td>2</td><td>3</td><td>1</td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h5 class="subtitulo">Justificación de las calificaciones:</h5>
+    <ul>
+        <li><b>Reflejo, D1–D3 (+):</b> golpear a la altura del rostro reproduce el gesto técnico real y deja el estímulo frente a los ojos; la forma suave no tiene aristas.</li>
+        <li><b>Reflejo, D4 (–):</b> requiere atornillar un soporte.</li>
+        <li><b>Reflejo, T1 (–):</b> la superficie convexa desvía los golpes que no llegan al centro, y en la pared la "fuerza" estimada con F = m·a cambia respecto al piso (contradicción C2).</li>
+        <li><b>Reflejo, T3–T5 (–):</b> un domo no se apila; la unión sin juntas no se imprime; el anclaje exige una pieza metálica adicional.</li>
+        <li><b>Golpe fijo, D1 (–):</b> en el piso solo admite patadas o golpes forzados hacia abajo; para boxeo es su mayor defecto.</li>
+        <li><b>Golpe fijo, T1–T2 (+):</b> el centro cóncavo guía el puño al centro del sensor (mejor repetibilidad) y el borde rígido protege el interior.</li>
+        <li><b>Combinado, T5–T6 (–):</b> placa de pared, celdas de carga y tres modos de montaje cuestan más y añaden trabajo; es su costo real.</li>
+    </ul>
+
+    <h5 class="subtitulo">Análisis:</h5>
+    <ul>
+        <li><b>Reflejo gana en deseabilidad (+24) y pierde en factibilidad (–42).</b> Es el concepto que más atrae, pero tal como está dibujado no se puede construir bien.</li>
+        <li><b>Golpe fijo gana en factibilidad (+26) y pierde en deseabilidad (–4).</b> Es la mejor ingeniería, en la posición equivocada para el boxeo.</li>
+        <li>Como pide la metodología, el ganador (Golpe fijo) es <b>punto de partida, no decisión final</b>. Sus fortalezas y las de Reflejo son complementarias, así que se combinan.</li>
+        <li><b>Robustez:</b> el concepto combinado supera al datum tanto en deseabilidad (+32) como en factibilidad (+12). Golpe fijo solo lo superaría si la factibilidad pesara más del ≈ 80 % del total.</li>
+    </ul>
+</div>
+
+<!-- ===================== 6. CONCEPTO ELEGIDO ===================== -->
+    <h2 id="SEIS">Concepto elegido</h2>
+    <h3>Reflejo Fijo: Reflejo con la estructura de Golpe fijo</h3>
+
+   <div class="greencommand-block">
+    <p class="frase">"Un objetivo luminoso que se monta en la pared a la altura del rival, te dice dónde golpear y mide qué tan rápido y qué tan fuerte lo hiciste."</p>
+    <p><b>Qué toma de cada concepto:</b> de <b>Reflejo</b>, el golpeo en la pared con la luz frente a los ojos y una forma suave. De <b>Golpe fijo</b>, el pad cóncavo que centra el golpe y el labio rígido que protege. De <b>Cadena</b>, solo lo que el PDS exige: el apilamiento, con los contactos protegidos.</p>
+</div>
+
+   <div class="greencommand-block">
+    <h4 id="SEIS-1">Cambios de esta revisión (v2 del concepto)</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Observación</th><th>Antes</th><th>Ahora</th><th>Por qué</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">1. Material del pad</td><td>TPU 95A impreso + EVA</td><td><b>Vinipiel de tapicería sobre 2 capas de EVA de alta densidad</b>, tensada con un aro como un parche de tambor; diafragma de cámara de bicicleta en el hueco</td><td>Todo se compra en México sin impresora de filamento flexible. Es la misma construcción de una manopla de foco, y la funda se cambia en minutos</td></tr>
+            <tr><td class="material-tag">2. Tamaño</td><td>Ø 130 × 70 mm (pad Ø 90)</td><td><b>Ø 160 × 75 mm</b> (pad Ø 120 mm)</td><td>El pad se dimensiona por el guante y el labio por lo que debe alojar. El PDS v1.0 lo adopta en RD-04 (Ø ≤ 160, ≤ 78 mm); ver "Justificación del tamaño"</td></tr>
+            <tr><td class="material-tag">3. Luz</td><td>Aro completo de 16 LED</td><td><b>Arco de 120° (≈ 1/3 de la circunferencia) en la parte superior</b>, con 18 LED WS2812B bajo un difusor</td><td>Queda en la línea de visión, marca "arriba" (coincide con la orientación de la bayoneta) y permite estímulos direccionales: tercio izquierdo, centro y derecho</td></tr>
+            <tr><td class="material-tag">3b. Contactos de carga</td><td>Anillo concéntrico de contactos a R 55</td><td><b>Conector pogo magnético rehundido a las 6 en punto</b></td><td>El arco ocupa la parte superior del labio. Un conector pogo magnético comercial es una pieza discreta, no un anillo; con la orientación fija ya no hace falta que sea concéntrico</td></tr>
+            <tr><td class="material-tag">4. Durabilidad</td><td>Pad impreso, bumper de TPU</td><td>Funda reemplazable, burlete de hule EPDM, difusor rehundido, insertos de latón, fijador de rosca y plan de pruebas de 10,000 golpes</td><td>Ver la tabla de factibilidad y durabilidad</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+   <div class="command-block">
+    <h4 id="SEIS-2">Justificación del tamaño: Ø 160 × 75 mm con pad Ø 120</h4>
+    <p>El tamaño se calculó de adentro hacia afuera: primero el área que necesita el guante, después lo que debe alojar el labio.</p>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Elemento (radio)</th><th>Medida</th><th>Por qué</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">Pad</td><td>R 60 (Ø 120)</td><td>La cara de nudillos de un guante de 12–16 oz mide del orden de 9–10 cm de ancho <b>[Estimado: medir con un guante real]</b>. Con Ø 120, el guante cae completo sobre el pad aunque el golpe se desvíe ≈ 1–1.5 cm del centro, y menos golpes pegan en el labio rígido (mejora D3, seguridad)</td></tr>
+            <tr><td class="material-tag">Hueco con diafragma</td><td>1.5 mm</td><td>Deja flotar el pad sin que toque el labio, para que toda la fuerza pase por las celdas</td></tr>
+            <tr><td class="material-tag">Labio</td><td>15.5 mm (R 61.5–77)</td><td>Ventana del arco de luz (7 mm) + paredes de 2 mm por lado + margen para que el difusor no quede en el canto. A las 6 en punto aloja el conector pogo magnético (≈ 10–12 mm <b>[Verificar el modelo]</b>). También es el hombro donde se apoya otro pod al apilar</td></tr>
+            <tr><td class="material-tag">Burlete</td><td>3 mm</td><td>Protege el canto en golpes descentrados y caídas</td></tr>
+            <tr><td class="material-tag"><b>Total</b></td><td><b>R 80 → Ø 160</b></td><td>60 + 1.5 + 15.5 + 3 = 80 mm</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><code>⦿ Por qué no menos:</code> con Ø 150 y el mismo pad, el labio quedaría de 10.5 mm. No caben a la vez el difusor y el conector, el hombro de apilamiento es muy delgado y el difusor quedaría en el borde, donde más golpes de canto recibe.</p>
+    <p><code>⦿ Por qué no más:</code> el pad ya cubre el guante; crecer el labio no mejora el golpe y sí aumenta masa, costo y tiempo de impresión. Ø 160 todavía cabe en una cama de impresión de 220 × 220 mm; arriba de ≈ Ø 180 habría que imprimir el cuerpo en partes.</p>
+    <p><code>⦿ Por qué la profundidad se queda en 75 mm:</code> en la pared, cada milímetro de profundidad es brazo de palanca para los ganchos sobre la bayoneta. Los 75 mm ya alojan la espuma y la electrónica; el diámetro mayor da espacio sin hacer el pod más profundo.</p>
+    <h5 class="subtitulo">Efectos verificados por cálculo [Estimado]:</h5>
+    <ul>
+        <li><b>Área útil:</b> el pad ocupa el 56 % del frente (antes 51 % con Ø 100 en Ø 140) y tiene 44 % más área que el pad de Ø 100.</li>
+        <li><b>Medición:</b> el plato pasa a Ø 118 × 3 mm (≈ 89 g). Con plato y pad de ≈ 0.2 kg sobre 4 celdas, la frecuencia propia queda en ≈ 1 kHz, todavía muy por encima del contenido del golpe (≈ 100 Hz).</li>
+        <li><b>Masa:</b> ≈ 0.6 kg, que la placa y los taquetes soportan sin problema.</li>
+        <li><b>Autonomía:</b> con 18 LED (40 % de brillo, 30 % de ciclo) el consumo es ≈ 263 mA y 3 h requieren ≈ 1,280 mAh con márgenes; la celda de 2,000 mAh alcanza.</li>
+        <li><b>Costo:</b> ≈ +$60–80 por pod (filamento, plato y espuma más grandes, 3 LED más).</li>
+        <li><b>Pugh:</b> no cambia el orden. Mejora D3 (menos golpes en el labio) y empeora un poco T5 (costo).</li>
+    </ul>
+    <div class="nota">
+        <p><i><b>Cambio al PDS (aplicado):</b> el límite original de 15 × 15 × 15 cm se fijó antes de conocer el tamaño del guante y la geometría del labio. El PDS v1.0 de la semana 5 ya lo actualizó en <b>RD-04: Ø ≤ 160 mm, ≤ 78 mm de profundidad y ≤ 0.7 kg</b>. Como respaldo con datos propios se recomienda la prueba de cartón: círculos de Ø 100, 120 y 140 mm en la pared y conteo de golpes que caen completos dentro de cada uno.</i></p>
+    </div>
+</div>
+
+   <div class="command-block">
+    <h4 id="SEIS-3">Material del pad: alternativas al TPU</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Material</th><th>Dónde se consigue</th><th>Costo por pod [Estimado]</th><th>Durabilidad y sensación</th><th>Veredicto</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">TPU 95A impreso</td><td>Filamento flexible; requiere extrusor directo y ajuste fino</td><td>$40–80</td><td>Buena, pero con capas visibles y calidad variable</td><td>Descartado por acceso</td></tr>
+            <tr><td class="material-tag"><b>Vinipiel + EVA de alta densidad</b></td><td>Vinipiel en tiendas de telas y tapicerías; EVA en tapetes tipo rompecabezas para gimnasio (autoservicios, Mercado Libre)</td><td>$30–60</td><td>Es la construcción de manoplas y costales; la vinipiel resiste abrasión y sudor y se reemplaza</td><td><b>Elegido</b></td></tr>
+            <tr><td class="material-tag">Hule EPDM o neopreno en lámina 3–5 mm</td><td>Tiendas de hules y empaques, ferreterías</td><td>$50–120</td><td>Homogéneo y durable; más firme</td><td>Alternativa si la EVA se aplasta</td></tr>
+            <tr><td class="material-tag">Tapete de hule SBR de gimnasio</td><td>Tiendas de equipo deportivo</td><td>$30–70</td><td>Muy durable, pero duro y pesado para el puño</td><td>Solo como base</td></tr>
+            <tr><td class="material-tag">Silicona RTV colada</td><td>Tiendas de manualidades y resinas</td><td>$80+</td><td>Muy durable; requiere molde impreso y curado</td><td>Versión futura</td></tr>
+            <tr><td class="material-tag">EVA sola (foami)</td><td>Papelerías</td><td>$10–20</td><td>Se marca y se comprime de forma permanente</td><td>Solo como capa interna</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><b>Cómo se arma el pad (analogía: parche de tambor):</b> sobre el plato de aluminio Ø 118 va un disco de EVA de 12 mm; encima, un <b>anillo</b> de EVA de 4 mm solo en el borde. Al tensar la vinipiel sobre ambos, el centro queda ≈ 4 mm más bajo: la concavidad sale de la espuma, sin moldes. La vinipiel se sujeta con un <b>aro tensor de PETG</b> atornillado al plato (6 tornillos M3). Entre el pad flotante y el labio fijo queda un hueco de 1.5 mm, sellado con un <b>diafragma</b> cortado de cámara de bicicleta, como el borde de una bocina: deja moverse al pad sin desviar fuerza de las celdas y evita que entren sudor y polvo. <b>[Verificar en banco: tensión de la vinipiel, flecha real y que el diafragma no "robe" más del 2 % de la fuerza.]</b></p>
+</div>
+
+   <div class="command-block">
+    <h4 id="SEIS-4">Arco de luz de 120°</h4>
+    <ul>
+        <li><b>Posición:</b> en el labio, entre R 64 y R 71 mm (≈ 140 mm de largo), de las 10 a las 2 en punto. Queda arriba del pad, donde el usuario mira, y fuera de la zona principal de golpe.</li>
+        <li><b>LED:</b> prototipo con tira WS2812B de 144 LED/m cortada en 3 tramos de 6 LED (cuerdas de 40° de ≈ 46 mm); 18 LED en total. Para el lote: una PCB en arco con 12–14 WS2812B 5050, que el equipo puede fabricar y soldar. La tira de 60 LED/m ya cotizada sirve, pero da solo 6 LED y exige un difusor más profundo.</li>
+        <li><b>Difusor:</b> PETG natural impreso al 100 % o policarbonato cortado (no acrílico, que se quiebra), rehundido 1 mm respecto al labio para que el guante no lo golpee de lleno.</li>
+        <li><b>Usos:</b> estímulo completo, estímulo direccional por tercios (izquierdo, centro, derecho para indicar jab, recto o gancho), barra de batería y estados de conexión.</li>
+        <li><b>Consumo:</b> 18 LED a 40 % de brillo dan ≈ 263 mA promedio; las 3 h siguen cubiertas con la celda de 2,000 mAh (ver justificación del tamaño).</li>
+    </ul>
+</div>
+
+   <div class="command-block">
+    <h4 id="SEIS-5">Mejoras de diseño del concepto</h4>
+    <ol>
+        <li><b>Una sola interfaz de montaje.</b> La parte trasera tiene un receptáculo de bayoneta de ¼ de vuelta. La misma bayoneta recibe la placa de pared, un disco antiderrapante para piso y un adaptador semicurvo con correas para costal.</li>
+        <li><b>Medición que no depende del montaje.</b> Lista de componentes v2: ADXL375 + 4 celdas de 50 kg bajo el plato flotante (ahora Ø 118 × 3 mm) con topes + ADS1220 a 2 kSPS.</li>
+        <li><b>Apilamiento sin cargar el sensor.</b> La cara trasera tiene un rebaje Ø 122 × 3 mm: el pod de arriba se apoya en el <i>labio</i> del de abajo, nunca en su pad, y el rebaje centra la torre. Para apilar se alinean los arcos de luz, y el conector magnético termina de alinear.</li>
+        <li><b>Contactos que el guante no alcanza.</b> Conector pogo magnético rehundido a las 6 en punto (R 70), en ambas caras. En la pared, el trasero queda fuera de la placa (Ø 120) y no toca metal.</li>
+        <li><b>Placa embutida.</b> La placa de 3 mm entra en el rebaje trasero; el pod sobresale de la pared ≈ 75 mm (RD-04 ≤ 78).</li>
+        <li><b>Mantenimiento por detrás y por delante.</b> Batería y PCB por la tapa trasera (4 tornillos, ocultos al estar montado); funda del pad por el frente, quitando el aro tensor.</li>
+    </ol>
+</div>
+
+   <div class="purpcommand-block">
+    <h4 id="SEIS-6">Factibilidad y durabilidad</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Riesgo de desgaste o falla</th><th>Solución de diseño</th><th>Cómo se verifica</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">La vinipiel se raspa o se rompe</td><td>Funda reemplazable con aro tensor; refacción de ≈ $5–10 de material</td><td>Inspección cada 1,000 golpes en la prueba de 10,000</td></tr>
+            <tr><td class="material-tag">La EVA se aplasta de forma permanente</td><td>EVA de alta densidad en dos capas; plan B: neopreno o EPDM</td><td>Medir el espesor y la flecha antes y después de 10,000 golpes; cambiar de material si pierde más del 10 %</td></tr>
+            <tr><td class="material-tag">Grietas entre capas de impresión</td><td>PETG con 5 perímetros, 40–50 % gyroid, costillas radiales y capas perpendiculares a la carga del golpe</td><td>Inspección visual y con lupa tras la prueba de impactos</td></tr>
+            <tr><td class="material-tag">Tornillos que se aflojan</td><td>Insertos de latón termoinsertados y fijador de rosca medio</td><td>Torque de verificación cada 1,000 golpes</td></tr>
+            <tr><td class="material-tag">Golpes en el difusor del arco</td><td>Rehundido 1 mm, PETG al 100 % o policarbonato</td><td>Golpes descentrados dirigidos al arco</td></tr>
+            <tr><td class="material-tag">Golpes en el canto y caídas</td><td>Burlete de hule EPDM en la mitad frontal del canto, alojado en una ranura (no solo pegado)</td><td>Caída de 1 m sobre piso de concreto, 10 veces</td></tr>
+            <tr><td class="material-tag">El pad toca el labio y la fuerza "se brinca" las celdas</td><td>Hueco de 1.5 mm con diafragma flexible; guía radial con holgura de 0.5 mm</td><td>Carga descentrada a 25 mm con pesas: la lectura no debe caer más del 8 %</td></tr>
+            <tr><td class="material-tag">Sudor y polvo</td><td>O-ring en la tapa trasera, diafragma en el frente, USB-C con tapa en la mitad trasera del canto</td><td>Rocío de agua salina sobre el pod montado; revisión interna</td></tr>
+            <tr><td class="material-tag">La bayoneta gira con ganchos</td><td>Seguro con prisionero o pestillo</td><td>1,000 golpes reales sobre un muro de prueba</td></tr>
+            <tr><td class="material-tag">Cables de las celdas se rompen</td><td>Alivio de tensión con bridas y conector JST-PH</td><td>Prueba de continuidad tras los 10,000 golpes</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+   <div class="command-block">
+    <h4 id="SEIS-7">Los siete principios de diseño aplicados</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Principio</th><th>Cómo lo cumple Reflejo Fijo</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">1. Affordances</td><td>El pad cóncavo de vinipiel mate y oscura dice "golpea aquí"; el labio satinado y más claro dice "esto no es para golpear". El arco de luz marca dónde está "arriba" y dónde mirar.</td></tr>
+            <tr><td class="material-tag">2. Contour bias</td><td>Sin aristas vivas: frente con radio ≥ 8 mm, burlete de hule en el canto y pad cóncavo y acolchado.</td></tr>
+            <tr><td class="material-tag">3. Consistencia</td><td>Lenguaje de círculo y arco: pod, pad, arco de luz, placa de pared y el anillo de progreso de la app.</td></tr>
+            <tr><td class="material-tag">4. Restricciones</td><td>La bayoneta entra en una sola orientación (arco arriba, USB-C y conector abajo); para apilar se alinean los arcos y el conector magnético solo cierra en esa posición; el botón está rehundido; la salida superior está desenergizada si el Hall no detecta otro pod; los topes impiden sobrecargar las celdas.</td></tr>
+            <tr><td class="material-tag">5. Confirmación</td><td><b>Menor:</b> golpe registrado → destello blanco del arco y el contador sube en la app. <b>Importante:</b> fin de serie o récord → barrido verde de izquierda a derecha en todos los pods y vibración del teléfono. <b>Crítico:</b> batería &lt; 15 %, pod desconectado o sensor saturado → arco ámbar o rojo pulsante, banner rojo y pausa.</td></tr>
+            <tr><td class="material-tag">6. Costo-beneficio</td><td>Ver la tabla siguiente.</td></tr>
+            <tr><td class="material-tag">7. Ciclo de desarrollo</td><td>Se conservan los principios (pared, centro cóncavo, luz donde se mira) y se revisan las formas: la cúpula pasó a cilindro, el anclaje de cámara a bayoneta, el aro completo a arco y el TPU a vinipiel.</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+   <div class="purpcommand-block">
+    <h4 id="SEIS-8">Costo-beneficio de cada decisión</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Característica</th><th>Costo por pod [Estimado]</th><th>Beneficio</th><th>Decisión</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">Celdas + ADS1220 + plato de aluminio</td><td>≈ $270–400</td><td>Fuerza en N independiente del montaje (T1, 14 pts)</td><td>Entra; banco en la semana 2 y decisión al cierre de la semana 3 (lista v2)</td></tr>
+            <tr><td class="material-tag">Placa de pared con bayoneta</td><td>≈ $40 (MDF o acrílico de 6 mm) en prototipo; ≈ $80–150 en acero</td><td>Golpeo a altura real (D1, 12 pts) e interfaz universal</td><td>Entra; acero solo si pasa la prueba de carga</td></tr>
+            <tr><td class="material-tag">Pad de vinipiel + EVA + diafragma</td><td>≈ $30–60 (menos que TPU + EVA)</td><td>Material accesible, reemplazable y probado en manoplas</td><td>Entra</td></tr>
+            <tr><td class="material-tag">Arco de 18 LED + difusor</td><td>≈ $40–70 (tramo de tira de 144 LED/m) <b>[Verificar precio]</b></td><td>Estímulo visible y direccional</td><td>Entra; PCB en arco para el lote</td></tr>
+            <tr><td class="material-tag">Tamaño Ø 160 (contra Ø 140)</td><td>≈ +$60–80</td><td>Pad Ø 120 a la medida del guante y labio funcional</td><td>Entra (ver justificación)</td></tr>
+            <tr><td class="material-tag">Conector pogo magnético</td><td>≈ $150 por par (prototipo)</td><td>Apilamiento del PDS</td><td>Diferido a las semanas 4–5</td></tr>
+            <tr><td class="material-tag">Burlete EPDM y botón rehundido</td><td>≈ $15–25</td><td>Protección del canto y encendido sin la app</td><td>Entra</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><b>Lectura honesta del presupuesto:</b> la configuración B de la lista v2 sin pogo (≈ $1,380–1,830), más la placa, el arco, el burlete y el tamaño Ø 160, y con el pad más barato, queda en ≈ $1,510–1,980. Cumple el límite del prototipo del PDS v1.0 (RR-03: ≤ $3,000) y queda dentro de la meta de $1,500–1,900 salvo en el extremo alto; con las palancas de la lista v2 (ESP32 DevKit local, ≈ −$80–130, y plato de FR4, ≈ −$50) baja a ≈ $1,330–1,380. <b>A 10 unidades</b> el BOM de la semana 5 es de $1,460 por pod, apenas debajo del límite de $1,500 de RR-03: cualquier sobrecosto del ADXL375 lo rebasa, por eso su plan B (H3LIS331DL) sigue vigente.</p>
+</div>
+
+   <div class="yellowcommand-block">
+    <h4 id="SEIS-9">Prompt para el render del concepto elegido</h4>
+    <div class="prompt-box">Photorealistic industrial design hero shot of a smart boxing training pod mounted on a concrete gym wall at face height. The pod is a low-profile cylinder, 160 mm in diameter and 75 mm deep, with softly rounded front edges and a black rubber bumper strip around the front half of its side. The front face has a slightly concave striking pad, 120 mm wide, covered in matte black synthetic leather stretched like a drum head and held by a thin dark ring; its edge sits flush with a satin light-grey rigid rim about 15 mm wide. In the upper third of the rim, a curved light bar spanning about 120 degrees glows cyan behind a frosted diffuser, slightly recessed; the rest of the rim is unlit. A small recessed magnetic connector sits at the bottom of the rim. The pod sits almost flush against the wall on a hidden quarter-turn bayonet plate. Inset in the lower right corner: two identical pods stacked flat on a gym floor with their light bars aligned. Neutral studio lighting, shallow depth of field, no text, no logos, no full LED ring, no domes, no action-camera mounts.</div>
+</div>
+
+<!-- ===================== 7. BOCETO TÉCNICO ===================== -->
+    <h2 id="SIETE">Boceto técnico</h2>
+    <h3>Vistas frontal, lateral y en corte</h3>
+
+   <div class="command-block">
+    <p>Medidas en mm. Primera aproximación para CAD; las alturas internas vienen del apilado de la lista de componentes v2 con la espuma del nuevo pad.</p>
+
+    <figure class="figura">
+        <svg viewBox="0 0 990 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vista frontal y vista lateral de Reflejo Fijo con cotas">
+            <style>
+                .tb { font: bold 14px Arial, sans-serif; fill: #032472; }
+                .ts { font: 11.5px Arial, sans-serif; fill: #4d5a78; }
+                .ln { stroke: #4d5a78; stroke-width: 1; fill: none; }
+                .dim { stroke: #b10a0a; stroke-width: 1; fill: none; }
+                .dt { font: 12px Arial, sans-serif; fill: #b10a0a; }
+            </style>
+            <text class="tb" x="120" y="24">VISTA FRONTAL</text>
+            <!-- frontal: centro (190,214), escala 2.1 px/mm -->
+            <circle cx="190" cy="214" r="168" fill="#2f333d"></circle>
+            <circle cx="190" cy="214" r="161.7" fill="#c9cfdc" stroke="#4d5a78"></circle>
+            <path d="M67.2 143.1 A141.75 141.75 0 0 1 312.8 143.1" fill="none" stroke="#9fe7f7" stroke-width="15" stroke-linecap="round"></path>
+            <path d="M67.2 143.1 A141.75 141.75 0 0 1 312.8 143.1" fill="none" stroke="#20c4e8" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 5"></path>
+            <circle cx="190" cy="214" r="129.2" fill="#7a808c"></circle>
+            <circle cx="190" cy="214" r="126" fill="#2b2f38"></circle>
+            <circle cx="190" cy="214" r="117.6" fill="none" stroke="#5a6070" stroke-width="3"></circle>
+            <circle cx="190" cy="214" r="80" fill="none" stroke="#3a3f4b"></circle>
+            <circle cx="190" cy="214" r="40" fill="none" stroke="#3a3f4b"></circle>
+            <rect x="177" y="356" width="26" height="10" rx="2" fill="#c77d3a"></rect>
+            <line class="dim" x1="22" y1="408" x2="358" y2="408"></line>
+            <line class="dim" x1="22" y1="400" x2="22" y2="416"></line><line class="dim" x1="358" y1="400" x2="358" y2="416"></line>
+            <text class="dt" x="172" y="430">Ø 160</text>
+            <line class="dim" x1="64" y1="214" x2="316" y2="214" stroke-dasharray="4 3"></line>
+            <text class="dt" x="206" y="208" style="fill:#ffb3b3">Ø 120 pad</text>
+            <line class="ln" x1="300" y1="112" x2="388" y2="70"></line><text class="ts" x="392" y="68">Arco 120°: 18 LED bajo difusor</text>
+            <line class="ln" x1="340" y1="160" x2="388" y2="110"></line><text class="ts" x="392" y="108">Labio PETG, 15.5 mm (R 61.5–77)</text>
+            <line class="ln" x1="355" y1="214" x2="388" y2="150"></line><text class="ts" x="392" y="148">Burlete de hule EPDM en ranura</text>
+            <line class="ln" x1="316" y1="246" x2="388" y2="190"></line><text class="ts" x="392" y="188">Diafragma de cámara de bici</text>
+            <line class="ln" x1="296" y1="276" x2="388" y2="230"></line><text class="ts" x="392" y="228">Aro tensor de PETG (8 × M3)</text>
+            <line class="ln" x1="240" y1="296" x2="388" y2="270"></line><text class="ts" x="392" y="268">Pad: vinipiel + EVA alta densidad</text>
+            <line class="ln" x1="203" y1="361" x2="388" y2="312"></line><text class="ts" x="392" y="310">Conector pogo magnético (6 en punto)</text>
+
+            <text class="tb" x="650" y="24">VISTA LATERAL</text>
+            <rect x="634" y="40" width="16" height="350" fill="#d9dbe0"></rect>
+            <text class="ts" x="608" y="404">Pared</text>
+            <path d="M650 46 L790 46 Q807.5 46 807.5 63.5 L807.5 364.5 Q807.5 382 790 382 L650 382 Z" fill="#c9cfdc" stroke="#4d5a78" stroke-width="1.5"></path>
+            <rect x="728" y="46" width="68" height="6" fill="#2f333d"></rect>
+            <rect x="728" y="376" width="68" height="6" fill="#2f333d"></rect>
+            <rect x="650" y="88" width="6.3" height="252" fill="none" stroke="#4d5a78" stroke-dasharray="4 3"></rect>
+            <path d="M807.5 88 Q799 214 807.5 340" fill="none" stroke="#2b2f38" stroke-width="4"></path>
+            <rect x="676" y="380" width="24" height="5" fill="#10131a"></rect>
+            <rect x="712" y="380" width="10" height="5" fill="#10131a"></rect>
+            <line class="dim" x1="650" y1="414" x2="807.5" y2="414"></line>
+            <line class="dim" x1="650" y1="406" x2="650" y2="422"></line><line class="dim" x1="807.5" y1="406" x2="807.5" y2="422"></line>
+            <text class="dt" x="676" y="436">≈ 75 (desde la pared)</text>
+            <line class="dim" x1="828" y1="46" x2="828" y2="382"></line>
+            <line class="dim" x1="820" y1="46" x2="836" y2="46"></line><line class="dim" x1="820" y1="382" x2="836" y2="382"></line>
+            <text class="dt" x="836" y="218">Ø 160</text>
+            <line class="ln" x1="654" y1="120" x2="690" y2="108"></line><text class="ts" x="668" y="100">Placa embutida</text>
+            <text class="ts" x="878" y="100">Frente cóncavo</text>
+            <text class="ts" x="878" y="116">(flecha ≈ 4)</text>
+            <text class="ts" x="878" y="300">Burlete solo en</text>
+            <text class="ts" x="878" y="316">la mitad frontal</text>
+            <text class="ts" x="664" y="374">USB-C + botón</text>
+        </svg>
+        <figcaption>Vista frontal y vista lateral montado en pared. Escala aproximada 2.1 px/mm; la placa y el rebaje trasero están ocultos (línea punteada).</figcaption>
+    </figure>
+
+    <figure class="figura">
+        <svg viewBox="0 0 930 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Corte lateral de Reflejo Fijo con ubicación de componentes">
+            <style>
+                .t2  { font: 13px Arial, sans-serif; fill: #1b1f2a; }
+                .tb2 { font: bold 14px Arial, sans-serif; fill: #032472; }
+                .ts2 { font: 11.5px Arial, sans-serif; fill: #4d5a78; }
+                .ln2 { stroke: #4d5a78; stroke-width: 1; fill: none; }
+            </style>
+            <text class="tb2" x="60" y="22">CORTE A-A (lateral, montado en pared)</text>
+            <rect x="34" y="34" width="26" height="336" fill="#d9dbe0"></rect>
+            <path d="M60 34 L200 34 Q217.5 34 217.5 51.5 L217.5 352.5 Q217.5 370 200 370 L60 370 Z" fill="#c9cfdc" stroke="#4d5a78" stroke-width="1.5"></path>
+            <rect x="139" y="34" width="66" height="6.3" fill="#2f333d"></rect>
+            <rect x="139" y="363.7" width="66" height="6.3" fill="#2f333d"></rect>
+            <rect x="60" y="76" width="6.3" height="252" fill="#8a93a6"></rect>
+            <rect x="66.3" y="76" width="6.3" height="252" fill="#a9b2c6"></rect>
+            <rect x="81" y="96" width="4" height="212" fill="#3c8d5a"></rect>
+            <circle cx="76" cy="110" r="3" fill="#6b7280"></circle><circle cx="76" cy="294" r="3" fill="#6b7280"></circle>
+            <rect x="100" y="134" width="38" height="136" rx="8" fill="#f1c27d" stroke="#b07d2b"></rect>
+            <rect x="146" y="70" width="6.3" height="264" fill="#a9b2c6"></rect>
+            <rect x="140" y="196" width="6" height="12" fill="#7b2cbf"></rect>
+            <rect x="152.4" y="82" width="16.8" height="72" fill="#0d48d2"></rect>
+            <rect x="152.4" y="250" width="16.8" height="72" fill="#0d48d2"></rect>
+            <rect x="155" y="176" width="12" height="6" fill="#444"></rect><rect x="155" y="222" width="12" height="6" fill="#444"></rect>
+            <rect x="173.4" y="78" width="6.3" height="248" fill="#7c8698"></rect>
+            <rect x="169" y="74" width="11" height="9" fill="#5a6070"></rect>
+            <rect x="169" y="321" width="11" height="9" fill="#5a6070"></rect>
+            <path d="M179.7 76 L215.4 76 Q203 202 215.4 328 L179.7 328 Z" fill="#3a3f4b"></path>
+            <path d="M207 80 L207 98 M207 306 L207 324" stroke="#9aa3b5" stroke-dasharray="2 2"></path>
+            <path d="M215.4 76 Q203 202 215.4 328" fill="none" stroke="#111" stroke-width="3"></path>
+            <path d="M211 73 q3 -3 6 0" stroke="#b10a0a" stroke-width="2" fill="none"></path>
+            <path d="M211 331 q3 3 6 0" stroke="#b10a0a" stroke-width="2" fill="none"></path>
+            <path d="M185 40.3 L203 40.3 Q217.5 40.3 217.5 54.8 L217.5 72.8 L185 72.8 Z" fill="#5a6274"></path>
+            <rect x="205" y="54" width="6" height="12" fill="#20c4e8"></rect>
+            <rect x="211" y="52.9" width="6.5" height="14.7" fill="#bfeefa"></rect>
+            <path d="M185 331.2 L217.5 331.2 L217.5 349.2 Q217.5 363.7 203 363.7 L185 363.7 Z" fill="#5a6274"></path>
+            <rect x="210" y="345" width="7.5" height="8" fill="#c77d3a"></rect>
+            <rect x="60" y="345" width="6.3" height="8" fill="#c77d3a"></rect>
+            <rect x="90" y="366" width="24" height="6" fill="#10131a"></rect>
+            <path d="M310 202 L228 202" stroke="#b10a0a" stroke-width="3"></path>
+            <path d="M228 202 l12 -7 l0 14 z" fill="#b10a0a"></path>
+            <text class="t2" x="252" y="192">Golpe</text>
+            <text class="ts2" x="56" y="392">0</text><text class="ts2" x="96" y="392">20</text><text class="ts2" x="138" y="392">40</text><text class="ts2" x="166" y="392">54</text><text class="ts2" x="206" y="392">75</text>
+            <text class="ts2" x="60" y="410">Profundidad desde la pared (mm)</text>
+            <line class="ln2" x1="209" y1="60" x2="420" y2="44"></line><text class="ts2" x="424" y="48">Arco de 18 LED (arriba) + difusor rehundido 1 mm</text>
+            <line class="ln2" x1="214" y1="74" x2="420" y2="68"></line><text class="ts2" x="424" y="72">Diafragma de cámara de bicicleta en el hueco de 1.5 mm</text>
+            <line class="ln2" x1="175" y1="79" x2="420" y2="92"></line><text class="ts2" x="424" y="96">Aro tensor PETG que sujeta la vinipiel al plato</text>
+            <line class="ln2" x1="161" y1="118" x2="420" y2="116"></line><text class="ts2" x="424" y="120">4 celdas de carga 50 kg a 90° (R ≈ 40), 44–52 mm</text>
+            <line class="ln2" x1="205" y1="140" x2="420" y2="140"></line><text class="ts2" x="424" y="144">Pad Ø120: vinipiel 1 mm + EVA 12 mm + anillo EVA 4 mm, 57–74 mm</text>
+            <line class="ln2" x1="177" y1="165" x2="420" y2="164"></line><text class="ts2" x="424" y="168">Plato flotante de aluminio Ø118 × 3 mm, 54–57 mm</text>
+            <line class="ln2" x1="143" y1="202" x2="420" y2="188"></line><text class="ts2" x="424" y="192">ADXL375 atornillado al chasis, al centro</text>
+            <line class="ln2" x1="161" y1="225" x2="420" y2="212"></line><text class="ts2" x="424" y="216">Topes M4 ajustables al ≈ 90 % de carga</text>
+            <line class="ln2" x1="118" y1="250" x2="420" y2="236"></line><text class="ts2" x="424" y="240">Celda 18650 con pestañas, en cuna con espuma, 19–37 mm</text>
+            <line class="ln2" x1="83" y1="275" x2="420" y2="260"></line><text class="ts2" x="424" y="264">PCB (ESP32, TP4056, AP2112K, ADS1220) sobre aisladores, 10 mm</text>
+            <line class="ln2" x1="69" y1="300" x2="420" y2="284"></line><text class="ts2" x="424" y="288">Tapa trasera con o-ring: acceso a batería y PCB (4 tornillos)</text>
+            <line class="ln2" x1="63" y1="320" x2="420" y2="308"></line><text class="ts2" x="424" y="312">Placa de pared Ø120 × 3 mm embutida en rebaje Ø122; bayoneta ¼ de vuelta + seguro</text>
+            <line class="ln2" x1="214" y1="349" x2="420" y2="332"></line><text class="ts2" x="424" y="336">Conector pogo magnético rehundido a las 6 (frontal = salida, trasero = entrada)</text>
+            <line class="ln2" x1="190" y1="367" x2="420" y2="356"></line><text class="ts2" x="424" y="360">Burlete EPDM en ranura, mitad frontal del canto</text>
+            <line class="ln2" x1="102" y1="371" x2="420" y2="380"></line><text class="ts2" x="424" y="384">USB-C con tapa y botón rehundido, mitad trasera del canto</text>
+        </svg>
+        <figcaption>Corte lateral esquemático con la ubicación de componentes según la lista de componentes v2. Proporciones aproximadas.</figcaption>
+    </figure>
+</div>
+
+   <div class="command-block">
+    <h4 id="SIETE-1">Especificación para CAD</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Pieza</th><th>Medidas aproximadas</th><th>Material y proceso</th><th>Notas</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">Envolvente</td><td>Ø 160 (con burlete) × ≈ 75 mm; máximo en CAD 78 mm</td><td>—</td><td>Cumple RD-04 del PDS v1.0 (Ø ≤ 160, ≤ 78 mm, ≤ 0.7 kg)</td></tr>
+            <tr><td class="material-tag">Cuerpo / chasis</td><td>Ø 154 mm sin burlete; pared 2.5–3 mm</td><td>PETG o ASA impreso, 5 perímetros, 40–50 % gyroid</td><td>Cabe en cama de 220 × 220 mm; costillas radiales bajo celdas y topes; insertos de latón M3/M4</td></tr>
+            <tr><td class="material-tag">Labio frontal</td><td>Anillo R 61.5–77 mm (15.5 mm); frente R ≥ 8</td><td>PETG satinado claro</td><td>Ventana del arco de 120° (R 64–71) y alojamiento del conector a las 6</td></tr>
+            <tr><td class="material-tag">Pad de golpeo</td><td>Ø 120 mm, flecha ≈ 4 mm, ≈ 17 mm de espesor</td><td>Vinipiel 1 mm + EVA de alta densidad 12 mm + anillo de EVA 4 mm</td><td>Funda reemplazable; plan B: neopreno o EPDM 5 mm</td></tr>
+            <tr><td class="material-tag">Aro tensor</td><td>Ø 120 / Ø 108 mm × 4 mm</td><td>PETG, 8 tornillos M3</td><td>Sujeta la vinipiel y el diafragma al plato</td></tr>
+            <tr><td class="material-tag">Plato flotante</td><td>Ø 118 × 3 mm (≈ 89 g)</td><td>Aluminio 5052/6061 cortado (FR4 doble en prototipo)</td><td>Celdas a R ≈ 40 mm; guía radial con holgura de 0.5 mm</td></tr>
+            <tr><td class="material-tag">Arco de luz</td><td>120°, R 64–71 mm, ≈ 140 mm de largo</td><td>Tira WS2812B 144 LED/m (3 tramos de 6) o PCB en arco; difusor PETG natural o policarbonato</td><td>Difusor rehundido 1 mm</td></tr>
+            <tr><td class="material-tag">Burlete</td><td>Mitad frontal del canto, ≈ 3 mm</td><td>Burlete de hule EPDM (ferretería)</td><td>En ranura de retención, no solo adhesivo</td></tr>
+            <tr><td class="material-tag">Tapa trasera</td><td>Ø 122 mm, rebaje de 3 mm</td><td>PETG con o-ring</td><td>Receptáculo de bayoneta con 3 orejas; una más ancha da la orientación</td></tr>
+            <tr><td class="material-tag">Placa de pared</td><td>Ø 120 × 3 mm, 4 barrenos</td><td>MDF o acrílico de 6 mm en prototipo; acero de 3 mm en v2</td><td>Seguro con prisionero o pestillo</td></tr>
+            <tr><td class="material-tag">Masa total</td><td>≈ 0.6 kg <b>[Estimado]</b></td><td colspan="2">Cuerpo ≈ 230 g, plato ≈ 89 g, celda 18650 ≈ 45 g, pad y burlete ≈ 70 g, electrónica, celdas y tornillería ≈ 150 g</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+<!-- ===================== 8. WIREFRAME ===================== -->
+    <h2 id="OCHO">Wireframe de la app</h2>
+    <h3>Pantalla principal (normal y alerta) y primeros tres pasos de instalación</h3>
+
+   <div class="command-block">
+    <p>Baja fidelidad. Se mantienen la arquitectura de la semana 5 (la app habla con un solo pod gateway por BLE) y el lenguaje de círculo y arco del producto.</p>
+
+    <figure class="figura">
+        <svg viewBox="0 0 880 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Wireframes de la app: pantalla normal, alerta y tres pasos de instalación">
+            <style>
+                .ph { fill: #ffffff; stroke: #1b1f2a; stroke-width: 2; }
+                .wt { font: 11px Arial, sans-serif; fill: #1b1f2a; }
+                .wb { font: bold 12px Arial, sans-serif; fill: #1b1f2a; }
+                .wh { font: bold 13px Arial, sans-serif; fill: #032472; }
+                .ws { font: 10px Arial, sans-serif; fill: #5a5a5a; }
+                .box { fill: #eef1f7; stroke: #9aa3b5; }
+                .btn { fill: #0d48d2; }
+                .btt { font: bold 11px Arial, sans-serif; fill: #fff; }
+            </style>
+            <text class="wh" x="38" y="18">Principal: normal</text>
+            <text class="wh" x="212" y="18">Principal: alerta</text>
+            <text class="wh" x="398" y="18">Paso 1</text>
+            <text class="wh" x="570" y="18">Paso 2</text>
+            <text class="wh" x="744" y="18">Paso 3</text>
+
+            <!-- normal -->
+            <rect class="ph" x="20" y="28" width="156" height="340" rx="18"></rect>
+            <text class="wb" x="34" y="56">Sesión · Combos 1</text>
+            <circle cx="98" cy="130" r="48" fill="none" stroke="#dfe3ec" stroke-width="10"></circle>
+            <path d="M98 82 A48 48 0 1 1 52 145" fill="none" stroke="#0d48d2" stroke-width="10"></path>
+            <text class="wb" x="74" y="128">312 ms</text>
+            <text class="ws" x="68" y="143">reacción media</text>
+            <text class="wt" x="34" y="200">Golpes 42 / 60</text>
+            <text class="wt" x="34" y="218">Fuerza media 640 N</text>
+            <circle cx="44" cy="248" r="10" fill="#36b37e"></circle><circle cx="76" cy="248" r="10" fill="#36b37e"></circle>
+            <circle cx="108" cy="248" r="10" fill="#36b37e"></circle><circle cx="140" cy="248" r="10" fill="#36b37e"></circle>
+            <text class="ws" x="34" y="274">4 pods · batería 78–91 %</text>
+            <rect class="btn" x="34" y="320" width="128" height="30" rx="15"></rect><text class="btt" x="78" y="339">Pausar</text>
+
+            <!-- alerta -->
+            <rect class="ph" x="194" y="28" width="156" height="340" rx="18"></rect>
+            <rect x="200" y="40" width="144" height="48" rx="8" fill="#fde2e2" stroke="#b10a0a"></rect>
+            <text class="wb" x="208" y="58" style="fill:#b10a0a">Pod 3 desconectado</text>
+            <text class="ws" x="208" y="72">Los golpes se guardan</text>
+            <text class="ws" x="208" y="84">en el pod. Sesión en pausa.</text>
+            <circle cx="272" cy="140" r="38" fill="none" stroke="#dfe3ec" stroke-width="10"></circle>
+            <text class="wb" x="252" y="144">Pausa</text>
+            <circle cx="218" cy="210" r="10" fill="#36b37e"></circle><circle cx="250" cy="210" r="10" fill="#f2a900"></circle>
+            <circle cx="282" cy="210" r="10" fill="#b0b6c3"></circle><circle cx="314" cy="210" r="10" fill="#36b37e"></circle>
+            <text class="wb" x="279" y="214" style="fill:#fff">!</text>
+            <text class="ws" x="208" y="240">Pod 2: batería 12 %</text>
+            <text class="ws" x="208" y="254">Pod 3: sin señal</text>
+            <rect class="btn" x="208" y="300" width="128" height="30" rx="15"></rect><text class="btt" x="244" y="319">Reintentar</text>
+            <text class="ws" x="226" y="348">Seguir sin el pod 3</text>
+
+            <!-- paso 1 -->
+            <rect class="ph" x="368" y="28" width="156" height="340" rx="18"></rect>
+            <text class="wb" x="382" y="56">1. Monta la placa</text>
+            <rect x="382" y="72" width="128" height="120" class="box"></rect>
+            <circle cx="446" cy="124" r="32" fill="#c9cfdc" stroke="#4d5a78"></circle>
+            <circle cx="446" cy="124" r="22" fill="#2b2f38"></circle>
+            <path d="M424 112 A26 26 0 0 1 468 112" fill="none" stroke="#20c4e8" stroke-width="4"></path>
+            <path d="M484 104 A40 40 0 0 1 488 144" fill="none" stroke="#0d48d2" stroke-width="2"></path>
+            <text class="ws" x="478" y="164">¼</text>
+            <line x1="390" y1="178" x2="502" y2="178" stroke="#9aa3b5" stroke-dasharray="3 3"></line>
+            <text class="ws" x="404" y="189">altura de la barbilla</text>
+            <text class="wt" x="382" y="214">Atornilla la placa en</text>
+            <text class="wt" x="382" y="229">concreto o block. Coloca el</text>
+            <text class="wt" x="382" y="244">pod con el arco de luz</text>
+            <text class="wt" x="382" y="259">arriba y gira ¼ de vuelta.</text>
+            <rect class="btn" x="382" y="320" width="128" height="30" rx="15"></rect><text class="btt" x="424" y="339">Listo</text>
+
+            <!-- paso 2 -->
+            <rect class="ph" x="542" y="28" width="156" height="340" rx="18"></rect>
+            <text class="wb" x="556" y="56">2. Enciende los pods</text>
+            <rect x="556" y="72" width="128" height="120" class="box"></rect>
+            <circle cx="620" cy="136" r="38" fill="#c9cfdc" stroke="#4d5a78"></circle>
+            <circle cx="620" cy="136" r="27" fill="#2b2f38"></circle>
+            <path d="M590 120 A33 33 0 0 1 650 120" fill="none" stroke="#20c4e8" stroke-width="5" stroke-dasharray="6 5"></path>
+            <text class="wt" x="556" y="214">Mantén 2 s el botón del</text>
+            <text class="wt" x="556" y="229">canto. El arco parpadea en</text>
+            <text class="wt" x="556" y="244">azul: está listo para</text>
+            <text class="wt" x="556" y="259">emparejar.</text>
+            <rect class="btn" x="556" y="320" width="128" height="30" rx="15"></rect><text class="btt" x="580" y="339">Ya parpadea</text>
+
+            <!-- paso 3 -->
+            <rect class="ph" x="716" y="28" width="156" height="340" rx="18"></rect>
+            <text class="wb" x="730" y="56">3. Golpea cada pod</text>
+            <rect x="730" y="72" width="128" height="34" rx="6" class="box"></rect><text class="wt" x="740" y="93">Pod-A3F2 · encontrado</text>
+            <rect x="730" y="112" width="128" height="34" rx="6" class="box"></rect><text class="wt" x="740" y="133">Pod-7C10 · encontrado</text>
+            <text class="wt" x="730" y="174">Golpea cada pod una vez.</text>
+            <text class="wt" x="730" y="189">Su arco se pone verde y</text>
+            <text class="wt" x="730" y="204">aparece aquí numerado.</text>
+            <circle cx="760" cy="240" r="12" fill="#36b37e"></circle><text class="ws" x="756" y="244" style="fill:#fff">1</text>
+            <circle cx="796" cy="240" r="12" fill="#36b37e"></circle><text class="ws" x="792" y="244" style="fill:#fff">2</text>
+            <circle cx="832" cy="240" r="12" fill="none" stroke="#9aa3b5" stroke-dasharray="3 3"></circle>
+            <rect class="btn" x="730" y="320" width="128" height="30" rx="15"></rect><text class="btt" x="770" y="339">Entrenar</text>
+        </svg>
+        <figcaption>Wireframes de baja fidelidad. En la alerta, la sesión se pausa y los eventos quedan guardados en el pod (operación sin conexión de la semana 5).</figcaption>
+    </figure>
+
+    <ul>
+        <li><b>Normal:</b> el anillo de progreso repite la forma del pod; muestra tiempo de reacción, golpes y fuerza media; los pods aparecen como círculos con su estado.</li>
+        <li><b>Alerta:</b> banner rojo con la causa y lo que pasa con los datos ("se guardan en el pod"), el pod afectado en gris, la batería baja en ámbar y dos salidas: reintentar o seguir sin ese pod.</li>
+        <li><b>Paso 1:</b> la instrucción "arco de luz arriba" fija la orientación de la bayoneta sin necesidad de leer marcas.</li>
+        <li><b>Paso 3:</b> el emparejamiento se confirma <b>golpeando el pod</b>. El usuario aprende el gesto principal desde el primer minuto y sabe cuál pod es cuál.</li>
+    </ul>
+</div>
+
+<!-- ===================== 9. CRÍTICA TÉCNICA ===================== -->
+    <h2 id="NUEVE">Crítica técnica</h2>
+    <h3>Prompt 6: revisión del boceto antes de CAD</h3>
+
+   <div class="redcommand-block">
+    <h5 class="subtitulo">Problemas críticos (máximo 3):</h5>
+    <ol>
+        <li><b>Giro de la bayoneta en ganchos.</b> Un gancho descentrado genera un par que puede destrabar un ¼ de vuelta. <b>Ajuste:</b> seguro obligatorio (prisionero lateral o pestillo con resorte) y orejas con rampa de autobloqueo; probar con golpes descentrados a 25 mm del centro.</li>
+        <li><b>Pad flotante contra labio fijo.</b> Si el pad toca el labio al comprimirse o con un golpe en ángulo, parte de la fuerza se va al chasis sin pasar por las celdas. <b>Ajuste:</b> hueco de 1.5 mm con diafragma flexible, guía radial con holgura de 0.5 mm y verificación con carga descentrada (pérdida &lt; 8 %).</li>
+        <li><b>Calor durante la carga.</b> Con o-ring, diafragma y la celda detrás de la PCB, cargar a 500 mA sin ventilación puede calentar el interior. <b>Ajuste:</b> el modo carga apaga el arco de LED; se mide la temperatura de la celda durante una carga completa con criterio &lt; 45 °C.</li>
+    </ol>
+    <p><b>Resuelto en esta revisión:</b> la profundidad pasó de 70 a 75 mm (máximo 78 en CAD), con margen para la espuma y las tolerancias de impresión; el diámetro pasó a Ø 160 para que el labio de 15.5 mm aloje el arco, el conector y el hombro de apilamiento. El cambio ya está en RD-04 del PDS v1.0.</p>
+    <h5 class="subtitulo">Preguntas abiertas:</h5>
+    <ul>
+        <li>¿Altura fija de montaje o un riel vertical con varias posiciones para usuarios de distinta estatura?</li>
+        <li>¿Qué tipo de pared tiene el gimnasio piloto? En tablaroca la placa necesita un tablero de madera intermedio.</li>
+        <li>¿Basta un solo pod gateway si cuatro pods están en paredes distintas a más de 5 m? Se valida con la prueba de ESP-NOW de la semana 4.</li>
+        <li>¿Los estímulos por tercio del arco se distinguen bien a 2–3 m? Se prueba con 5 usuarios.</li>
+    </ul>
+    <p><code>⦿ Fortaleza principal:</code> un solo diseño de pod, hecho con materiales que se consiguen en México, sirve para pared, piso y costal con la misma bayoneta y mide la fuerza igual en los tres.</p>
+    <p><code>⦿ Veredicto:</code> <b>listo para CAD con 3 ajustes</b> (seguro de la bayoneta, hueco y diafragma del pad, y prueba térmica de carga).</p>
+</div>
+
+<!-- ===================== 10. DEFENSA ===================== -->
+    <h2 id="DIEZ">Defensa del concepto (3 minutos)</h2>
+    <h3>Guion</h3>
+
+   <div class="greencommand-block">
+    <ol>
+        <li><b>Concepto (1 min):</b> Reflejo Fijo es un objetivo luminoso de 16 cm que se monta en la pared a la altura del rival, te dice dónde golpear con un arco de luz en la parte superior y mide qué tan rápido y qué tan fuerte lo hiciste. Su pad cóncavo de vinipiel centra el golpe, el labio rígido lo protege, y con la misma bayoneta también va en el piso o en un costal.</li>
+        <li><b>Por qué ganó (1 min):</b> obtuvo +44 contra +22 de Golpe fijo y −18 de Reflejo. Gana en golpeo a altura realista (D1, 12 pts), visibilidad (D2) y seguridad del golpe (D3), que Golpe fijo no tenía; y gana en medición independiente del montaje (T1, 14 pts) y protección (T2, 12 pts), que Reflejo no tenía.</li>
+        <li><b>Riesgo principal y mitigación (1 min):</b> que la placa o la bayoneta no aguanten golpes reales. Se mitiga con prueba de carga estática (≥ 3,500 N de compresión <b>[Hipótesis]</b>) y 1,000 golpes reales sobre un muro de prueba, empezando con placa de MDF o acrílico y pasando a acero solo si hace falta.</li>
+    </ol>
+</div>
+
+   <div class="purpcommand-block">
+    <h4 id="DIEZ-1">Preguntas de autoevaluación</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Pregunta</th><th>Respuesta</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">¿Se describe en una oración sin tecnicismos?</td><td>Sí: "Un objetivo luminoso en la pared que te dice dónde golpear y mide qué tan rápido y fuerte lo hiciste".</td></tr>
+            <tr><td class="material-tag">¿Por qué este y no los otros dos?</td><td>Combina D1–D3 de Reflejo con T1–T2 de Golpe fijo; es el único que es positivo en deseabilidad y factibilidad a la vez.</td></tr>
+            <tr><td class="material-tag">¿Parámetro más crítico y qué pasa si cambia?</td><td>El montaje. Si la bayoneta no aguanta y el pod regresa al piso, se pierde D1 y deja de servir para boxeo de puño; la medición sí se conserva gracias a las celdas.</td></tr>
+            <tr><td class="material-tag">¿Criterio de deseabilidad de mayor peso y cómo sabemos que se cumple?</td><td>D1 (12 pts). Hoy es una <b>hipótesis</b> basada en la entrevista con el atleta de boxeo; se valida montando 2 pods a la altura de la barbilla y observando a 5 usuarios de un gimnasio de box en la semana 7.</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
     <h2 id="Learning">Reflexión sobre aprendizajes</h2>
-        <div>
-            
-    </div>
-
-                                                           
+   <div class="greencommand-block reflexion">
+    <p>
+            Esta semana pasamos de saber <i>con qué</i> se construye el dispositivo a decidir <i>cómo se ve, cómo se instala y cómo se usa</i>. La tabla morfológica me ayudó a abrir el espacio de soluciones, pero al revisarla contra el PDS me di cuenta de que una variante puede ser fabricable y aun así no servir para el producto: una interfaz capacitiva no detecta bien a través de un guante y una carcasa encapsulada en resina impide cambiar la batería. Las analogías tecnológicas fueron lo que más me sorprendió, porque soluciones como la bayoneta de una cámara o el pad de una batería electrónica resolvían justo los puntos débiles.
+<br>
+Los renders con IA fueron útiles para visualizar y comunicar los conceptos, aunque aprendí a leerlos con cuidado, porque la IA dibuja con naturalidad cosas que no aguantan un golpe, como el anclaje del concepto Reflejo. Por eso la matriz de Pugh fue clave: el concepto que más me gustaba, Reflejo, quedó en último lugar tal como estaba planteado, mientras que Golpe fijo resolvía la ingeniería pero en una posición poco útil para el boxeo. Combinarlos, junto con la nueva propuesta de componentes, me permitió conservar lo que hace atractivo al producto y darle una base técnica sólida. En la revisión final también ajusté detalles que parecían menores pero cambian mucho la factibilidad: sustituir el TPU por vinipiel sobre espuma, como en una manopla, hace que el pad se fabrique con materiales que puedo comprar y que se pueda reemplazar; y reducir el aro de luz a un arco superior no solo ahorra componentes, también define la orientación del dispositivo y permite indicar direcciones. Comprendí que seleccionar un concepto no es elegir la imagen más bonita, sino justificar cada decisión con criterios medibles y estar dispuesto a corregir lo que no funciona antes de llegar al CAD.
+           </p>
+</div>
 
                     </div>
-                </div>                
+                </div>
         </section>
 
      <!--FIN CONTENIDO-->
@@ -982,6 +946,17 @@
                 link.classList.add('active');
             });
         });
+
+        // Resalta en el menú la sección que se está leyendo
+        const targets = [...links].map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+        const spy = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+                }
+            });
+        }, { rootMargin: '-130px 0px -65% 0px' });
+        targets.forEach(t => spy.observe(t));
     </script>
 
 </body>
