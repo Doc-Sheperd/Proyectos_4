@@ -1,0 +1,1222 @@
+EXPORTACIÓN DE LA CONVERSACIÓN — Pod inteligente de entrenamiento para boxeo y artes marciales
+Fecha de exportación: 7 de octubre de 2026
+
+NOTAS SOBRE ESTA EXPORTACIÓN
+- Se incluyen los mensajes del usuario y las respuestas visibles de Claude.
+- Los mensajes de usuario muy extensos (el primer prompt, el prompt complementario y los documentos pegados en el último turno) aparecen resumidos entre corchetes. Los demás van completos.
+- No se incluye el razonamiento interno ni el contenido de las llamadas a herramientas.
+- Los dos documentos generados (diseño técnico y revisión crítica) se anexan completos al final, en su versión actual en disco.
+- Estado al momento de exportar: la solicitud de la Matriz de Pugh (último mensaje con documentos) NO fue respondida. Las ediciones de los dos documentos están guardadas en disco pero no se republicaron en los enlaces de artefacto.
+
+================================================================================
+
+[USUARIO — turno 1]
+[Prompt extenso: "Investigación y diseño de un dispositivo inteligente de entrenamiento para boxeo y artes marciales". Pide asumir el rol de un equipo multidisciplinario y entregar: A) síntesis, B) matriz de requerimientos, C) arquitectura (con diagrama de bloques), D) selección de componentes con precios y enlaces, E) diseño mecánico y electrónico, F) arquitectura de software y app, G) presupuesto (≤ $1,500 MXN), H) plan de 8 semanas (primera versión funcional en la semana 3), I) plan de pruebas, J) riesgos y viabilidad, K) propuesta final. Restricciones: 15×15×15 cm, PCB de 2 capas con pitch ≥ 0.8 mm, componentes disponibles en México con entrega < 3 semanas, autonomía ≥ 3 h, carga por apilamiento, comunicación entre módulos, app para iOS 14+, Android 8+ y HarmonyOS, y precisión > 90 % definida por función. Texto completo omitido por extensión.]
+
+[CLAUDE — turno 1]
+Armé el documento completo con los entregables A–K, más una sección de contradicciones y un apéndice con el cálculo de batería. Lo publiqué en el artefacto que aparece arriba.
+
+Lo que más afecta tus decisiones
+
+- Fuerza: con sensores de este costo no se mide directamente. Las celdas con HX711 muestrean a 10–80 muestras por segundo, y un golpe dura unos 5–20 ms. Los FSR se saturan. Propongo un acelerómetro de ±200 g con un piezo de respaldo y un índice de fuerza calibrado, sin prometer ±10 %.
+- Acelerómetro: el ADXL375 es el candidato principal. Confirmé que mide ±200 g y resiste 10,000 g, y que el módulo de Adafruit cuesta USD 24.95. Es el componente más caro (≈ 30–40 % del presupuesto) y es de importación. Dejé el H3LIS331DL como plan B, pero su disponibilidad en México está sin verificar.
+- Presupuesto: un pod instrumentado sale en ≈ $1,040–1,745 MXN. El extremo bajo cabe en $1,500 y el alto no. Asumí que los $1,500 cubren un solo pod, y los módulos adicionales quedan fuera del límite. Confírmalo con tu asesor.
+- Carga por apilamiento: es carga por contacto, no inalámbrica. Propongo anillos concéntricos con pogo pins, para que no importe la rotación. Los contactos de la cara superior van desenergizados hasta detectar un pod encima.
+- Semana 3: la demo es de un pod, con LEDs, impacto, tiempo de reacción, BLE y la app registrando una sesión. El apilamiento y el multi-pod vienen después.
+- El 90 %: lo definí por separado para tiempo de reacción, aceleración, detección de impacto y recomendaciones de IA. Para la fuerza no comprometo 90 %.
+
+Lo que no pude verificar: precios, existencias y enlaces de tiendas mexicanas. Los precios en MXN son rangos estimados y marqué cada dato con una etiqueta de confiabilidad. La sección G explica cómo comprobarlos. Tampoco verifiqué el soporte de HarmonyOS, la normativa vigente (cambió la autoridad de telecomunicaciones en 2025) ni las capacidades de tu laboratorio para la PCB. Todo eso está marcado como [Verificar].
+
+Haz los pedidos de importación el día 1. El plazo de entrega es el mayor riesgo del calendario.
+
+--------------------------------------------------------------------------------
+
+[USUARIO — turno 2]
+Me gustó la respuesta del artefacto. Tengo las siguientes dudas, ¿Por qué se dicidió usar BLE y no WIFI para la sincronización con la app?. ¿El material que va a recibir los golpes será TPU, no existe otra alternativa?. ¿Para la estructura se puede considerar inyección de aluminio?. ¿Qué implicaciones tendría el uso de una galga extensiométrica + amplificador y como podría ser incorporado?. ¿Es beneficioso la incopración de una celda de carga + HX711 en conjunto con el acelerómetro y el piezo, o podría reemplazar alguno de los dos?.
+
+Si alguna de las respuestas de estas preguntas mejoran alguna ya dada en el artefacto, actualizalo.
+
+[CLAUDE — turno 2]
+Actualicé el artefacto con las cuatro mejoras de abajo. Mantuve la selección base y añadí secciones nuevas (D.2b, D.9b, D.9c y una nota en D.7).
+
+1. ¿Por qué BLE y no Wi-Fi para la app?
+- El tiempo de reacción se mide dentro del pod, así que el enlace no afecta la medición. La menor latencia del Wi-Fi no aporta nada ahí.
+- Los datos caben de sobra en BLE: un evento ocupa decenas de bytes y una ventana de forma de onda unos 300 B (estimado).
+- Con Wi-Fi directo el teléfono tiene que unirse a la red del pod y suele perder internet, que necesita para la nube y la IA. También cuesta más energía, y el consumo pesa en las 3 h de autonomía.
+- Wi-Fi queda como canal opcional para actualizar firmware (OTA) y descargar ondas crudas durante la calibración.
+
+2. ¿El TPU es la única opción para la superficie de golpeo?
+No. Agregué una tabla con EVA, hule EPDM, poliuretano colado, silicona y Sorbothane. Mantengo EVA + TPU para v1 porque es un solo proceso. Recomiendo comparar en las semanas 2–3 con una variante de EPDM sobre EVA, midiendo señal pico, repetibilidad y desgaste en el mismo banco. Cualquier cambio de material modifica la señal y obliga a recalibrar.
+
+3. ¿Aluminio inyectado para la estructura?
+- Para el prototipo no es viable. El herramental (moldes de acero) rebasa por mucho el presupuesto y el plazo, y el maquinado CNC también queda fuera de los $1,500.
+- Para producción en volumen sí es una opción, pero una carcasa metálica cerrada blinda el 2.4 GHz y exige una ventana de plástico o antena externa. Tampoco evita el choque hacia la electrónica y agrega peso y esquinas duras.
+- Mi recomendación futura es inyección de plástico de ingeniería (PC/ABS o poliamida con fibra de vidrio) con sobremoldeo de TPE, y una placa interior de aluminio si hace falta rigidez.
+
+4. Galga extensométrica + amplificador, y celda de carga + HX711
+- Cómo se incorpora: la galga (o una celda comercial) va entre la placa de golpeo y la base, en la ruta de carga. Necesita puente completo, amplificador de instrumentación, un ADC rápido, topes mecánicos contra sobrecarga y un pegado y calibración cuidadosos.
+- Qué ganas: mide la fuerza transmitida sin depender de cómo está montado el pod (piso, pared o apilado). Eso es justo lo que no resuelve el índice basado solo en aceleración.
+- Qué cuesta: ≈ $150–400 por pod (estimado), más complejidad mecánica y de calibración. La dejé como fase opcional en las semanas 5–6, solo si el ADXL375 llega a tiempo y sobra presupuesto.
+- Celda de carga + HX711: no reemplaza al acelerómetro (la aceleración se pide como medición directa y el HX711 no captura el impacto) ni al piezo (el HX711 entrega 10–80 muestras por segundo, y el piezo da el inicio del evento en microsegundos). Sí lo recomiendo como referencia en el banco de calibración (una sola unidad, no una por pod), para validar la ganancia en carga estática. El impulso dinámico se valida con péndulo o caída de masa conocida. Lo agregué al presupuesto como costo fuera del límite.
+
+Los costos y detalles de componentes de estas secciones siguen marcados como estimados o [Verificar]. No los comprobé en tiendas ni en datasheets, salvo lo que ya estaba confirmado del ADXL375.
+
+--------------------------------------------------------------------------------
+
+[USUARIO — turno 3]
+[Prompt complementario extenso: "Arquitectura integral, escalabilidad y viabilidad de producto mecatrónico". Pide una revisión crítica en 10 pasos: auditoría de la arquitectura, validación de la arquitectura de IA (Edge/Cloud/Híbrida), arquitectura de datos y operación sin conexión, arquitectura completa de software (React Native vs. PWA, backend, página de venta), flujo de datos y latencia, escalabilidad de 1 a 10 unidades (con verificación de disponibilidad), viabilidad económica y precio (BOM ≤ 30 % del precio), validación con usuarios reales, matriz de 10 riesgos y tres escenarios finales (MVP de 8 semanas, tirada de 10 unidades, producto futuro). Capacidades del equipo: ESP32, Raspberry Pi, PCB de 2 capas, impresión 3D, soldadura SMD, Python, C/C++, JavaScript/React/React Native, TensorFlow Lite, PyTorch y APIs de IA. Texto completo omitido por extensión.]
+
+[CLAUDE — turno 3]
+Publiqué la revisión crítica como un documento nuevo, con los 10 pasos que pediste. Corrige varias decisiones de mi propuesta anterior.
+
+Lo más importante que cambia
+- React Native en lugar de Flutter. Elegí Flutter sin considerar que tu equipo sabe React y React Native, y no Dart.
+- ESP-NOW y "pod maestro" salen del MVP. (Esta decisión se revirtió después; ver turno 7.)
+- El ADXL375 pasa de módulo a circuito integrado en tu PCB para el lote de 10. Diez módulos Adafruit costarían unos USD 225, cerca de $4,150 MXN solo en ese componente. En LCSC el CI cuesta alrededor de USD 6–7, pero tenía 0 unidades en inventario cuando lo consulté. Tampoco verifiqué si tiene stock en tiendas mexicanas.
+- La carga por apilamiento pasa a opcional. Es el subsistema con más riesgo y el menos necesario para el piloto. (Revisado después; ver turnos 5 y 7.)
+- HarmonyOS queda fuera. HarmonyOS NEXT ya no puede ejecutar apps Android (APK) de forma nativa.
+- El portacelda de resorte para la 18650 podría perder contacto con los golpes. Propongo celda con pestañas y cables.
+
+Números del lote de 10
+- Costo en efectivo por unidad: ≈ $1,037 MXN (≈ $10,400 por las 10), con ±25 % de incertidumbre.
+- Precio de referencia (BOM ÷ 0.30): ≈ $2,720–3,460 MXN sin IVA. Esto no es un precio rentable: no incluye mano de obra, garantía, comisiones ni software, y no verifiqué el precio de la competencia en México.
+- Alternativa de entrada: una versión sin acelerómetro (solo reacción) bajaría la referencia a ≈ $2,320.
+- Software: Supabase gratis pausa los proyectos tras 7 días sin actividad, y el plan Pro cuesta $25 USD al mes. Recomiendo contratarlo durante el piloto.
+
+Calendario
+- 5 unidades en la semana 8 son posibles, pero solo si pides las PCB a más tardar en la semana 4.
+- 10 unidades probablemente necesiten las semanas 9–12.
+- Los $1,500 MXN alcanzan para un prototipo, no para el lote.
+
+Lo que no pude verificar: precios y existencias en tiendas mexicanas, si el ADXL375 está en la biblioteca de ensamblaje de JLCPCB, plazos de envío a México, mínimos de versión de React Native para BLE y la normativa vigente. Todo está marcado como [Pendiente]. El documento cierra con 14 decisiones que el equipo debe tomar antes de comprar o fabricar.
+
+No tengo el PDS en esta conversación. Usé el primer prompt y el documento previo como fuente.
+
+--------------------------------------------------------------------------------
+
+[USUARIO — turno 4]
+Componente,Precio (MXN),Proveedor,Notas de optimización
+ESP32-WROOM-32E,$281,Mouser MX,"Ideal para el prototipo. Para producción en masa, usarás el chip desnudo (~$70 MXN)."
+Módulo ADXL375,$344,Amazon MX,"Es el componente más caro, pero indispensable para medir hasta 200G de impacto real."
+Pogo Pins Magnéticos,~$150,Amazon / ML,"El precio es por par. En producción, comprar los pines sueltos y fabricar la carcasa magnética reducirá este costo a $30 MXN."
+Celda 18650 Protegida,~$125,Steren / ML,Excelente capacidad (2000+ mAh) para dar días de autonomía.
+Aro WS2812B (16 LEDs),$29,UNIT,"Gran precio. Si armas muchos pods, la tira de 300 LEDs ($356) te alcanza para 18 pods (reduciendo el costo a $19 por pod)."
+Piezoeléctrico 27 mm,$10,UNIT,Extremadamente barato y fácil de reemplazar.
+Módulo TP4056 Tipo-C,$9,UNIT,Perfecto para la gestión de carga y protección de la celda 18650.
+AMS1117 3.3V (LDO),$3,UNIT,Muy económico para regular el voltaje en la PCB.
+Total Electrónica (1 Pod),~$951 MXN,,~$47 USD para la primera unidad (prototipo).
+
+Ya investigué los precios, estos son
+
+[CLAUDE — turno 4]
+La suma de tu tabla es correcta ($951). El "~$47 USD" implica 20.2 MXN/USD. Con 18.5 serían ≈ $51 USD.
+
+Lo que corregiría antes de comprar
+
+1. AMS1117: tiene una caída de tensión de ~1.1 V (dato de memoria, no lo verifiqué hoy en el datasheet). Con una celda de 1S (4.2 → 3.0 V) no puede dar 3.3 V estables: a 4.2 V entrega ≈ 3.1 V y el ESP32 se reinicia mucho antes de que la celda se agote. Usa un LDO de baja caída, como el AP2112K-3.3 (600 mA, ~250 mV de caída). No verifiqué su precio ni su existencia.
+2. "Chip desnudo ~$70": ese precio corresponde al módulo WROOM-32E en LCSC (≈ USD 3.1–3.8). El chip desnudo no es viable para este equipo: requiere flash, cristal, diseño de RF y un encapsulado de paso fino (muy por debajo del mínimo de 0.8 mm). Para producción el camino sigue siendo el módulo.
+3. ESP32 a $281 en Mouser MX: confirma si incluye envío e IVA. Además, un módulo sin placa necesita un programador USB-UART, que no está en tu lista. Para el prototipo en perfboard, una DevKit local probablemente sea más barata y práctica. No lo verifiqué.
+4. Módulo ADXL375 a $344 (Amazon MX): es más barato de lo que estimé. El riesgo es que sea un módulo mal etiquetado, por ejemplo un ADXL345 de ±16 g. Compruébalo con una lectura estática: el ADXL375 debe dar ≈ 20.5 LSB por g, que es el valor listado en Mouser. Pide devolución o compra una sola unidad primero.
+5. 18650 a ~$125: "días de autonomía" no aplica en uso real. Con ~215–245 mA de consumo promedio, 2,000 mAh son ≈ 8–9 h de entrenamiento. Mide la capacidad real con una descarga. Tampoco hay portacelda ni pestañas en tu lista.
+6. TP4056 Tipo-C: verifica que sea la versión con protección (DW01 + 8205, 4 terminales). Carga a 1 A por defecto y no tiene gestión de energía mientras carga. No uses el pod con el cable conectado, o apaga los LEDs durante la carga por firmware.
+7. Pogo magnéticos (~$150): no los necesitas si difieres el apilamiento. Quitarlos deja el total en $801.
+8. Aro WS2812B a $29: confirma que sean 16 LEDs. Tu cuenta de la tira es correcta (356 ÷ 18 ≈ $19.8 por pod).
+
+Contra los $1,500: tu $951 es solo electrónica. Faltan pasivos, comparador, conectores, programador y portacelda o pestañas (≈ $80–130, mi estimado). Faltan también la PCB (≈ $30–120) y la carcasa, la superficie de golpeo y la tornillería (≈ $160–310). Eso da ≈ $1,221–1,511, al límite. Sin los pogo magnéticos queda en ≈ $1,071–1,361.
+
+Para el lote de 10: con el módulo ADXL375 a $344, el costo sube ≈ $224 por unidad frente al CI. Pasaría de ≈ $1,037 a ≈ $1,260 por unidad. El BOM de materiales sería ≈ $1,040, y el precio de referencia con la regla del 30 % subiría de ≈ $2,720 a ≈ $3,460. Si tu meta de costo sigue en ~$800 por pod, solo se alcanza en materiales y con el CI en PCB propia, no con el módulo.
+
+El ADXL375 es "indispensable" solo si te comprometes con aceleración e impulso. Para una versión de solo reacción no lo es.
+
+Antes de comprar 10 unidades, cotiza 12 en Mouser MX (ESP32 y el CI ADXL375, con envío e IVA) y confirma stock y devolución del módulo en Amazon.
+
+--------------------------------------------------------------------------------
+
+[USUARIO — turno 5]
+Por qué quieres retirar la carga por apilamiento y el ESP NOW. ¿Cómo se van a cargar según tu nueva propuesta y cómo se van a comunicar?. En lo personal considero mejor que sean pogos magnéticos y se haga un ligero desnivel para que el pad reciba el impacto antes que el aro del pogo, en lugar de tenerlos expuestos.
+
+[CLAUDE — turno 5]
+Los retiré por riesgo de calendario, no porque sean inviables ni indeseables. Tu diseño con contactos rehundidos me convence, y creo que puedes conservar ambas funciones sin comprometer el MVP si las tratas como hitos con criterio de continuar o descartar.
+
+Por qué los difería
+- Apilamiento: toca mecánica, electrónica de potencia y seguridad a la vez, y la primera demo funcional es en la semana 3. Tampoco hace falta para validar la hipótesis central con usuarios.
+- ESP-NOW: no es necesario para medir, porque el tiempo de reacción se calcula dentro de cada pod. Mantiene el radio en recepción (≈ 100 mA según mi estimado) y su convivencia con BLE no está medida.
+
+Cómo se cargan y comunican en la propuesta que te di
+- Carga: cada pod con su propio USB-C, conectado a un cargador USB de varios puertos.
+- Comunicación: BLE de cada pod al teléfono, que actúa como hub. Cada pod ejecuta su rutina de forma autónoma y mide con su reloj local.
+
+Mi recomendación revisada
+1. ESP-NOW: benchmark en la semana 4 con 2–3 pods durante 30 min. Se adopta si la pérdida es < 1 %, no se pierde ningún evento BLE y el consumo extra es aceptable.
+2. Apilamiento: prototipo en paralelo (semanas 4–5), con decisión al cierre de la semana 5. Criterios: carga estable ≥ 30 min con 2 pods, contactos < 45 °C y resistencia de contacto estable tras 500 ciclos.
+
+Tu diseño de pogo magnético con desnivel
+Es buena idea: protege los contactos del golpe directo y de la mano, y los imanes alinean y retienen. Ajustes:
+- Tolerancias: la almohadilla se comprime varios milímetros bajo un golpe, probablemente más que el desnivel. Sube un labio perimetral más alto que el aro de contacto y mide la apilación de tolerancias.
+- La carga estructural no debe pasar por los contactos: usa un hombro mecánico.
+- Energía en los contactos superiores: propongo un sensor Hall que detecte el imán del pod de arriba y active el interruptor de salida con límite de corriente (hipótesis por validar en banco).
+- Alimentación del MCU: debe salir de la batería, no del contacto.
+- Corriente: baja la corriente de carga por pod a ~500 mA ajustando la resistencia de programación del TP4056.
+- Modo carga: al detectar apilamiento, desactiva estímulos y duerme el acelerómetro.
+- Costo del par: tu ~$150 es macho + hembra, lo que necesita un pod simétrico. Con un par puedes probar un pod sobre una base de maqueta; apilar dos pods exige un segundo par.
+- Lote de 10: pines sueltos más imanes (≈ $30 por pod) tendrían más sentido que diez pares comerciales.
+
+--------------------------------------------------------------------------------
+
+[USUARIO — turno 6]
+También considera que IOS tiene problemas con varios BLE a la vez. Me gustaba más tu propuesta de hacer que los pods se comuniquen entre sí por medio de ESP NOW y solo uno se comunique con BLE al telefono. Tu eres el experto, pero no te confundas con tus respuestas.
+
+[CLAUDE — turno 6]
+Tienes razón, y me corrijo: la arquitectura original (un pod con BLE y el resto por ESP-NOW) era la correcta. La degradé para recortar riesgo de calendario y esa decisión no se sostiene.
+
+Por qué el gateway es mejor aquí
+- Riesgo que controlas vs. riesgo que no: con varias conexiones BLE en iOS, el comportamiento depende de la pila del sistema y no puedes corregirlo. La coexistencia BLE + ESP-NOW en el gateway sí es firmware tuyo, en C/C++, que el equipo domina.
+- No verifiqué el número exacto de conexiones simultáneas en iOS. No lo necesito para decidir: con gateway basta una conexión sin importar cuántos pods haya.
+- El riesgo principal no desaparece: la coexistencia BLE + ESP-NOW en el gateway sigue sin medirse.
+
+Arquitectura de comunicación definitiva
+- Un solo firmware para todos. El pod al que se conecta la app asume el rol de gateway; los demás actúan como seguidores. Si el gateway se reinicia o se queda sin batería, la app reconecta con otro pod.
+- Provisión inicial: la app se conecta a cada pod uno por uno, nunca a la vez, y le escribe el identificador de grupo, el canal y la clave de ESP-NOW.
+- Eventos: el seguidor mide con su reloj local, guarda el evento con su clave (dev_id, boot_id, seq) y lo envía al gateway. El gateway lo reenvía por BLE y la app confirma. Solo entonces el seguidor borra el evento.
+- Canal Wi-Fi fijo para ESP-NOW. Verifica en el gimnasio que no haya interferencia.
+- Límites a verificar: el máximo de pares con cifrado en ESP32 y la latencia real entre pods.
+- Consumo: el gateway gasta más que los seguidores. La app debería asignar ese rol al pod con más batería.
+
+Qué cambia en los documentos
+- Pasos 1, 3 y 4: ESP-NOW pasa de "opcional" a decidido, y la app solo se conecta a un pod.
+- Escenario A: la demo de la semana 3 sigue siendo de un pod con BLE directo. El gateway con 2 pods pasa a ser un entregable de las semanas 4–5.
+- Prueba de la semana 4: ya no decide si ESP-NOW entra, sino cómo. Si la coexistencia falla, hay tres salidas: (1) que el gateway alterne ventanas de BLE y de ESP-NOW mientras los seguidores guardan eventos; (2) limitar iOS a 2–3 pods por BLE; (3) usar Wi-Fi/UDP.
+
+--------------------------------------------------------------------------------
+
+[USUARIO — turno 7]
+O qué tan viable sería que los pods se comuniquen entre ellos por BLE y que solo 1 se comunique por ble a la app? no abría ruido?
+
+[CLAUDE — turno 7]
+Es viable, y tiene dos ventajas reales sobre ESP-NOW. Aun así, mantendría ESP-NOW como base y dejaría el BLE entre pods como plan B, por la sincronización.
+
+Sobre el ruido. Ambos usan la banda de 2.4 GHz, pero se comportan distinto:
+- BLE salta entre canales y evita los ocupados, así que aguanta mejor un gimnasio lleno de teléfonos, relojes, audífonos y Wi-Fi.
+- ESP-NOW usa un canal Wi-Fi fijo y compite con el Wi-Fi del gimnasio si coincide. Se mitiga eligiendo un canal libre y con reenvíos a nivel de aplicación.
+- Un solo radio compartido: en el gateway, BLE y ESP-NOW se reparten el tiempo de un mismo radio. Eso es lo que hay que medir. Con BLE en todo el sistema, esa coexistencia desaparece.
+
+Comparación (ESP-NOW + BLE al teléfono vs. BLE entre pods + BLE al teléfono)
+- Sincronía entre pods: ESP-NOW, una trama llega a todos en pocos ms (estimado). BLE entre pods: peor; con 5 pods a 15 ms por conexión se acumulan ≈ 75 ms (estimado).
+- Consumo del seguidor: ESP-NOW ≈ 100 mA con el radio en recepción (estimado). BLE entre pods ≈ 20–40 mA (estimado; medir).
+- Robustez ante interferencia: menor en ESP-NOW (canal fijo), mayor en BLE (salto de canal).
+- Complejidad de firmware: menor en ESP-NOW; mayor en BLE entre pods (cada pod central y periférico).
+- Límite de dispositivos: ESP-NOW unos 20 pares, menos con cifrado (confirmar); BLE entre pods unas 3–9 conexiones en el gateway (confirmar).
+
+Dónde pesa cada uno
+- Si importa encender varios pods a la vez o encadenar estímulos con baja latencia: ESP-NOW.
+- Si importa la autonomía de 3 h y la robustez, y el estímulo puede variar unas decenas de ms: BLE entre pods.
+El tiempo de reacción no se ve afectado en ninguno de los dos casos, porque se mide dentro de cada pod.
+
+Qué haría: mantén ESP-NOW como base y prueba su coexistencia con BLE en la semana 4. Si falla por consumo, pérdidas o latencia, el plan B sería BLE entre pods con un máximo de 3–4 seguidores.
+
+--------------------------------------------------------------------------------
+
+[USUARIO — turno 8]
+Ok, elige la mejor decisión y ahora sí actualiza el artefacto
+
+[CLAUDE — turno 8]
+[Turno de trabajo sin mensaje final. Acciones realizadas: se editaron en disco los dos documentos (revisión crítica y diseño técnico) con las decisiones vigentes: gateway BLE + ESP-NOW como base y BLE entre pods como plan B; apilamiento con pogo magnéticos y contactos rehundidos con hito de continuar/descartar al cierre de la semana 5 y USB-C en cada pod como vía base; React Native; LDO AP2112K en lugar de AMS1117; TP4056 con protección; celda con pestañas; módulo ADXL375 para el prototipo y las primeras 5 unidades; presupuesto con los precios cotizados (≈ $1,176 por unidad y ≈ $11,760 para 10). Las versiones actuales están anexas más abajo. No se republicaron los enlaces de artefacto.]
+
+--------------------------------------------------------------------------------
+
+[USUARIO — turno 9]
+[Mensaje con tres documentos adjuntos:
+1) Un prompt de "Matriz de Pugh" para selección de concepto (rol de ingeniero de producto; 3 conceptos con el 3 como datum; usuario y restricciones de manufactura; 8–10 criterios con peso total 100 y deseabilidad ≥ 40 %; evaluación con +/–/S; puntuación ponderada; análisis y formato de salida fijo).
+2) Una respuesta previa de diseño industrial con seis conceptos, tabla morfológica, matriz ponderada y tres finalistas (Canto Rodado, Guijarro de Boxeo, Marca Asimétrica).
+3) Una respuesta previa con analogías tecnológicas y tres conceptos integrales (Reflejo, Guante Fijo, Cadena), con instalación, uso, app y landing.
+Instrucción del usuario: "El primero es el prompt. Los otros dos son respuestas con la información que ya tenemos. En resumen me gustaría permanecer con el ESPNOW, BLE, los componentes que me mencionaste en el PDS y estoy a favor de la arquitectura que me mencionaste en el PDS. Usa toda la información que hemos estado trabajando y las dos nuevas respuestas."]
+
+[CLAUDE — turno 9]
+[Sin respuesta final. Solo se completaron ediciones de archivos y se presentó el documento de diseño técnico. La Matriz de Pugh está pendiente.]
+
+--------------------------------------------------------------------------------
+
+[USUARIO — turno 10]
+Exporta esta conversación como archivo de texto
+
+================================================================================
+ANEXO A — DOCUMENTO: DISEÑO TÉCNICO (pod-boxeo-diseno-tecnico.md, versión actual)
+================================================================================
+
+# Pod inteligente de entrenamiento para boxeo y artes marciales
+**Propuesta técnica para un prototipo funcional de 8 semanas (≤ $1,500 MXN)**
+
+> **Cómo leer este documento.** Cada dato lleva una etiqueta: **[Confirmado]** (verificado en una fuente consultada), **[Estimado]** (cálculo o rango razonable, sin verificar), **[Hipótesis]** (supuesto de diseño a validar) y **[Verificar]** (dato que debes comprobar antes de comprar o fabricar).
+> **No pude verificar precios, existencias ni enlaces de tiendas mexicanas.** Los precios en MXN son rangos estimados y la sección G indica cómo comprobarlos. El único precio confirmado es el del módulo ADXL375 de Adafruit (USD 24.95, adafruit.com/product/5374). No incluyo enlaces de compra inventados.
+
+> **Actualización posterior.** Las decisiones de este documento fueron revisadas en *Revisión crítica de arquitectura, escalabilidad y viabilidad*, cuya sección **"Decisiones vigentes"** prevalece. Cambios ya aplicados aquí: app en **React Native** (no Flutter), **gateway BLE + ESP-NOW** como arquitectura de comunicación, **pogo magnéticos con contactos rehundidos** para el apilamiento, LDO **AP2112K** (no AMS1117), celda con pestañas y el presupuesto con los **precios cotizados por el equipo** (sección G.1b).
+
+---
+
+## 0. Contradicciones detectadas en los requerimientos (resumen)
+
+| # | Contradicción | Consecuencia | Resolución propuesta |
+|---|---|---|---|
+| C1 | "Medir la fuerza" de un golpe con sensores de bajo costo. | La fuerza de un golpe (cientos a miles de N, 1–20 ms) no se mide directamente con FSR ni con celdas HX711. | Se entrega un **índice de fuerza de impacto calibrado** (N equivalentes) estimado a partir de aceleración e impulso. No se presenta como fuerza medida directamente. |
+| C2 | Aceleración = fuerza. | Solo F = m·a si se conoce la masa efectiva y el pod está libre. Un pod apoyado en piso o pared transmite el impacto al soporte. | Calibración por condición de montaje (piso, pared, apilado). Se reporta aceleración (g) como medición directa y fuerza como estimación. |
+| C3 | "Carga inalámbrica" por apilamiento. | Con contactos metálicos es **carga por contacto eléctrico**, no inalámbrica. La inducción (Qi) es posible pero no encadena módulos y es menos eficiente. | Contactos concéntricos (anillos + pogo pins). Se documenta como "carga por contacto". |
+| C4 | La cara superior es superficie de golpeo y también interfaz de apilamiento con contactos energizados. | Contactos expuestos a sudor, golpes y cortos. | Zona de golpeo central de elastómero; anillos de contacto **rebajados** en una corona perimetral; salida superior **desenergizada** hasta detectar un pod encima. |
+| C5 | Presupuesto de $1,500 MXN **total**, pero se requieren "varios módulos". | Un pod instrumentado ya consume ~$1,000–1,400 [Estimado] con el sensor de alta g. | Se asume que $1,500 cubre **1 pod instrumentado completo**. Los módulos adicionales (versión reducida) se tratan como costo aparte. **Confírmalo con tu asesor.** |
+| C6 | Precisión > 90 % "de la IA". | Un único porcentaje mezcla magnitudes distintas. | Métricas separadas por función (sección I). |
+| C7 | HarmonyOS. | Las herramientas varían según la versión del sistema (ver sección F). | Se declara como objetivo deseable, no indispensable. |
+| C8 | Primera versión funcional en semana 3 con carga por apilamiento, multi-pod e IA. | No cabe todo. | La semana 3 demuestra **1 pod**: LEDs, impacto, tiempo de reacción, BLE y app básica. Apilamiento y multi-pod llegan después. |
+
+---
+
+## A. Síntesis del proyecto
+
+**Funcionamiento.** Cada pod enciende un patrón en su aro de LEDs. El usuario lo golpea. El pod toma una marca de tiempo (µs) al encender el LED y otra al detectar el impacto en un pin de interrupción. La diferencia es el **tiempo de reacción**, medido **localmente** en el pod, por lo que la latencia inalámbrica no entra en la medición. En el impacto se captura una ventana corta de aceleración (±200 g) y de un canal piezoeléctrico, y de ahí se calculan pico de aceleración, impulso y un índice de fuerza. Un pod actúa como *gateway* BLE hacia el teléfono y se coordina con los demás por ESP-NOW.
+
+**Subsistemas.** (1) Sensado de impacto. (2) Iluminación. (3) Procesamiento y comunicación. (4) Energía y carga. (5) Mecánica. (6) App y datos. (7) Análisis con IA.
+
+**Retos principales.**
+1. Medir impactos violentos con un sensor que no se dañe ni sature.
+2. Separar el contacto real de las vibraciones por apilamiento o caídas.
+3. Distribuir 3 h de autonomía con 12–16 LEDs.
+4. Contactos de carga robustos y seguros en la cara que se golpea.
+5. Entregar todo en 8 semanas con hardware importado.
+
+---
+
+## B. Matriz de requerimientos
+
+Prioridad: **I** = indispensable, **M** = importante, **D** = deseable.
+
+| ID | Requerimiento | Subsistema | Pri. | Verificación | Criterio de aceptación | Riesgo |
+|---|---|---|---|---|---|---|
+| RF-01 | Aro de LEDs con patrones configurables | Iluminación | I | Inspección + prueba funcional | ≥ 5 patrones; visible a 3 m con luz de gimnasio | Bajo |
+| RF-02 | Detectar impacto y marcar tiempo | Sensado | I | Comparación con analizador lógico | Sesgo < 2 ms y σ < 2 ms [Hipótesis] | Medio |
+| RF-03 | Tiempo de reacción LED→impacto | Firmware | I | Banco con pulsador y referencia | ≥ 90 % de mediciones dentro de ±5 ms de la referencia | Medio |
+| RF-04 | Medir aceleración del impacto | Sensado | I | Banco de caída/péndulo | Error ≤ ±10 % vs. referencia en el rango calibrado [Hipótesis] | Medio |
+| RF-05 | Índice de fuerza de impacto | Sensado + calibración | M | Péndulo con energía conocida | Repetibilidad CV < 10 %; error ≤ ±20 % en prototipo [Hipótesis] | **Alto** |
+| RF-06 | Sensores protegidos dentro de la carcasa | Mecánica | I | Inspección tras ensayo de impactos | Sin daño en 10,000 impactos | Medio |
+| RF-07 | Wi-Fi y Bluetooth | Comunicación | I | Prueba de enlace | Conexión estable con teléfono Android e iOS | Bajo |
+| RF-08 | Sincronización multi-pod | Comunicación | M | Prueba de latencia/pérdida | Pérdida de comandos < 1 %; latencia < 20 ms entre 2 pods | Medio |
+| RF-09 | Datos a la app | Software | I | Prueba extremo a extremo | 100 % de impactos de una sesión de 100 eventos recibidos | Bajo |
+| RF-10 | Autonomía ≥ 3 h | Energía | I | Descarga con perfil de uso | ≥ 3 h con brillo y duty definidos | Medio |
+| RF-11 | Protección de batería | Energía | I | Pruebas eléctricas | Corte por sobrecarga, sobredescarga y cortocircuito | Alto (seguridad) |
+| RF-12 | Carga por apilamiento | Carga | M | Prueba de carga con 2–3 pods | Corriente de carga estable; temperatura de contacto < 45 °C | Alto |
+| RF-13 | Solo el pod inferior se conecta a la fuente | Carga | M | Prueba funcional | Pods superiores cargan sin cable | Alto |
+| RF-14 | App: sesiones, gráficas, historial | App | I | Pruebas funcionales | Sesión guardada y comparable con anteriores | Bajo |
+| RF-15 | App: rutinas | App | I | Pruebas funcionales | Crear, guardar y ejecutar una rutina | Medio |
+| RF-16 | App: análisis con IA | App/IA | M | Evaluación con rúbrica | Ver sección I | Medio |
+| RF-17 | Perfil, rutinas, desempeño, leaderboard, recompensas, IA | App | M | Revisión de pantallas | 6 secciones navegables; leaderboard local en v1 | Medio |
+| RF-18 | Uso con una sola mano | UX | M | Prueba con 5 usuarios | Acciones principales alcanzables con el pulgar | Bajo |
+| RF-19 | iOS ≥ 14, Android ≥ 8 | App | I | Dispositivos reales | Funciona en ≥ 1 dispositivo por plataforma | Medio |
+| RF-20 | HarmonyOS | App | D | Prueba en dispositivo | Ver sección F | Alto |
+| RNF-01 | Dimensiones ≤ 15×15×15 cm | Mecánica | I | Medición | Ø ≤ 140 mm × alto ≤ 80 mm | Bajo |
+| RNF-02 | BOM ≤ $1,500 MXN | Presupuesto | I | Facturas | Suma ≤ $1,500 (ver supuesto C5) | **Alto** |
+| RNF-03 | PCB ≤ 2 capas, pitch ≥ 0.8 mm | PCB | I | DRC y revisión | Cumple | Bajo |
+| RNF-04 | Entrega < 3 semanas | Compras | I | Confirmación de pedidos | Todos los pedidos con ETA < 3 semanas | Medio |
+| RNF-05 | Banda 2.4 GHz con módulos con documentación | Regulatorio | I | Revisión documental | Módulo con certificaciones documentadas | Bajo |
+| RNF-06 | Mantenimiento y acceso | Mecánica | M | Prueba de desarmado | Cambio de batería y PCB en < 5 min con herramienta básica | Bajo |
+
+---
+
+## C. Arquitectura del sistema
+
+### C.1 Diagrama de bloques
+
+```mermaid
+flowchart LR
+  subgraph POD[Pod]
+    P[Elastómero de golpeo] --> S[Placa de sensores: ADXL375 + piezo]
+    S -->|INT / I2C-SPI| MCU[ESP32: BLE + ESP-NOW]
+    MCU -->|1 pin datos| LED[Aro LED WS2812B]
+    BAT[Batería 1S] --> PM[Protección + cargador]
+    PM --> REG[LDO 3.3 V]
+    REG --> MCU
+    BAT -->|VBAT| LED
+    CIN[Anillos de contacto inferior - entrada] --> PM
+    PM --> SW[Interruptor con límite de corriente]
+    SW --> COUT[Anillos de contacto superior - salida]
+  end
+  MCU <-->|ESP-NOW| POD2[Otros pods]
+  MCU <-->|BLE GATT| APP[App móvil React Native]
+  APP --> DB[(SQLite local)]
+  APP <-->|sincronización| CLOUD[(Backend en la nube)]
+  APP --> IA[Motor de análisis: reglas + LLM]
+```
+
+### C.2 Arquitectura electrónica
+- Un MCU por pod (ESP32). El tiempo de reacción se calcula en el pod.
+- **Placa de sensores pequeña, rígida y fijada a la placa interior de golpeo**, con acelerómetro y piezo. **Placa principal** (MCU, energía) montada sobre soportes de silicona para aislarla del choque.
+- Sensor de impacto en dos canales: acelerómetro ±200 g (medición y detección) y disco piezoeléctrico con limitador (detección de toques ligeros y respaldo del inicio del evento).
+
+### C.3 Arquitectura mecánica
+- Cuerpo cilíndrico (Ø ≈ 130 mm × ≈ 70 mm). Dentro del límite de 15 cm.
+- De arriba hacia abajo: tapa de elastómero de golpeo → placa rígida interior con sensores → difusor de luz con aro LED → batería → placa principal → base con pogo pins.
+- Corona perimetral rebajada con anillos de contacto en la cara superior, y pogo pins en la cara inferior.
+
+### C.4 Arquitectura de software
+Firmware (ESP-IDF o Arduino-ESP32) → GATT BLE → app React Native → SQLite → sincronización → motor de análisis (sección F).
+
+---
+
+## D. Selección de componentes (comparativa por subsistema)
+
+> Precios en MXN: **[Estimado]**, sin verificar en tiendas. Cambio supuesto 18.5 MXN/USD **[Verificar]**.
+
+### D.1 Microcontrolador
+| Opción | Ventajas | Desventajas | Costo | Consumo | Veredicto |
+|---|---|---|---|---|---|
+| **ESP32-WROOM-32E (módulo, DevKit para prototipo)** | Dual core, BLE + Wi-Fi + ESP-NOW, ecosistema enorme, pads 1.27 mm | Consumo con radio activo; ADC poco lineal | $90–180 | ~100 mA con radio en RX [Estimado] | **Elegido** |
+| ESP32-C3 (DevKit / MINI-1) | Más barato, BLE 5, menor consumo | Un solo núcleo; **verificar pitch del módulo MINI-1 (≥ 0.8 mm)** | $80–150 | Menor | Alternativa |
+| nRF52840 | BLE excelente y bajo consumo | Sin Wi-Fi/ESP-NOW; más difícil de conseguir barato | $250+ | Muy bajo | Descartado |
+
+### D.2 Sensores de fuerza e impacto
+| Tecnología | Medición | Velocidad | Resistencia a impactos | Integración | Costo | Veredicto |
+|---|---|---|---|---|---|---|
+| **Piezo (disco 27 mm)** | Señal proporcional a la variación de fuerza; no estática; poco calibrable en absoluto | µs | Alta si va detrás del elastómero | Simple (limitador + comparador/ADC) | $5–20 | **Complemento** (detección y tiempo de inicio) |
+| Celda de carga + HX711 | Fuerza **directa** y estática | 10/80 SPS (≈ 12.5 ms por muestra) | Media (se sobrecarga) | Simple, pero **demasiado lenta** para picos de 5–20 ms | $100–200 | Solo como **referencia de calibración estática** |
+| FSR (tipo 402) | Fuerza aproximada | ~ms | Media | Simple | $150–300 | **Descartado**: rango del orden de decenas de N, se satura |
+| Galga extensométrica + amplificador de instrumentación | Directa y de buena precisión | kHz con ADC adecuado | Media | Compleja (puente, amplificación, ADC rápido) | $200+ | Futura versión |
+| **Acelerómetro ±200 g** | Aceleración **directa**; fuerza estimada con calibración | ~1 ms | Alta (ADXL375: 10,000 g) | Simple (I2C/SPI) | ver D.3 | **Elegido** |
+
+#### D.2b Ruta opcional de fuerza directa: galga extensométrica o celda de carga
+
+**Qué implica.**
+- **Puente de Wheatstone completo** (4 galgas o una celda de carga comercial), alimentado a 3.3 V. Con una sensibilidad típica de ~1–2 mV/V la salida a escala completa es de unos 3–7 mV **[Estimado]**.
+- **Amplificador de instrumentación** (p. ej. INA125, INA333 o similar) con ganancia de ~100–500 **[Verificar]** disponibilidad, encapsulado y pitch ≥ 0.8 mm; si no, usar módulo.
+- **ADC rápido.** El HX711 entrega 10 o 80 SPS: no sirve para un pico de 5–20 ms. Alternativas: ADS1115 (hasta 860 SPS, ≈ 1.2 ms por muestra, suficiente para describir un pulso de 10–20 ms con pocos puntos) o un ADC mayor como ADS1256 en módulo (30 kSPS **[Verificar]**). El ADC interno del ESP32 es poco lineal y ruidoso.
+- **Elemento elástico (flexión) y topes mecánicos.** Un golpe puede superar con facilidad el rango de una celda de 50–100 kg (≈ 500–1,000 N): sin topes, se sobrecarga y se pierde el cero. Hay que rigidizar para que la frecuencia propia del conjunto quede muy por encima del ancho de banda del impacto, a costa de menor señal.
+- **Proceso de pegado de galgas** (limpieza, adhesivo, curado) y compensación térmica. Es el paso más delicado y el que más tiempo de aprendizaje consume.
+- **Calibración** con masas conocidas (estática) y con péndulo/caída (dinámica).
+
+**Cómo incorporarla.** Entre la placa rígida de golpeo y la base del pod, **en la ruta de carga**: placa → celda (o 3–4 apoyos con galgas) → base. Así mide la fuerza transmitida al soporte **sin depender de si el pod está en el piso, la pared o apilado**, que es justo la debilidad del índice basado solo en aceleración (contradicción C2). Hay que considerar que una pila superior añade precarga estática y que los pogo pins deben quedar fuera de la ruta de carga.
+
+**Veredicto.** Mejora el requisito de fuerza, pero cuesta ≈ $150–400 por pod **[Estimado]**, añade complejidad mecánica y de calibración y compite con las 8 semanas. **No entra en el prototipo base.** Entra como **fase de mejora (semanas 5–6) si el ADXL375 llega a tiempo y sobra presupuesto**, o en una versión futura.
+
+**¿Celda de carga + HX711 junto al acelerómetro y el piezo?**
+- **No reemplaza al acelerómetro:** la aceleración se pide como medición directa, y el HX711 no captura el impacto.
+- **No reemplaza al piezo:** el piezo da el inicio del evento en microsegundos y detecta toques ligeros; el HX711 tiene retardo de decenas de ms.
+- **Sí es útil como instrumento de referencia en el banco de calibración** (una sola vez, no en cada pod): valida la ganancia en carga estática y sirve para tarar. Para la dinámica, el impulso se valida por conservación de la cantidad de movimiento (masa conocida, velocidad antes y después del choque).
+- **Dentro de cada pod** aportaría, como mucho, la detección de precarga o de pod apilado y mediciones de presión sostenida. Con el HX711 solo, eso no justifica el costo ni el espacio. Con un ADC rápido, pasa a ser la ruta de fuerza directa descrita arriba.
+
+### D.3 Acelerómetro
+| Opción | Datos clave | Costo | Veredicto |
+|---|---|---|---|
+| **ADXL375 (módulo)** | ±200 g, ancho de banda hasta 1 kHz, 2.0–3.6 V, 10,000 g de supervivencia, detección de golpes en hardware, FIFO de 32 niveles **[Confirmado: analog.com/ADXL375]**. Módulo Adafruit: USD 24.95 **[Confirmado]** | ≈ $460 + envío/importación [Estimado] | **Elegido**, pero es el componente más caro y de importación |
+| H3LIS331DL (módulo) | ±100/200/400 g; **verificar** disponibilidad local y ODR | $150–300 [Estimado, verificar] | **Alternativa económica** si el ADXL375 rompe el presupuesto o el plazo |
+| ADXL345 / MPU6050 / LIS3DH | ±16 g | $40–80 | **Descartados**: se saturan. Un golpe de ~500 N sobre un pod de ~0.4 kg implica ~130 g [Estimado: a = F/m] |
+
+El IC desnudo ADXL375 tiene precio de lista desde USD 5.80 a 1 ku **[Confirmado]**, pero es un LGA-14 de 3×5 mm. Requiere reflujo y verificar el pitch del encapsulado en el datasheet; **no es viable con el equipo de laboratorio sin confirmar**. Se usa el módulo.
+
+### D.4 Aro de LEDs
+| Opción | Ventajas | Desventajas | Costo |
+|---|---|---|---|
+| **Aro WS2812B/SK6812 de 12–16 LEDs (módulo)** | Un solo pin de datos, programable, disponible localmente | 60 mA/LED a blanco total; temporización estricta | $60–130 [Estimado] |
+| LEDs discretos con registros (74HC595/TLC) | Control de corriente, RGB limitado | Más PCB y componentes | $80–150 |
+
+Se limita el brillo por firmware (≈ 40 %) por consumo y para evitar deslumbrar. Datos a 3.3 V con alimentación del LED desde la batería (3.3–4.2 V) suele funcionar; **[Verificar] en banco** (umbral de entrada ≈ 0.7·VDD).
+
+### D.5 Batería y gestión
+| Opción | Ventajas | Desventajas | Costo |
+|---|---|---|---|
+| **Celda 18650 protegida 1S (≥ 2,000 mAh) con pestañas y cables** | Rígida, robusta ante golpes; evita el resorte del portacelda, que puede perder contacto con los impactos | Volumen; riesgo de celdas falsas; capacidad real por medir | $100–200 [Estimado]; cotizado ≈ $125 |
+| LiPo de bolsa 1S 2,000 mAh con PCM | Plana y ligera | Vulnerable a presión y perforación | $100–180 |
+
+- **Cargador:** módulo TP4056 con USB-C y protección (1 A, SOP-8 de 1.27 mm) para el prototipo; para la PCB propia, MCP73831 (500 mA, SOT-23-5) **[Verificar]** disponibilidad y pitch.
+- **Regulador:** LDO de 3.3 V con baja caída (p. ej. AP2112K-3.3, ~600 mA) **[Verificar]** hoja de datos.
+- **Protección:** celda con PCM integrada + fusible reseteable + TVS en los contactos.
+
+### D.6 Carga por apilamiento
+| Opción | Eficiencia | Seguridad | Fabricación | Alineación | Desgaste | Costo | Veredicto |
+|---|---|---|---|---|---|---|---|
+| **Pogo pins + anillos concéntricos de cobre (PCB)** | Alta (~90 %+ [Estimado]) | Media: contactos expuestos → salida conmutada | Fácil | **Independiente de la rotación** | Bajo-medio (dorado/ENIG) | $30–60 | **Elegido** |
+| Pads planos + imanes | Alta | Media | Fácil | Requiere orientación | Medio | $30–50 | Alternativa |
+| Inductiva Qi | Menor (~50–70 % [Estimado]) | Alta (sin contactos) | Bobinas; **no encadena** pods | Sensible a distancia | Nulo | $100+ | Descartado |
+
+Diseño eléctrico por pod: anillos inferiores (entrada) → fusible → TVS → [cargador de su batería] + [interruptor con límite de corriente → anillos superiores]. El interruptor se habilita solo si se detecta un pod encima. Para el prototipo se limita la pila a 3 pods y ≤ 500 mA por pod (≈ 1.5 A en el contacto inferior), con **dos pogo pins en paralelo por anillo** **[Verificar]** la corriente nominal del modelo elegido.
+
+**Variante elegida por el equipo: pogo magnéticos con contactos rehundidos.** Los contactos quedan por debajo del pad de golpeo para que el pad reciba el impacto antes que el aro del pogo. Ajustes de diseño:
+- **Tolerancias:** la almohadilla se comprime varios milímetros bajo un golpe, probablemente más que el desnivel. Se añade un labio perimetral más alto que el aro de contacto y se calcula la apilación de tolerancias (desnivel + compresión vs. recorrido del pogo, ≈ 1–2 mm **[Pendiente: según el modelo]**).
+- **Carga estructural:** un hombro mecánico soporta el peso del apilado; los contactos no cargan estructura.
+- **Energía en contactos:** un sensor Hall detecta el imán del pod de arriba y habilita la salida con límite de corriente **[Hipótesis: validar en banco]**.
+- **Alimentación:** el MCU se alimenta de la batería, no del contacto, para que el rebote no lo reinicie.
+- **Corriente:** carga por pod ≈ 500 mA (ajustar la resistencia de programación del TP4056, que viene en 1 A); verificar la capacidad nominal del conector, que muchos anuncios no especifican.
+- **Modo carga:** al detectar apilamiento se apagan los estímulos y se duerme el acelerómetro, para evitar falsos positivos en los pods inferiores.
+- **Costo:** un par comercial (≈ $150 cotizado) es macho + hembra, lo que necesita un pod simétrico. Con un par se prueba un pod sobre una base de maqueta; apilar 2 pods exige un segundo par. Para un lote, pines sueltos + imanes (≈ $30 por pod, estimado del equipo).
+- **Hito:** prototipo en las semanas 4–5; continuar o descartar al cierre de la semana 5.
+
+### D.7 Comunicación
+| Opción | Latencia | Consumo | Nº de dispositivos | Compat. móvil | Veredicto |
+|---|---|---|---|---|---|
+| **BLE (pod↔teléfono)** | Intervalo de conexión ≥ 15 ms en iOS [Verificar guía de Apple] | Bajo | iOS/Android admiten varias conexiones simultáneas, con límites [Verificar] | Universal | **Enlace con la app** |
+| **ESP-NOW (pod↔pod)** | Del orden de pocos ms [Estimado; Verificar en banco] | Medio (radio en RX) | Hasta ~20 pares [Verificar documentación de Espressif] | No hay soporte en teléfonos | **Elegido entre pods** |
+| Wi-Fi (AP/STA + UDP/MQTT) | Variable | Alto | Muchos | Requiere cambiar de red en el teléfono | Opcional (OTA, sincronización masiva) |
+| BLE Mesh | Alta latencia | Bajo | Muchos | Complejo | Descartado |
+
+**Arquitectura elegida:** un pod hace de **gateway BLE** hacia el teléfono y los demás se comunican con él por **ESP-NOW**. Se evita que el teléfono mantenga N conexiones BLE simultáneas, que es el punto débil en iOS y no se puede corregir. El rol de gateway es intercambiable (cualquier pod puede asumirlo; la app elige el de mayor batería), con confirmación de eventos en la aplicación y reenvío por `seq`. La coexistencia BLE + ESP-NOW en el ESP32 es posible, pero **[Verificar] en banco** (semana 4) el efecto en latencia, pérdida de paquetes y consumo del gateway. **Plan B:** BLE entre pods (3–4 seguidores) o ventanas alternadas de BLE y ESP-NOW.
+
+**Por qué BLE y no Wi-Fi para la app:**
+- **El tiempo de reacción no depende del enlace.** Se mide dentro del pod; el teléfono solo recibe resultados. La ventaja de latencia del Wi-Fi no aporta a la medición.
+- **El volumen de datos cabe en BLE.** Un evento (RT, pico, impulso, duración) ocupa decenas de bytes, y una ventana de forma de onda de ~50 muestras × 3 ejes × 2 bytes ≈ 300 B **[Estimado]**.
+- **Consumo.** Mantener el radio Wi-Fi activo cuesta más corriente que una conexión BLE **[Verificar en banco con el perfil real]**, y el consumo pesa en el requisito de 3 h.
+- **Experiencia en el teléfono.** Con Wi-Fi directo, el teléfono debe unirse a la red del pod y suele perder internet (sincronización en la nube, llamadas a la API de IA). iOS y Android piden además permisos y avisos de red local **[Verificar]**. BLE no cambia la red del teléfono y tiene plugins maduros en Flutter.
+- **Conexión y reconexión.** El emparejamiento BLE es más directo en la app.
+- **Cuándo sí usar Wi-Fi:** actualización OTA de firmware, descarga de ondas crudas para calibración y sincronización masiva. Si el gimnasio ofrece Wi-Fi con aislamiento de clientes, el pod no sería alcanzable por esa red **[Verificar]**. Por eso queda como canal opcional, no principal.
+
+### D.8 PCB
+| Opción | Ventajas | Desventajas |
+|---|---|---|
+| **PCB propia de 2 capas, hecha en el laboratorio** | Integra todo, cumple el requisito | Depende del equipo: **[Verificar]** ancho mínimo de pista, vías (¿metalizadas?), máscara |
+| Protoboard/perfboard + módulos | Inmediata (semana 1–3) | Frágil ante golpes |
+| PCB mandada a fabricar (JLCPCB/PCBWay) | Calidad, vías metalizadas | Plazo y envío; **[Verificar]** compatibilidad con la restricción de 3 semanas |
+
+Estrategia: perfboard/módulos en semanas 1–3; PCB propia v1 en semana 4. Reglas de diseño asumidas: pista ≥ 0.3 mm, separación ≥ 0.3 mm, SMD ≥ 0603, SOT-23/SOIC, **sin QFN/BGA**.
+
+### D.9 Carcasa y superficie de golpeo
+| Elemento | Opción | Ventajas | Desventajas | Costo |
+|---|---|---|---|---|
+| Cuerpo | **PETG o ASA impreso (pared 2.5–3 mm, relleno ≥ 40 %)** | Tenaz, imprimible, económico | Anisotropía en capas | $60–100 por pod [Estimado] |
+| Cuerpo | Resina tenaz SLA | Acabado | Fragilidad, costo | $150+ |
+| Superficie | **TPU 95A impreso (3–5 mm) + espuma EVA de 5–10 mm** | Absorbe, cómodo, un solo proceso | Cambia la respuesta del sensor (se calibra) | $40–80 |
+| Superficie | Silicona colada 40–60 Shore A | Muy duradera | Requiere molde | $80+ |
+| Difusor LED | PETG natural o translúcido de 1–1.5 mm | Un solo proceso | Menos difusión | incluido |
+
+#### D.9b Alternativas para la superficie de golpeo
+
+| Material | Ventajas | Desventajas | Costo [Estimado] |
+|---|---|---|---|
+| TPU 95A impreso | Un solo proceso; integra bisel y retención | Capas visibles, histéresis y calidad variable según la impresión | $40–80 |
+| Espuma EVA 5–10 mm | Barata y cómoda | Se comprime de forma permanente; varía por lote | $20–50 |
+| **Hule EPDM/neopreno en lámina 3–5 mm** | Homogéneo, durable, se corta y se pega | Requiere buen adhesivo; menor control de forma | $50–120 |
+| Poliuretano colado (Shore 50–70A) o vinipiel sobre espuma | Es lo que usan costales y almohadillas; alta durabilidad | Requiere molde o costura/pegado | $80–200 |
+| Silicona 40–60 Shore A | Muy duradera | Molde y curado | $80+ |
+| Sorbothane (viscoelástico) | Amortigua mucho | Caro y difícil de conseguir **[Verificar]** | Alto |
+
+**Conclusión:** TPU **no** es la única opción ni necesariamente la mejor. Para v1 se mantiene **EVA + TPU** por ser un proceso. Se recomienda **comparar en la semana 2–3 con una variante EPDM sobre EVA**, midiendo en el mismo banco la señal pico, la repetibilidad y el desgaste. Cualquier cambio de material **modifica la señal** y obliga a recalibrar.
+
+#### D.9c ¿Estructura de aluminio inyectado?
+
+"Inyección de aluminio" suele referirse a **fundición a presión** (die casting).
+- **Prototipo:** no es viable. Requiere moldes de acero con un costo muy superior al presupuesto y largos plazos **[Estimado; Verificar con proveedores]**. Para 1–2 piezas de aluminio la alternativa es maquinado CNC, también fuera del límite de $1,500.
+- **Producción en volumen:** sí es una opción válida, con estas implicaciones:
+  - **Radiofrecuencia.** Una carcasa metálica cerrada blinda el 2.4 GHz y reduce el alcance de BLE/ESP-NOW. Hace falta una ventana de plástico o una antena externa.
+  - **Aislamiento eléctrico.** Los anillos de contacto y la electrónica deben aislarse (anodizado, insertos plásticos).
+  - **Choque.** El metal es rígido y transmite más energía de alta frecuencia al acelerómetro y a la placa, por lo que sigue siendo necesaria la capa elastomérica y el montaje elástico de la placa principal.
+  - **Peso y seguridad.** Pods más pesados y esquinas duras en golpes de boxeo.
+  - **Costo unitario y herramental** solo se justifican con volumen alto.
+- **Alternativa recomendada para producción:** inyección de plásticos de ingeniería (p. ej. PC/ABS o poliamida con fibra de vidrio) con sobremoldeo de TPE, **más una placa interior de aluminio** como estructura de golpeo si se requiere rigidez.
+
+### D.10 Aplicación móvil
+| Opción | Ventajas | Desventajas | Costo | Veredicto |
+|---|---|---|---|---|
+| Flutter + flutter_blue_plus | Una base para Android/iOS; BLE maduro; UI fluida | Dart no está entre las capacidades del equipo; HarmonyOS vía port comunitario **[Verificar]** | Gratis | Alternativa |
+| **React Native + librería BLE mantenida** | El equipo ya domina React y React Native; ecosistema JS | BLE requiere *development build* (no Expo Go); soporte Harmony **[Verificar]** | Gratis | **Elegido** |
+| Nativo (Kotlin/Swift) | Máximo control de BLE y segundo plano | Dos bases de código | Gratis (iOS requiere Mac) | Descartado por plazo |
+| PWA / Web Bluetooth | Sin tienda | **Sin soporte en iOS Safari** | Gratis | Descartado |
+
+Las versiones mínimas (Android 8, iOS 14) deben comprobarse contra la versión de React Native y de los plugins elegidos **[Verificar]**.
+
+### D.11 Datos e IA
+| Opción | Ventajas | Desventajas | Costo |
+|---|---|---|---|
+| **SQLite local (drift) + respaldo en Supabase/Firebase** | Funciona sin conexión; sincronización simple | Cuenta y reglas de acceso | Nivel gratuito [Verificar límites] |
+| **Motor de reglas/estadística + LLM por API para redactar** | Cifras controladas por código; texto natural | Costo por llamada; requiere conexión; privacidad | Bajo [Estimado] |
+| Modelo ML propio on-device | Sin conexión | Sin datos suficientes en 8 semanas | Alto en tiempo |
+
+---
+
+## E. Diseño mecánico y electrónico
+
+**Geometría (hipótesis de partida):** Ø 130 mm × 70 mm. Zona de golpeo central Ø ≈ 90 mm. Corona perimetral rebajada de ≈ 15 mm con los anillos de contacto.
+
+**Capas internas (de arriba hacia abajo):**
+1. Tapa de TPU 95A (3–5 mm) + EVA (5–10 mm).
+2. **Placa rígida interior** (PETG/ABS de 3 mm) que reparte la carga. Los sensores se fijan **rígidamente** a ella (sin aislarlos, o se perdería la señal).
+3. Aro LED bajo un difusor translúcido, visible por el costado y la corona.
+4. Batería con pestañas y cables (cerca del centro, fijada con espuma y bridas).
+5. **Placa principal sobre soportes de silicona**, para que la electrónica frágil (módulo ESP32, cristales) no reciba el choque directo.
+6. Base con pogo pins (2 por anillo) y tornillos de acceso.
+
+**Apilamiento:** chaflán/labio de centrado en la base y alojamiento en la corona superior; imanes de neodimio pequeños para retención. Se **verifica la polaridad** de los imanes y su distancia al sensor.
+
+**Montaje en uso:** apoyado en piso, pared o soporte. Se calibran por separado y se registra el modo de montaje en cada sesión (afecta el índice de fuerza).
+
+**PCB:** MCP73831/TP4056, LDO, protecciones de contacto, comparador del piezo (LM393 en SOIC-8), conector JST para batería y para la placa de sensores, pines de depuración, plano de tierra continuo y separación entre la zona del piezo y las líneas del LED.
+
+**Piezo:** resistencia en serie de ~1 MΩ, resistencia de descarga en paralelo y diodos de limitación a 3.3 V/GND antes del comparador. **[Verificar] en banco** el nivel máximo de tensión del disco con golpes reales.
+
+---
+
+## F. Arquitectura de software y aplicación
+
+### F.1 Flujo de datos
+1. App envía la rutina → pod gateway (BLE) → ESP-NOW a los demás.
+2. El pod enciende el LED y guarda `t0 = esp_timer_get_time()`.
+3. La interrupción del acelerómetro (o del comparador del piezo) guarda `t1`. Se lee una ventana de ≈ 20–50 ms de aceleración.
+4. El firmware calcula `RT = t1 − t0`, pico (g), impulso (∫a·dt) y duración, y empaqueta el evento (≤ 250 bytes en ESP-NOW).
+5. Los eventos van por BLE (notificaciones) a la app, con numeración para detectar pérdidas.
+6. La app guarda en SQLite, calcula métricas y sincroniza con la nube.
+7. El motor de análisis genera las sugerencias.
+
+### F.2 Funciones de la app
+Perfil, rutinas (creador por bloques: estímulo, descanso, series), sesión en vivo, desempeño (gráficas de tiempo de reacción, aceleración e índice de fuerza), comparación con sesiones previas, leaderboard (local en v1; en línea después), recompensas (reglas por mejora porcentual) y gestión de pods (emparejado, batería, firmware). Se **inspira en el flujo de registro de HEVY y en los patrones de BlazePod sin copiar interfaz, nombres ni recursos gráficos**.
+
+### F.3 Integración de IA (por capas)
+1. **Estadística determinista:** media/mediana/σ del tiempo de reacción, fatiga (diferencia entre el primer y último tercio de la sesión), asimetría entre pods, tendencia entre sesiones.
+2. **Reglas:** umbrales por perfil (p. ej., "RT +15 % en el último tercio").
+3. **LLM:** recibe **solo el JSON de métricas** y devuelve texto en un formato restringido. Restricciones: no dar consejo médico, no inventar cifras y citar la métrica de origen.
+4. **Validación automática:** un verificador comprueba que todas las cifras del texto existan en el JSON de entrada.
+
+### F.4 Plataformas
+- **Android:** permisos BLE por versión (Android 12+ pide `BLUETOOTH_SCAN/CONNECT`) y servicio en primer plano para sesiones largas.
+- **iOS:** el segundo plano para BLE tiene límites; la sesión se mantiene con la pantalla activa.
+- **HarmonyOS:** las versiones con compatibilidad con APK de Android pueden ejecutar la app tal cual; las versiones sin ella requieren un port (ArkTS/OpenHarmony). **[Verificar]** versión objetivo, APIs BLE y mecanismo de distribución antes de comprometerse.
+
+---
+
+## G. Presupuesto
+
+> Todos los precios son **[Estimado]**. Para cada línea: verificar en MercadoLibre México, Unit Electronics, SandoRobotics o Mouser (entrega < 3 semanas) y guardar captura con fecha.
+
+### G.1 Un pod instrumentado (el que debe caber en $1,500)
+
+| Rubro | Componente | Cant. | Estimado MXN |
+|---|---|---|---|
+| Electrónica | ESP32 DevKit / ESP32-WROOM-32E | 1 | 120–180 |
+| Sensor de alta g | Módulo ADXL375 (USD 24.95 en Adafruit **[Confirmado]**) | 1 | 460–600 (importación) |
+| Sensor de respaldo | Disco piezoeléctrico 27 mm + limitador | 1 | 15–30 |
+| Iluminación | Aro WS2812B de 12–16 LEDs | 1 | 70–130 |
+| Batería | Celda 18650 protegida ≥ 2,000 mAh con pestañas y cables | 1 | 100–200 |
+| Carga | TP4056 USB-C con protección | 1 | 25–45 |
+| Regulación | LDO 3.3 V + comparador LM393 + pasivos | 1 lote | 30–60 |
+| Carga por apilamiento | Pogo pins (6) + anillos en PCB | 1 lote | 30–70 |
+| PCB | Placa cobreada del laboratorio + químicos o fabricación externa | 1 | 30–120 |
+| Carcasa | Filamento PETG | ≈ 150 g | 50–90 |
+| Superficie | Filamento TPU 95A + espuma EVA | ≈ 60 g | 50–110 |
+| Mecánica | Imanes, tornillería, silicona, cables | 1 lote | 60–110 |
+| **Total estimado** | | | **≈ 1,040–1,745** |
+
+**Lectura honesta:** el extremo bajo cabe en $1,500 y el alto no. El ADXL375 es por mucho el mayor costo (≈ 30–40 % del total). Si el módulo no se consigue a ≤ $450 con entrega < 3 semanas, la alternativa es el H3LIS331DL (≈ $150–300 **[Verificar]**), que ahorra ≈ $200–300.
+
+### G.1b Presupuesto con los precios cotizados por el equipo (reemplaza la estimación de G.1)
+
+| Componente | Proveedor | Cotizado MXN |
+|---|---|---:|
+| ESP32-WROOM-32E | Mouser MX | 281 |
+| Módulo ADXL375 | Amazon MX | 344 |
+| Pogo pins magnéticos (par) | Amazon / ML | ≈ 150 |
+| Celda 18650 protegida | Steren / ML | ≈ 125 |
+| Aro WS2812B de 16 LEDs | Unit | 29 |
+| Piezo 27 mm | Unit | 10 |
+| TP4056 USB-C | Unit | 9 |
+| AMS1117 3.3 V | Unit | 3 |
+| **Total electrónica cotizada** | | **≈ 951** |
+
+**Correcciones a la cotización:**
+- **AMS1117 → AP2112K-3.3 (u otro LDO de baja caída).** La caída de ~1.1 V del AMS1117 no permite 3.3 V con una celda de 1S. El precio del AP2112K está **[Pendiente]**.
+- **"Chip desnudo ≈ $70":** ese precio corresponde al módulo WROOM-32E en LCSC (≈ USD 3.1–3.8 **[Confirmado]**). El chip desnudo no es viable para este equipo (paso fino, RF, flash, cristal).
+- **ESP32 a $281:** confirmar si incluye envío e IVA. Una DevKit local puede ser más barata para el prototipo **[Pendiente]**.
+- **ADXL375 a $344:** verificar autenticidad (≈ 20.5 LSB/g en reposo, no 256 como un ADXL345) y política de devolución.
+- **18650:** medir la capacidad real; la autonomía esperada es ≈ 8–9 h de entrenamiento, no días.
+- **TP4056:** verificar la versión con protección (DW01 + 8205); sin gestión de energía, no usar el pod mientras carga.
+- **Aro WS2812B:** confirmar que sean 16 LEDs.
+
+**Qué falta para llegar a un pod completo [Estimado]:** pasivos, comparador, conectores, programador y pestañas de la celda ≈ $80–130; PCB ≈ $30–120; carcasa, superficie de golpeo y mecánica ≈ $160–310.
+
+**Total esperado:** ≈ **$1,221–1,511** con los pogo magnéticos y ≈ **$1,071–1,361** sin ellos. Está al límite de los $1,500; por eso conviene posponer el par de pogo hasta la semana 4–5, cuando la decisión de apilamiento lo justifique.
+
+
+### G.2 Qué queda fuera del límite
+- Módulos adicionales para pruebas multi-pod y de apilamiento (cada módulo reducido: ESP32 + aro + batería + carga + carcasa ≈ $450–650 [Estimado]).
+- Impresora 3D y filamento sobrante, equipo de laboratorio, herramientas, osciloscopio/analizador lógico.
+- Cuentas de desarrollador de Apple/Google, dominio, backend y créditos de API de IA.
+- Materiales del banco de calibración (péndulo, masas, celda de carga + HX711 de referencia ≈ $150–350 [Estimado, Verificar]). La ruta opcional de fuerza directa (D.2b) tampoco está en el presupuesto base.
+
+### G.3 Cómo verificar los precios
+1. Buscar cada modelo exacto en las 4–5 tiendas y registrar precio, existencia y tiempo de envío.
+2. Para importaciones, sumar envío e IVA/aranceles y descartar lo que supere 3 semanas.
+3. Fijar el precio final con captura de pantalla de la tienda.
+
+---
+
+## H. Plan de desarrollo de 8 semanas
+
+> **Día 1:** pedir todo lo importado. El plazo de entrega es el riesgo crítico del calendario.
+
+| Sem. | Actividades | Entregables | Dependencias | Criterio de aceptación |
+|---|---|---|---|---|
+| 1 | Cerrar requisitos; pedidos; banco con ESP32 + aro LED; esqueleto de firmware; CAD v0; app React Native "hola BLE" | Lista de compras confirmada; LEDs con 3 patrones; CAD v0 | Proveedores | ESP32 enciende patrones y la app ve el dispositivo |
+| 2 | Integrar acelerómetro y piezo; medición de RT; GATT BLE; primera impresión; pantalla de sesión en vivo | RT y pico de aceleración por BLE; carcasa v1 | Llegada del ADXL375 (o alternativa) | RT dentro de ±5 ms respecto a una referencia simple |
+| **3** | **Pod funcional 1.0 (perfboard + módulos)** con carga USB-C; app: sesión + historial básico; diseño de PCB v1 | **Demo: un pod, LEDs, impacto, RT, BLE y app registrando una sesión** | Semanas 1–2 | 100 impactos de prueba registrados sin pérdida |
+| 4 | Fabricar PCB v1; gateway BLE + ESP-NOW con 2 módulos (prueba de coexistencia de 30 min); banco de calibración; gráficas | PCB v1; sincronización de 2 módulos (el segundo puede ser reducido) | PCB del laboratorio | Pérdida < 1 %, 0 eventos BLE perdidos, consumo medido |
+| 5 | Carga por apilamiento con pogo magnéticos y contactos rehundidos (par comercial + base de maqueta); carcasa v2; rutinas | Prueba de carga apilada; decisión de continuar o descartar | Piezas de contacto | Carga estable ≥ 30 min, contactos < 45 °C, resistencia estable tras 500 ciclos |
+| 6 | Calibración del índice de fuerza; motor de análisis (reglas + LLM); leaderboard y recompensas locales | Curvas de calibración; análisis funcionando | Banco de calibración | Repetibilidad medida y reportada |
+| 7 | Validación: 10,000 impactos, autonomía de 3 h, comunicación, compatibilidad Android/iOS | Reporte de pruebas | Todo integrado | Ver sección I |
+| 8 | Correcciones, documentación, demostración final, plan de siguientes pasos | Prototipo, manual, informe | — | Demo completa con lo que cumpla |
+
+**Si hay retrasos, el orden de recorte es:** HarmonyOS → leaderboard en línea → recompensas → carga por apilamiento (queda USB-C) → ESP-NOW multi-pod (queda BLE entre pods o un pod por vez).
+
+---
+
+## I. Plan de pruebas y validación
+
+### I.1 Qué significa "90 %" en cada función
+
+| Función | Métrica | Definición de 90 % (objetivo propuesto) | Procedimiento |
+|---|---|---|---|
+| Tiempo de reacción | Error absoluto vs. referencia | ≥ 90 % de las mediciones dentro de ±5 ms | Banco con pulsador y analizador lógico o cámara de alta velocidad; ≥ 200 pruebas |
+| Aceleración | Error relativo | ≥ 90 % dentro de ±10 % en el rango calibrado | Péndulo/caída con referencia (acelerómetro de referencia o geometría conocida) |
+| Índice de fuerza | Error y repetibilidad | **No se compromete 90 % en el prototipo.** Objetivo: CV < 10 % y ±20 % tras calibrar | Péndulo con energía conocida; comparación con celda de carga en condiciones estáticas |
+| Detección de impacto | Precisión, sensibilidad y F1 | ≥ 0.90 con eventos etiquetados | ≥ 300 eventos (golpes, toques ligeros, vibración, caídas, apilamiento); matriz de confusión |
+| Recomendaciones de IA | Evaluación por rúbrica + consistencia | ≥ 90 % de las recomendaciones "correctas, seguras y accionables" según 2–3 entrenadores; **100 %** de cifras consistentes con los datos | 50 sesiones de prueba (reales y sintéticas); rúbrica de 5 puntos; revisión ciega |
+
+### I.2 Pruebas
+- **Mediciones:** repetibilidad en 10 series de 30 impactos por condición de montaje; deriva térmica básica.
+- **Contacto y RT:** con superficie blanda y dura; toques ligeros y fuertes; latencia fija y jitter.
+- **Resistencia:** 10,000 impactos (primero con péndulo/solenoide y luego con golpes reales), con inspección cada 1,000; se repite la calibración antes y después para medir la **degradación** del sensor.
+- **Autonomía:** descarga con el perfil de uso definido (brillo, duty, radio) hasta 3.3 V, con registro de corriente.
+- **Comunicación:** 1 h con 2–3 pods; pérdida de paquetes, latencia, reconexión y distancia.
+- **Carga por apilamiento:** corriente y temperatura en contactos; efecto de sudor/polvo; ciclos de apilado (≥ 500).
+- **Seguridad eléctrica:** cortocircuito de contactos, sobrecarga y temperatura de la celda (con precauciones).
+- **Compatibilidad:** al menos 1 dispositivo Android 8+ y 1 iPhone con iOS 14+; HarmonyOS si hay equipo.
+
+---
+
+## J. Análisis de riesgos y viabilidad
+
+| Riesgo | Tipo | Prob./Impacto | Mitigación |
+|---|---|---|---|
+| ADXL375 no llega a tiempo o rompe el presupuesto | Calendario/costo | Alta/Alto | Pedirlo el día 1; plan B con H3LIS331DL; trabajar con ESP32 + piezo mientras tanto |
+| Índice de fuerza poco preciso | Técnico | Alta/Medio | Presentarlo como índice calibrado; no prometer ±10 % |
+| Contactos expuestos, cortos o corrosión | Seguridad | Media/Alto | Salida desenergizada sin pod, límite de corriente, ENIG o pogo dorados, fusible |
+| Batería dañada por golpes | Seguridad | Media/Alto | 18650 protegida, portacelda con espuma, prueba de caída |
+| Interferencia BLE + ESP-NOW | Técnico | Media/Medio | Medir en banco; plan B: Wi-Fi/UDP o 1 pod por vez |
+| Equipo del laboratorio limita la PCB | Técnico | Media/Medio | Confirmar capacidades en la semana 1; plan B: fabricación externa |
+| HarmonyOS | Técnico | Alta/Bajo | Declarar como deseable |
+| Costos de IA y privacidad | Económico | Baja/Bajo | Enviar solo métricas agregadas, sin datos personales |
+| Alcance excesivo | Calendario | Alta/Alto | Congelar el alcance de la semana 3; usar el orden de recorte de la sección H |
+
+**Clasificación de funciones**
+- **Viables en el prototipo inicial:** LEDs, RT local, aceleración, BLE, app con historial y gráficas, análisis con reglas + texto de IA, carga USB-C.
+- **Viables con ajustes:** índice de fuerza calibrado, ESP-NOW multi-pod (módulos reducidos), carga por apilamiento de 2 pods, leaderboard local.
+- **Para una versión futura:** HarmonyOS completo, carga inductiva, galgas extensométricas, leaderboard en línea, ML propio, certificación y comercialización.
+
+### Consideraciones regulatorias (México)
+- **Prototipo académico:** uso de módulos certificados con documentación, sin comercialización. Aun así, **[Verificar]** con la institución cualquier requisito de laboratorio.
+- **Comercialización:** probablemente aplican homologación de equipos de radiocomunicación en 2.4 GHz (norma NOM-208-SCFI-2016 **[Verificar vigencia]**), seguridad de productos electrónicos (NOM-001-SCFI **[Verificar versión vigente]**), etiquetado e información comercial (**[Verificar]**) y requisitos de baterías de litio, incluido su transporte (UN 38.3).
+- La autoridad en telecomunicaciones cambió con la reforma de 2025 (el IFT fue sustituido por nuevos organismos). **[Verificar]** ante quién se tramita hoy la homologación.
+- Usar un módulo certificado **no exime automáticamente** al producto final: la integración, la antena y la evaluación del equipo completo se revisan por separado.
+
+---
+
+## K. Propuesta final
+
+### K.1 Arquitectura recomendada
+Pod cilíndrico (Ø 130 × 70 mm) con **ESP32** + **ADXL375** (o H3LIS331DL) + disco piezoeléctrico, aro **WS2812B**, **18650 protegida**, cargador **TP4056 USB-C**, LDO 3.3 V y carcasa **PETG + tapa de TPU/EVA**. Comunicación **BLE a la app + ESP-NOW entre pods**. App **Flutter** con SQLite, análisis por reglas y redacción con LLM.
+
+### K.2 Lista definitiva de componentes (a confirmar contra tiendas)
+1. ESP32-WROOM-32E (DevKit para v1; módulo para PCB propia).
+2. Módulo ADXL375 (plan B: H3LIS331DL).
+3. Disco piezoeléctrico 27 mm, LM393, resistencias y diodos limitadores.
+4. Aro WS2812B de 12–16 LEDs.
+5. Celda 18650 protegida ≥ 2,000 mAh con pestañas y cables.
+6. TP4056 con USB-C y protección (MCP73831 para la PCB propia).
+7. LDO 3.3 V tipo AP2112K-3.3.
+8. Pogo magnéticos (par comercial para el prototipo; pines sueltos + imanes para un lote), contactos rehundidos.
+9. PETG, TPU 95A, EVA, silicona, tornillería.
+
+### K.3 Secuencia de fabricación e integración
+1. Pedidos el día 1 → banco de LEDs + ESP32.
+2. Integrar sensores y probar RT con referencia.
+3. Imprimir carcasa v1; montar el pod con módulos (**demo semana 3**).
+4. PCB v1 → ESP-NOW → banco de calibración.
+5. Anillos de contacto y carga por apilamiento.
+6. Calibración, IA, validación y cierre.
+
+### K.4 Qué simplificar para la primera versión
+- **Fuerza:** índice calibrado, no medición directa.
+- **Multi-pod:** pods adicionales reducidos y fuera del límite de $1,500.
+- **Carga por apilamiento:** primero USB-C; apilamiento con 2 pods si el calendario lo permite.
+- **HarmonyOS:** diferido.
+- **Leaderboard y recompensas:** locales.
+
+Ninguno de estos requerimientos debe darse por cumplido hasta superar las pruebas de la sección I.
+
+---
+
+## Apéndice: cálculo de batería
+
+**Supuestos [Estimado, verificar en banco]:** ESP32 con radio activo ≈ 110 mA promedio; 12 LEDs a 40 % de brillo (≈ 24 mA cada uno encendido) con 30 % de duty ≈ 86 mA; reposo de LEDs ≈ 12 mA; sensores y otros ≈ 5 mA. Total ≈ **215 mA**.
+
+- Energía para 3 h: 215 mA × 3 h ≈ **645 mAh**.
+- Con 80 % de profundidad de descarga útil: 645 / 0.8 ≈ **806 mAh**.
+- Con 25–30 % de margen por envejecimiento y temperatura: ≈ **1,000–1,050 mAh**.
+- **Recomendación: celda de ≥ 2,000 mAh** (margen ≈ ×2, que cubre picos y la pérdida de capacidad real de celdas económicas).
+- **Peor caso:** 12 LEDs en blanco total ≈ 720 mA + 110 mA ≈ 830 mA → ≈ 2.4 h con 2,000 mAh. Por eso el brillo máximo se limita por firmware.
+- Si se requiere el consumo de la radio en RX continuo, se puede reducir con ciclos de trabajo en ESP-NOW **[Verificar]**.
+
+
+================================================================================
+ANEXO B — DOCUMENTO: REVISIÓN CRÍTICA (pod-boxeo-revision-critica.md, versión actual)
+================================================================================
+
+# Revisión crítica de arquitectura, escalabilidad y viabilidad
+**Complemento al diseño técnico del pod de boxeo y artes marciales** · Fecha de consulta de fuentes: 1 de octubre de 2026
+
+> **Etiquetas:** **[Confirmado]** = verificado en una fuente consultada hoy (ver "Fuentes" al final). **[Estimado]** = cálculo o rango propio, sin verificar. **[Hipótesis]** = supuesto por validar. **[Pendiente]** = no se pudo verificar; se indica cómo hacerlo.
+>
+> **Sobre el PDS:** no tengo el PDS en esta conversación. Usé como fuente los requerimientos del primer prompt y el documento técnico previo. Si el PDS dice algo distinto (por ejemplo prioridades o cifras), avísame y ajusto este documento.
+>
+> **Tipo de cambio supuesto:** 18.5 MXN/USD **[Pendiente: verificar el día de compra]**. Todos los precios en MXN son derivados de ese supuesto o estimados.
+
+---
+
+## Decisiones vigentes (actualización posterior a la revisión)
+
+Estas decisiones **prevalecen** sobre cualquier texto anterior, de este documento o del diseño técnico inicial, que las contradiga.
+
+| Tema | Decisión | Motivo |
+|---|---|---|
+| Comunicación | Un solo pod (gateway) se conecta por BLE al teléfono; los demás se comunican con él por ESP-NOW. Cualquier pod puede asumir el rol; la app elige el de mayor batería | iOS maneja mal varias conexiones BLE y eso no se puede corregir. La coexistencia BLE + ESP-NOW es firmware propio |
+| Plan B de comunicación | BLE entre pods (máximo 3–4 seguidores) | Más robusto ante interferencia y consume menos en los seguidores, pero tiene peor sincronía y es más complejo. Se activa si falla la prueba de la semana 4 |
+| Entrega de eventos | Confirmación en la aplicación con la clave (`dev_id`, `boot_id`, `seq`). El seguidor borra el evento tras la confirmación del gateway, y este tras la de la app. Si el gateway falla, la app reconecta con otro pod | ESP-NOW no garantiza entrega de extremo a extremo |
+| Carga | USB-C en cada pod (vía base) y apilamiento con pogo magnéticos y contactos rehundidos | El apilamiento es requisito del PDS. El desnivel protege contactos y mano |
+| Diseño del apilamiento | Labio perimetral más alto que el aro de contacto; hombro mecánico que soporta la carga; sensor Hall que habilita la salida superior; MCU alimentado por la batería; carga por pod ≈ 500 mA; modo carga que apaga estímulos y duerme el acelerómetro | Tolerancias, energía en contactos expuestos, corriente acumulada y falsos positivos en pods apilados |
+| Hito del apilamiento | Prototipo en las semanas 4–5; continuar o descartar al cierre de la semana 5: carga estable ≥ 30 min con 2 pods, contactos < 45 °C, resistencia estable tras 500 ciclos | Criterios propuestos por mí |
+| Hito de ESP-NOW | Prueba en la semana 4 con 2–3 pods durante 30 min: pérdida < 1 %, 0 eventos BLE perdidos y consumo medido | Criterios propuestos por mí |
+| Regulador | AP2112K-3.3 u otro LDO de baja caída; **no AMS1117** | La caída de ~1.1 V del AMS1117 no permite 3.3 V con una celda de 1S |
+| Cargador | TP4056 USB-C **con protección** (DW01 + 8205). No hay gestión de energía: el pod no se usa mientras carga (LEDs y estímulos apagados) | La terminación de carga se confunde con la carga conectada |
+| Acelerómetro | Módulo ADXL375 ($344) para el prototipo y las primeras 5 unidades, verificando autenticidad (≈ 20.5 LSB/g en reposo); CI en PCB propia para una segunda tirada | Reduce el riesgo de soldadura LGA y de calendario |
+| Batería | Celda protegida con pestañas y cables; medir la capacidad real con una descarga | El portacelda de resorte puede perder contacto con los golpes. La capacidad anunciada no está verificada |
+| App | React Native | Capacidades del equipo |
+| HarmonyOS | Fuera de las 8 semanas | HarmonyOS NEXT no ejecuta APK de Android de forma nativa **[Confirmado]** |
+
+---
+
+## 0. Qué cambia respecto al documento anterior
+
+Esta revisión corrige decisiones de mi propuesta previa. Las más importantes:
+
+| # | Decisión previa | Cambio | Por qué |
+|---|---|---|---|
+| 1 | App en **Flutter** | **React Native** | Dart no está entre las capacidades del equipo (sí lo están React y React Native). Fue una decisión mía sin considerar el equipo. |
+| 2 | **ESP-NOW** entre pods con "pod maestro" | **Se mantiene: un pod hace de gateway BLE y los demás se comunican con él por ESP-NOW.** El rol es intercambiable; plan B: BLE entre pods | iOS maneja mal varias conexiones BLE y eso no se puede corregir. La coexistencia BLE + ESP-NOW es firmware propio y se mide en la semana 4. El "maestro" fijo se sustituye por un rol que cualquier pod puede asumir. |
+| 3 | Módulo **ADXL375** por pod | **Módulo ($344, Amazon MX, verificar autenticidad) para el prototipo y las primeras 5 unidades; CI en PCB propia para una segunda tirada** | Con el precio cotizado por el equipo, diez módulos suman ≈ $3,440 MXN (sin confirmar descuento ni stock para 10). El módulo evita soldar un LGA en la primera tirada. |
+| 4 | Portacelda para la 18650 | Celda **con pestañas y cables**, o LiPo con soporte | Un portacelda de resorte puede perder contacto con los golpes. |
+| 5 | Carga por apilamiento como función "importante" | **Se mantiene** con pogo magnéticos y contactos rehundidos; USB-C en cada pod como vía base; decisión de continuar o descartar al cierre de la semana 5 | Responde al PDS. El desnivel protege los contactos del golpe y de la mano. Sigue siendo el subsistema con más riesgo. |
+| 6 | HarmonyOS "deseable" | **Fuera del alcance de las 8 semanas** | HarmonyOS NEXT no ejecuta APK de Android de forma nativa **[Confirmado]**. |
+| 7 | Presupuesto de $1,500 MXN | Se separa: **$1,500 = prototipo (1 unidad)**; el lote de 10 requiere **≈ $10,000–13,000 MXN** **[Estimado]** | Los $1,500 no alcanzan para 10 unidades. |
+
+---
+
+# PASO 1 — Auditoría de la arquitectura preliminar
+
+| Decisión actual | Justificación existente | Problema detectado | Consecuencia | Alternativa propuesta |
+|---|---|---|---|---|
+| ESP32-WROOM-32E como MCU | BLE + Wi-Fi, ecosistema, el equipo lo domina | Bien justificada. Riesgo: coexistencia BLE + ESP-NOW y consumo con el radio activo, sin medir | Autonomía y latencia podrían quedar por debajo de lo esperado | Mantenerlo. Medir consumo y estabilidad BLE en la **semana 2**, antes de congelar la PCB |
+| Acelerómetro ±200 g (ADXL375) | Los acelerómetros de ±16 g se saturan en golpes | Justificado técnicamente, **no económicamente en módulo**. Un solo proveedor (Analog Devices) y es el componente más caro | Riesgo de importación y de presupuesto. Con 10 unidades el módulo no cabe | CI en PCB propia (≈ USD 6–7 por pieza en LCSC **[Confirmado]**, existencias pendientes). Plan B: otro acelerómetro de alta g **[Pendiente]** |
+| Piezo como segundo canal | Detecta toques ligeros y da inicio rápido | Parcialmente justificado: añade diseño analógico y ajuste de umbral | Más tiempo de integración y de calibración | Probarlo en la semana 2. **Si el ADXL375 detecta toques ligeros de forma fiable, se elimina** |
+| Índice de fuerza a partir de aceleración | Única vía barata | Correlación con fuerza dependiente del montaje y del material; el 90 % no aplica | Se puede prometer más de lo que se mide | Reportar un **índice relativo** (g e impulso). La fuerza en newtons queda como estimación calibrada y diferida |
+| Flutter | Una sola base para Android/iOS | **Sin justificación para este equipo** | Curva de aprendizaje de Dart en 8 semanas | React Native (ver Paso 4) |
+| ESP-NOW + gateway BLE de un solo pod | Evita las conexiones BLE múltiples en iOS, que el equipo no puede corregir | Un solo radio compartido entre BLE y ESP-NOW en el gateway; mayor consumo en el gateway; sin entrega garantizada de extremo a extremo | Latencia, pérdidas y autonomía podrían salir peor de lo esperado | **Se mantiene.** Rol intercambiable, confirmación de eventos en la aplicación, prueba en la semana 4 y plan B con BLE entre pods (3–4 seguidores) |
+| Carga por apilamiento con pogo magnéticos y contactos rehundidos | Diferenciador del producto y requisito del PDS | Contactos en la cara de golpeo, corriente acumulada, tolerancias (la compresión del pad puede superar el desnivel) y energía en contactos expuestos | Cortos, desgaste, retrasos | **Se mantiene como hito con decisión al cierre de la semana 5.** Hombro mecánico que soporta la carga, sensor Hall que habilita la salida, MCU alimentado por la batería y USB-C en cada pod como vía base |
+| 18650 con portacelda | Robusta ante golpes | El resorte del portacelda puede perder contacto con los impactos. Riesgo de celdas falsificadas | Reinicios inesperados, seguridad | Celda protegida **con pestañas y cables** de proveedor confiable, o LiPo en soporte rígido |
+| Aro WS2812B | Un solo pin, fácil | Los LED de este tipo pueden fallar si la temporización depende del CPU y el BLE interrumpe | Parpadeos y errores visuales | Controlarlo con **RMT/I2S** (periférico de hardware) |
+| PCB propia desde la semana 4 | Integración y robustez | Depende del equipo de laboratorio; para 10 unidades el fresado/ataque químico no escala | Retrasos y repetibilidad baja | Para el lote: PCB fabricada por un servicio externo (JLCPCB u otro). Para el prototipo: módulos |
+| Carcasa impresa en PETG + TPU | Se fabrica en casa | **Tiempo de impresión para 10 unidades** (cuerpo, tapa, difusor, base) | Cuello de botella, variación entre piezas | Medir el tiempo real de una pieza en la semana 2. Si excede ≈ 8 h por pod **[Estimado]**, repartir impresoras o simplificar |
+| Supabase + SQLite + LLM | Postgres, auth, bajo costo | Bien justificada. Riesgos: pausa del plan gratuito, clave de API del LLM y privacidad | Servicio no disponible durante el piloto | Ver Paso 4: plan de pago durante el piloto y respaldo con plantillas por reglas |
+| HarmonyOS | Mercado objetivo | HarmonyOS NEXT no corre APK de Android de forma nativa **[Confirmado]** | App Android actual no instalable en esos equipos | Posponer; evaluar una app nativa o una PWA solo para consulta de resultados |
+| Presupuesto de $1,500 MXN | Restricción del proyecto | Solo aplica a 1 unidad | Falta de fondos para el lote | Pedir presupuesto aparte para 10 unidades |
+
+**Puntos únicos de falla identificados:** (1) el ADXL375 (proveedor único, importación); (2) la batería (seguridad, calidad); (3) el rol de gateway BLE (mitigado: cualquier pod puede asumirlo y la app reconecta con otro); (4) la cuenta de Supabase (pausa por inactividad); (5) el backend para la generación de recomendaciones (mitigado con un modo sin conexión).
+
+**Qué cabe en 8 semanas:** un pod con LEDs, impacto, tiempo de reacción, BLE, app con historial y gráficas, análisis con reglas y recomendaciones con LLM, y 5 unidades si la PCB se ordena a más tardar en la semana 4 (ver Paso 6). Como entregables paralelos con decisión de continuar o descartar: ESP-NOW con 2 pods (semana 4) y prototipo de apilamiento (semana 5). **Para la v2:** HarmonyOS, fuerza en newtons, leaderboard en línea, ML propio.
+
+**Conflictos entre requerimientos:** (a) 10 unidades vs. $1,500 MXN; (b) apilamiento y superficie de golpeo en la misma cara; (c) 3 h de autonomía vs. LEDs al brillo máximo; (d) 90 % de precisión "global"; (e) 5–10 unidades vs. 8 semanas con PCB propia.
+
+---
+
+# PASO 2 — Validación de la arquitectura de IA
+
+**Estrategia recomendada: híbrida y mínima.** El microcontrolador mide, el teléfono calcula, la nube solo redacta recomendaciones a partir de métricas ya agregadas.
+
+| Función | ¿Requiere IA? | Procesamiento | Input | Output | Latencia objetivo | Alternativa sin IA |
+|---|---|---|---|---|---|---|
+| Detección del impacto | **No** (umbral + reglas) | MCU | Aceleración (±200 g) y señal del piezo | Evento válido/no válido y marca `t1` | ≤ 2 ms hasta la marca [Hipótesis] | Es la solución base. ML (TFLite Micro) solo si hay muchos falsos positivos |
+| Cálculo de pico, impulso, duración y tiempo de reacción | **No** (determinista) | MCU | Ventana de muestras y marcas `t0`/`t1` | Valores por evento | ≤ 5 ms tras el impacto [Hipótesis] | Cálculo directo |
+| Índice de fuerza | **No** (función de calibración) | Teléfono (o MCU) | Pico, impulso, modo de montaje | Índice relativo | < 100 ms | Regresión lineal calibrada |
+| Identificación de errores y patrones (fatiga, asimetría) | **Parcial** | Teléfono | Métricas de la sesión | Banderas y valores | < 1 s tras terminar | Umbrales y percentiles personales |
+| Comparación histórica | **No** | Teléfono (SQLite) y nube | Sesiones previas | Diferencias, gráficas | < 1 s | Consultas SQL |
+| Recomendaciones personalizadas | **Sí, acotada** (LLM) | Nube (función de borde) | JSON de métricas agregadas, sin datos personales | Texto estructurado | ≤ 5–10 s, asíncrona [Hipótesis] | Plantillas de texto activadas por reglas (modo sin conexión) |
+| Predicción de tendencias | **No justificada en el MVP** | — | — | — | — | Regresión lineal o media móvil. Con pocas sesiones por usuario un modelo no aporta valor |
+
+**Reparto de procesamiento:**
+- **MCU:** marcas de tiempo, detección, métricas por evento, rutina autónoma y almacenamiento temporal.
+- **Teléfono:** persistencia, gráficas, comparaciones, índice de fuerza, reglas y recomendaciones de respaldo.
+- **Nube:** autenticación, respaldo, sincronización y llamadas al LLM.
+
+**Tiempo de reacción:** `RT = t1 − t0`, ambos con `esp_timer_get_time()` en el mismo pod. Ni BLE ni Internet intervienen.
+
+**IA generativa sin datos innecesarios:** la función de borde recibe solo estadísticos (medias, desviaciones, tendencias, número de eventos) y un identificador seudónimo. No recibe nombre, correo, ubicación ni series completas. La clave de la API vive en el servidor, nunca en la app. Si el servicio falla, la app muestra el texto de respaldo generado por reglas.
+
+**Validación (cuatro niveles distintos, ningún porcentaje general):**
+
+| Nivel | Métrica | Conjunto de validación | Procedimiento |
+|---|---|---|---|
+| Medición de sensores | Error de RT vs. referencia; error de aceleración; CV del índice | ≥ 200 pruebas de RT en banco y 10 series de 30 impactos por montaje | Analizador lógico o cámara de alta velocidad; péndulo/caída de masa conocida |
+| Exactitud de clasificación | Precisión, sensibilidad y F1 del detector de impacto | ≥ 300 eventos etiquetados con video (golpes, toques, vibración, caídas), separados por usuario | Matriz de confusión; división entrenamiento/prueba por usuario |
+| Consistencia de recomendaciones | (a) 100 % de cifras del texto presentes en el JSON; (b) misma entrada → mismas banderas; (c) acuerdo entre revisores | 50 sesiones (reales y sintéticas) | Verificador automático; rúbrica de 2–3 entrenadores; kappa de acuerdo |
+| Utilidad percibida | Escala Likert, comprensión y uso posterior | Piloto con usuarios reales | Cuestionario y observación (Paso 8) |
+
+Ningún modelo recibe un porcentaje de "precisión" mientras no se defina el conjunto de datos y el procedimiento anteriores.
+
+---
+
+# PASO 3 — Arquitectura de datos y operación sin conexión
+
+## 3.1 Flujo y formatos
+
+`Pod → (BLE GATT) → App (SQLite) → (HTTPS) → Supabase (Postgres) → función de borde → LLM`
+
+**Evento de impacto en el pod (binario, little-endian, ≈ 40 bytes):**
+
+| Campo | Tipo | Nota |
+|---|---|---|
+| `ver` | u8 | Versión del formato |
+| `dev_id` | 6 bytes | MAC del ESP32 (identificador de fábrica) |
+| `boot_id` | u32 | Aleatorio en cada arranque |
+| `seq` | u32 | Contador de eventos desde el arranque |
+| `sess` | u16 | Identificador corto de sesión asignado por la app |
+| `stim` | u16 | Número de estímulo en la rutina |
+| `rt_us` | u32 | Tiempo de reacción en µs |
+| `peak_dg` | u16 | Pico de aceleración (0.1 g) |
+| `impulse` | u32 | Integral de aceleración (unidad definida en firmware) |
+| `dur_us` | u16 | Duración del impacto |
+| `flags` | u8 | Válido, saturado, doble golpe, sin estímulo |
+| `batt` | u8 | Porcentaje |
+| `crc` | u16 | Detección de errores |
+
+**Clave de deduplicación:** (`dev_id`, `boot_id`, `seq`). Es única por evento y sobrevive reinicios del pod.
+
+**Identificadores:**
+- *Dispositivo:* MAC del ESP32 más un nombre amigable en la app.
+- *Usuario:* UUID de Supabase Auth. Nunca se envía al pod.
+- *Sesión:* UUID v4 creado por la app. El pod recibe un identificador corto (`sess`) y la app lo mapea.
+
+**Frecuencia de envío:** una notificación BLE por evento (a lo sumo unos pocos por segundo en entrenamiento) y una de estado cada ≈ 30 s. **Marcas de tiempo:** el pod usa reloj relativo; la app asigna la hora real al recibir y calcula el desfase con un mensaje de sincronización al inicio.
+
+## 3.2 GATT propuesto
+- **Control** (escritura): iniciar/detener sesión, cargar rutina, sincronizar hora, solicitar reenvío desde `seq = N`.
+- **Eventos** (notificación): paquetes de arriba; la app responde con **ACK** del último `seq` recibido.
+- **Estado** (lectura/notificación): batería, versión de firmware, eventos pendientes, causa del último reinicio.
+
+## 3.3 Alternativas evaluadas
+
+| Tecnología | Papel | Decisión y motivo |
+|---|---|---|
+| **BLE GATT** | Pod ↔ teléfono | **Sí.** Nativo en ambos sistemas, bajo consumo, suficiente para eventos pequeños |
+| ESP-NOW | Pod ↔ pod | **Sí (base).** Un pod hace de gateway BLE hacia el teléfono y los demás se comunican con él por ESP-NOW, con confirmación de eventos a nivel de aplicación |
+| BLE entre pods | Pod ↔ pod (plan B) | **Respaldo.** Más robusto ante interferencia (salto de canal) y menor consumo en los seguidores, pero peor sincronía y más complejo (cada pod central y periférico). Máximo de 3–4 seguidores **[Pendiente: confirmar]**. Se activa si falla la prueba de la semana 4 |
+| **HTTPS** | App ↔ Supabase | **Sí.** Simple, soportado por todo, con reintentos |
+| MQTT | Dispositivo ↔ nube | **No.** Los pods no tienen salida a Internet propia y exigiría un broker |
+| WebSocket | Tiempo real en la nube | **No en el MVP.** BLE ya entrega eventos en vivo. Más adelante, Supabase Realtime para un leaderboard en vivo |
+| **Almacenamiento local (SQLite)** | App y pod | **Sí.** Base de la operación sin conexión |
+
+## 3.4 Seguridad básica
+- **BLE:** emparejamiento con cifrado (LE Secure Connections) y clave impresa en la etiqueta del pod **[Pendiente: verificar soporte en la librería BLE elegida]**. "Just Works" no protege contra interceptación activa.
+- **ESP-NOW:** claves PMK/LMK; el número de pares cifrados es limitado **[Pendiente: verificar en la documentación de Espressif]**.
+- **Nube:** HTTPS/TLS, Row Level Security por usuario en Postgres, JWT de Supabase, clave del LLM solo en el servidor.
+- **Firmware:** actualizaciones firmadas y arranque seguro quedan fuera del piloto. Se documenta como riesgo conocido.
+
+## 3.5 Qué ocurre ante cada falla
+
+| Falla | Comportamiento esperado | Qué se conserva |
+|---|---|---|
+| **1. El teléfono pierde la conexión con el pod** | El pod continúa la rutina cargada (autónomo) y guarda los eventos con `seq` | Eventos en flash del pod hasta recibir ACK. Al reconectar, la app pide reenvío desde su último `seq` |
+| **2. El usuario pierde Internet** | La app funciona completa: sesiones, gráficas y comparaciones locales; recomendaciones con plantillas | Todo en SQLite. La cola de sincronización (outbox) espera la conexión |
+| **3. El backend no responde** | Igual que el punto 2. La app reintenta con espera creciente | Sesiones locales; los envíos son idempotentes gracias a la clave de deduplicación |
+| **4. La app se cierra durante el entrenamiento** | El pod sigue y acumula eventos. Al reabrir, la app detecta la sesión pendiente y reconstruye desde el pod | Eventos en el pod (≈ 2,000 eventos ≈ 80 KB **[Estimado]**) |
+| **5. El pod se reinicia inesperadamente** | Nuevo `boot_id`; el pod marca la causa del reinicio; la sesión se divide en segmentos | Eventos previos ya enviados y con ACK. Los no confirmados se pierden si no se guardaron en flash (el registro en flash se escribe por lotes para limitar el desgaste) |
+
+**Política de sincronización:** eventos inmutables y solo se agregan; inserción con `ON CONFLICT DO NOTHING` por la clave de deduplicación; las sesiones sincronizan por lotes cuando hay red y energía; en conflictos de metadatos (nombre de rutina, notas) gana la última edición. **En el teléfono se conserva** todo el historial hasta que el usuario lo borre. **En el pod** solo se conservan eventos no confirmados. Las ondas crudas se guardan únicamente en modo de diagnóstico.
+
+---
+
+# PASO 4 — Arquitectura completa de software
+
+## 4.1 Hardware y firmware
+
+| Función | Decisión |
+|---|---|
+| Entorno | PlatformIO con Arduino-ESP32 o ESP-IDF; C/C++ (el equipo lo domina) |
+| Lectura de sensores | ADXL375 por **SPI**, FIFO e interrupción de umbral; piezo con comparador si se conserva |
+| Temporización | `esp_timer_get_time()` en µs; interrupción en IRAM que solo guarda `t1` |
+| Tareas | Núcleo 1: sensado y eventos. Núcleo 0: BLE y comunicación **[Hipótesis: validar en banco]** |
+| Control de LEDs | **RMT/I2S**, no bit-banging, para que el BLE no altere la señal |
+| Energía | Brillo máximo limitado (≈ 40 %), modem-sleep, suspensión tras inactividad y despertar por interrupción del acelerómetro **[Verificar viabilidad en banco]** |
+| Comunicación | BLE GATT al teléfono desde un solo pod (gateway); ESP-NOW entre pods; el gateway es intercambiable |
+| Almacenamiento temporal | Registro circular en LittleFS/NVS por lotes |
+| Diagnóstico | Causa de reinicio, contador de reinicios, voltaje de batería, autodiagnóstico del acelerómetro en el arranque, versión de firmware |
+
+## 4.2 Aplicación: React Native vs. PWA
+
+| Criterio | React Native | PWA |
+|---|---|---|
+| Android 8+ / iOS 14+ | Sí (según versión del framework y plugins) **[Pendiente: verificar mínimos]** | Depende del navegador |
+| Bluetooth | Plugins nativos de BLE maduros | **Web Bluetooth no está disponible en iOS Safari** **[Pendiente: confirmar en caniuse.com]** |
+| Segundo plano | Servicios en primer plano en Android; iOS limitado | Muy limitado |
+| Almacenamiento local | SQLite nativo | IndexedDB (menos confiable) |
+| Notificaciones | Soportadas | Limitadas en iOS **[Pendiente]** |
+| Complejidad | Compilaciones nativas (cuenta de Apple para iOS) **[Pendiente: costo vigente]** | Más simple, pero sin BLE en iOS |
+| HarmonyOS | **No hay soporte oficial.** HarmonyOS NEXT no ejecuta APK de Android de forma nativa **[Confirmado]**. Existen proyectos comunitarios **[Pendiente]** | El navegador podría servir para consulta, sin garantía de BLE **[Pendiente]** |
+
+**Decisión: React Native** (con *development build*, no con Expo Go, por el BLE) y una librería de BLE mantenida **[Pendiente: confirmar la versión compatible]**. El piloto en Android puede distribuirse por APK directo; en iOS, por TestFlight. **Justificación:** el equipo ya domina React, el BLE es indispensable y la PWA no lo ofrece en iOS. HarmonyOS queda fuera del MVP.
+
+## 4.3 Backend
+
+| Opción | Ventajas | Desventajas | Veredicto |
+|---|---|---|---|
+| **Supabase** | Auth, Postgres, RLS, almacenamiento y funciones de borde en un solo servicio | Plan gratuito: 2 proyectos, 500 MB de base de datos y **pausa tras 1 semana sin actividad** **[Confirmado]**. Pro cuesta USD 25/mes más uso **[Confirmado]** | **Elegido** |
+| Firebase | Auth y sincronización ágiles | Modelo NoSQL; consultas de series temporales menos naturales; dependencia de Google | Alternativa |
+| Python propio (FastAPI + VPS) | Control total | Mantener servidor, parches, TLS y respaldos; innecesario para 10 unidades | Descartado |
+
+**Uso para el piloto:** autenticación por correo, tablas `devices`, `sessions`, `impacts` (con clave única de deduplicación), una función de borde para el LLM y almacenamiento para los archivos de firmware si se usa OTA. Para evitar la pausa durante el piloto, contratar el plan Pro el mes de pruebas (≈ USD 25, ≈ $460 MXN **[Estimado]**).
+
+## 4.4 Página de venta (separada de la app)
+- **Solución:** sitio estático con React (Vite o similar) en un servicio gratuito de alojamiento estático, más un formulario de contacto y un enlace directo de WhatsApp (canal habitual en México) **[Hipótesis]**.
+- **Contenido:** propuesta de valor, demostración en video, funciones, especificaciones honestas (marcando lo que está en validación), preventa o lista de espera y aviso de privacidad.
+- **Costos:** dominio ≈ $200–400 MXN al año **[Estimado; verificar]**. Alojamiento: nivel gratuito **[Pendiente: verificar condiciones de uso comercial]**.
+- **Sin pagos en línea en el piloto.** Si se requiere cobro, usar un enlace de pago de un procesador local más adelante.
+- **Independencia:** no comparte base de datos ni cuentas con la app; solo un enlace a la descarga.
+
+---
+
+# PASO 5 — Flujo de datos y latencia
+
+Caso: el usuario inicia una rutina, recibe un estímulo, golpea y consulta sus resultados. **Todas las latencias son estimaciones o metas de diseño, no mediciones.**
+
+| Etapa | Componente | Dato | Protocolo | Latencia estimada | Falla posible | Fallback |
+|---|---|---|---|---|---|---|
+| 1. Inicio de rutina | App → Pod | Rutina y `sess` | BLE (escritura) | 15–100 ms [Estimado; depende del intervalo de conexión] | Pod desconectado | Reintento; el pod ejecuta la última rutina cargada |
+| 2. Activación del estímulo | Firmware → LEDs | Patrón | RMT | ≈ 1 ms para 16 LEDs [Estimado] | Error de datos del LED | Reenvío del cuadro |
+| 3. Registro temporal `t0` | Firmware | µs | Interno | < 0.1 ms [Hipótesis] | Marca tomada antes de que el LED cambie | Se calibra el desfase fijo con un fotodiodo en banco |
+| 4. Detección del impacto `t1` | Acelerómetro → MCU | Interrupción | SPI/GPIO | ≈ 1–3 ms de retardo del sensor y el elastómero [Hipótesis: medir] | Falso positivo por vibración | Reglas de duración y de ventana post-estímulo |
+| 5. Procesamiento de la señal | MCU | Ventana de muestras | SPI | < 5 ms [Hipótesis] | Saturación del sensor | Bandera `saturado` |
+| 6. Cálculo de métricas | MCU | RT, pico, impulso | Interno | < 2 ms [Estimado] | Evento sin estímulo previo | Bandera `sin_estimulo` |
+| 7. Transmisión a la app | Pod → App | Evento de ≈ 40 B | BLE (notificación) | 15–50 ms [Estimado] | Pérdida de paquetes | Reenvío por `seq` |
+| 8. Almacenamiento | App | Fila SQLite | Local | < 20 ms [Estimado] | Almacenamiento lleno | Aviso y exportación |
+| 9. Sincronización | App → Supabase | Lote de sesión | HTTPS | Segundos, diferida | Sin Internet | Outbox y reintentos |
+| 10. Análisis | App y función de borde | Métricas agregadas | HTTPS | < 1 s (reglas); 2–10 s (LLM) [Estimado] | Fallo del LLM | Plantillas por reglas |
+| 11. Presentación | App | Gráficas | Local | < 1 s [Meta] | — | Resultados básicos sin recomendación |
+
+**Latencia de medición local (afecta a los datos):** etapas 3 a 6. El tiempo de reacción solo depende de ellas. Un **sesgo fijo** por retardo del sensor y del elastómero se mide en banco y se compensa. **Latencia de visualización y sincronización (no afecta a los datos):** etapas 1, 7 a 11. Un retraso en el inicio del estímulo no es un error de medición, porque `t0` se toma en el pod.
+
+---
+
+# PASO 6 — Escalabilidad de 1 a 10 unidades
+
+## 6.1 Tres componentes críticos
+
+| | **ADXL375 (acelerómetro)** | **ESP32-WROOM-32E-N4 (MCU)** | **Celda Li-ion 18650 protegida** |
+|---|---|---|---|
+| Disponibilidad en México (≥ 10 u.) | **[Pendiente]** No se verificó stock en tiendas mexicanas. Mouser muestra existencias del ADXL375BCCZ en sus sitios regionales de Ecuador y Honduras, no en el de México **[Confirmado en esas páginas]** | **[Pendiente]** en tiendas locales; el módulo y las DevKit son comunes, pero no se verificó stock | **[Pendiente]** No se consultó |
+| Precio unitario / volumen | LCSC: USD 7.44 (1 u.), 6.38 (10 u.), 5.74 (30 u.), 5.20 (100 u.) con **0 unidades en inventario** al consultar **[Confirmado]**. Módulo Adafruit: USD 24.95 (1–9) y 22.46 (10–99) **[Confirmado]** | LCSC: ≈ USD 3.1–3.8 (1 u.) y 2.6–3.3 (10 u.), con miles de unidades en inventario según la página **[Confirmado; varía por página y fecha]** | **[Pendiente]** Rango propio: $100–200 MXN **[Estimado]** |
+| Entrega a México | **[Pendiente]** (Mouser, LCSC, Adafruit: verificar con el cálculo de envío) | **[Pendiente]** | Compra local recomendada (restricciones de envío de baterías de litio **[Pendiente: verificar por proveedor]**) |
+| Alternativas | Módulo (más caro). Otros acelerómetros de alta g **[Pendiente]** (el ADXL372 podría incumplir el pitch ≥ 0.8 mm **[Pendiente]**) | ESP32-WROOM-32D/32UE u otras variantes del mismo ecosistema | LiPo con protección, de otro proveedor |
+| JLCPCB PCBA | La pieza existe en LCSC (C662206). **Su estado en la biblioteca de ensamblaje de JLCPCB: [Pendiente]** | **Parte "Extended" con número C701341** **[Confirmado]** | No aplica (montaje manual) |
+| Ensamblaje | LGA-14 de 3×5 mm: requiere horno/aire caliente y pasta. **Pitch del encapsulado: [Pendiente: leer el datasheet]** | SMD castelado, apto para soldadura manual | Soldadura de cables o conector, con cuidado |
+| Riesgo de sustitución | **Alto** (proveedor único, sin existencias en LCSC al consultar) | **Bajo** | Medio (calidad y falsificaciones) |
+
+**Cómo verificar:** pedir cotización con 12 unidades (10 + 2 de repuesto) en Mouser México, LCSC, Adafruit y las tiendas locales; guardar capturas con fecha, precio con envío e impuestos y tiempo de entrega.
+
+## 6.2 Estrategia de fabricación para el lote
+
+| Opción | Ventajas | Desventajas | Recomendación |
+|---|---|---|---|
+| Fabricar todo en el laboratorio | Control y bajo costo en efectivo | Poco repetible para 10 unidades; vías sin metalizar; mucho tiempo | Solo para PCB v1 de 1–2 unidades |
+| PCB externa + ensamblaje manual | Calidad de PCB con vías metalizadas; el equipo ya suelda SMD | Plazos de envío **[Pendiente]**; 10 ensamblajes manuales con LGA | **Recomendada para las primeras 5–10 unidades** |
+| JLCPCB PCBA | Menos errores de soldadura | Cuotas por partes "Extended" y por montaje **[Pendiente]**; el calendario de 8 semanas es ajustado | Para una segunda tirada |
+| Módulos comerciales | Menos riesgo electrónico | El costo del acelerómetro en módulo no cabe (≈ $4,150 MXN por 10) | Solo para la semana 3 |
+| PCB propia que integre todo | Menor costo y mayor robustez | Más riesgo en la primera versión | Sí, para el lote, con una **v0 de módulos** como respaldo |
+
+## 6.3 Qué cambia al pasar de 1 a 10 unidades
+1. Pasar de módulos a **un solo diseño de PCB** con ESP32, acelerómetro, cargador, LDO y conectores.
+2. Definir una **prueba de fin de línea**: autodiagnóstico, medición de corriente en reposo, prueba de LEDs y verificación del acelerómetro con una sacudida estándar.
+3. **Calibración por unidad:** el cero y la ganancia del sensor y una verificación contra el mismo péndulo para todas.
+4. **Registro por unidad** (hoja de control): lote de la celda, versión de firmware, versión de la PCB, fecha de prueba.
+5. **Jigs y plantillas** de impresión y de montaje; tiempo de impresión y de ensamblaje por unidad.
+6. **Piezas de repuesto** (20 %) de los componentes críticos.
+7. **Firmware idéntico en todas las unidades**, con versión visible en la app.
+8. **Calendario realista:** 5 unidades en la semana 8 requieren pedir las PCB a más tardar en la semana 4 y recibirlas en la semana 6 **[Pendiente: verificar plazos de fabricación y envío]**. **Diez unidades probablemente requieran las semanas 9–12.**
+
+---
+
+# PASO 7 — Viabilidad económica y precio de venta
+
+**Supuestos:** lote de 10 con PCB externa y ensamblaje manual; mano de obra propia (no desembolso, pero se valora aparte). Los precios del ESP32, el ADXL375, la 18650, el aro LED, el piezo, el TP4056 y los pogo son los **cotizados por el equipo** para 1 unidad; el precio por volumen y el stock para 10 piezas están **[Pendientes]**. El resto son **[Estimados]**.
+
+| Concepto | Costo unitario MXN | Costo para 10 unidades | Observaciones |
+|---|---:|---:|---|
+| ESP32-WROOM-32E | 70 | 700 | Cotizado: $281 en Mouser MX (1 u.; verificar volumen, envío e IVA). En LCSC ≈ USD 3.1–3.8 **[Confirmado]** ≈ $57–70 con importación |
+| Pasivos, LDO AP2112K-3.3, comparador, protecciones, conectores, programador USB-UART | 60 | 600 | **[Estimado]**. Reemplaza al AMS1117 de la cotización |
+| Módulo ADXL375 | 344 | 3,440 | Cotizado por el equipo (Amazon MX, 1 u.); stock y precio para 10 **[Pendiente]**. Verificar autenticidad (≈ 20.5 LSB/g). Alternativa CI en PCB propia: ≈ 120 |
+| Piezo 27 mm | 10 | 100 | Cotizado (Unit). Opcional si se elimina el canal |
+| Aro de 16 LEDs WS2812B | 29 | 290 | Cotizado (Unit); confirmar que sean 16 LEDs. Con tira de 300 LEDs ($356 para 18 pods): ≈ 19 |
+| Celda 18650 protegida con pestañas y cables | 125 | 1,250 | Cotizado (Steren/ML); medir capacidad real |
+| TP4056 USB-C con protección | 9 | 90 | Cotizado (Unit); verificar versión con DW01 + 8205 |
+| Contactos de apilamiento (pines sueltos + imanes) | 30 | 300 | Estimado del equipo para producción. El prototipo usa un par comercial (≈ 150 por par, cotizado) |
+| PCB de 2 capas (lote de 10, prorrateado con envío) | 45 | 450 | **[Pendiente: cotizar]** |
+| Carcasa (PETG/ASA) | 75 | 750 | ≈ 150 g por pod |
+| Superficie de golpeo (TPU 95A y EVA) | 85 | 850 | |
+| Tornillería, imanes, silicona, cableado | 60 | 600 | |
+| **Subtotal materiales (BOM)** | **942** | **9,420** | |
+| Importación, envíos e impuestos | 50 | 500 | ≈ 15–20 % de lo importado |
+| Contingencia (10 % de materiales) | 94 | 940 | Piezas dañadas, errores de soldadura |
+| Pruebas y calibración (consumibles) | 20 | 200 | Excluye banco de calibración (gasto único) |
+| Empaque (caja, espuma, cable USB-C) | 70 | 700 | |
+| **Costo de fabricación en efectivo** | **≈ 1,176** | **≈ 11,760** | **±25 %** |
+| Ensamblaje (mano de obra propia) | no es desembolso | — | ≈ 1 h por unidad **[Hipótesis]**; valorarla si hay pago |
+| Software y servicios recurrentes | — | ≈ 460 MXN/mes (Supabase Pro) + dominio + LLM | Fijo; **no es costo por unidad**. Supabase Pro: USD 25 **[Confirmado]**; LLM **[Pendiente: estimar por sesión]** |
+| Banco de calibración (péndulo, celda de carga, HX711) | — | ≈ 150–350 (único) | Fuera del costo por unidad |
+
+**Precio de referencia (regla BOM ≤ 30 %), sin IVA:**
+- Con BOM de materiales (942): 942 / 0.30 ≈ **$3,140 MXN**. Con el CI del acelerómetro en lugar del módulo (BOM ≈ 718): ≈ **$2,390 MXN**.
+- Con costo de fabricación completo (1,176): 1,176 / 0.30 ≈ **$3,920 MXN**.
+- Con IVA del 16 %, aproximadamente $3,640–$4,550 MXN con el módulo **[Estimado]**.
+
+**Esto es una referencia inicial, no un precio rentable.** No incluye mano de obra, garantía, soporte, comisiones de venta, financiamiento ni costos de software.
+
+**Distinciones:**
+- *Costo de fabricación:* ≈ $1,176 MXN por unidad en efectivo en el lote de 10 (con módulo ADXL375).
+- *Precio de venta:* decisión comercial que depende del segmento y de lo que paguen los competidores. **El precio de BlazePod u otros pods en México no se verificó [Pendiente]; hay que cotizarlo antes de fijar precio.**
+- *Margen bruto:* ejemplo hipotético: precio sin IVA de $3,200 y costo directo con mano de obra y reserva de garantía de ≈ $1,390 deja ≈ 57 % de margen bruto **[Hipótesis]**.
+- *Costos recurrentes:* fijos pequeños con 10 usuarios (≈ $46 MXN por usuario al mes en infraestructura, a 10 usuarios **[Estimado]**), por lo que la suscripción **no está justificada por costos**, sino, en su caso, por valor del servicio.
+- *Suscripción:* solo si el piloto demuestra que las recomendaciones y el historial aportan valor. Se prueba con preguntas de disposición de pago en el piloto.
+
+**Coherencia con el segmento:** el segmento objetivo no está definido en el prompt. **Asumo gimnasios y estudios de boxeo y funcional y entrenadores personales [Hipótesis: confírmalo].** Un gimnasio compraría varios pods (por ejemplo, 4–6), de modo que el precio por juego sería del orden de **$12,500–$23,500 MXN** al precio de referencia, que puede ser una barrera. No lo fuerzo; alternativas:
+1. **Versión "reacción" sin acelerómetro** (solo piezo, LEDs, RT): materiales ≈ $598 y precio de referencia ≈ $1,990 (con costo completo ≈ $800, ≈ $2,660). Es la línea de entrada.
+2. **Versión "pro" con aceleración e índice de fuerza** como paquete superior.
+3. **Paquetes** (2, 4 o 6 pods) con descuento y cargador compartido.
+4. **Funciones premium** (análisis con IA y comparación) como suscripción opcional.
+5. **Renta o piloto pagado** a gimnasios para validar disposición de pago antes de invertir en un lote mayor.
+6. **Desarrollo gradual:** vender primero lo que está validado (RT) y añadir fuerza cuando haya calibración sólida.
+
+---
+
+# PASO 8 — Validación con usuarios reales
+
+**Alcance:** 5–10 unidades con 8–15 personas **[Hipótesis]**, entre entrenadores y practicantes, durante 3–4 semanas. Todos firman consentimiento informado y aviso de privacidad. **[Pendiente: confirmar con asesor/institución los requisitos de datos personales y de seguridad]**; la ley mexicana de protección de datos fue reformada en 2025 **[Pendiente: verificar la versión vigente]**. El dispositivo no debe describirse como un instrumento médico.
+
+## 8.1 Procedimiento sin asistencia
+1. **Configuración:** tarjeta con código QR a la descarga, pasos numerados, 5 minutos.
+2. **Emparejamiento:** encender el pod, abrir la app, aceptar permisos de Bluetooth, elegir el pod por su nombre amigable e ingresar la clave de la etiqueta.
+3. **Rutina:** elegir una rutina predefinida (3 plantillas) o crear una sencilla.
+4. **Entrenamiento:** iniciar, golpear los estímulos y finalizar. El pod funciona aunque el teléfono se desconecte.
+5. **Resultados:** pantalla de resumen y gráficas con comparación con la sesión anterior.
+6. **Errores comunes:** guía en la app para batería baja, pod no encontrado, permisos denegados, sin conexión y reinicio del pod. Sin respuesta, el usuario escribe a un canal de soporte (WhatsApp).
+7. **Firmware:** en el piloto, actualización por USB-C por el equipo en una visita; OTA por Wi-Fi solo si el tiempo lo permite **[Hipótesis]**.
+8. **Comentarios:** cuestionario breve en la app tras cada sesión y entrevista final.
+
+## 8.2 Métricas
+
+**Pruebas técnicas** (metas propuestas, no resultados):
+
+| Métrica | Meta propuesta | Cómo se mide |
+|---|---|---|
+| Tiempo hasta el primer entrenamiento | ≤ 10 min en ≥ 80 % de usuarios | Cronómetro y registro en la app |
+| Sesiones completadas sin asistencia | ≥ 90 % | Registro de sesiones y soporte |
+| Tasa de desconexiones | < 1 por sesión de 30 min | Registro de eventos de conexión |
+| Pérdida de datos | 0 eventos perdidos tras la sincronización | Comparación de `seq` en el pod y en la base |
+| Repetibilidad de mediciones | CV < 10 % en impactos de referencia | Banco y verificación periódica |
+| Autonomía real | ≥ 3 h en uso típico | Registro de batería |
+| Fallas mecánicas | Sin falla crítica en el periodo | Bitácora y fotografías |
+
+**Pruebas de deseabilidad:**
+
+| Métrica | Meta propuesta | Cómo se mide |
+|---|---|---|
+| Uso recurrente | ≥ 2 sesiones por semana en ≥ 3 de 4 semanas | Registro de sesiones |
+| Comprensión de las métricas | ≥ 80 % de respuestas correctas sobre qué significa cada métrica | Cuestionario con ejemplos |
+| Valor percibido de las recomendaciones | ≥ 4 de 5 en la mayoría de los usuarios | Escala Likert tras la sesión |
+
+**Disposición de pago:** preguntas directas de rango de precio y compra de pods o preventa con depósito simbólico, separadas de la experiencia de uso. **No se infiere disposición de pago de la satisfacción.**
+
+---
+
+# PASO 9 — Matriz de riesgos y plan de mitigación
+
+Probabilidad (P) e impacto (I): A = alto, M = medio, B = bajo.
+
+| # | Riesgo | P | I | Prioridad | Semana | Detección | Acción preventiva | Plan alternativo |
+|---|---|---|---|---|---|---|---|---|
+| 1 | **Acelerómetro:** sin existencias, retraso o sobrecosto | A | A | **1** | 1–3 | Cotizaciones y confirmación de pedido en la semana 1 | Pedir 12 unidades el día 1 en dos proveedores | Módulo para 1–2 unidades; reducir a versión "reacción" |
+| 2 | **Calibración:** el índice de fuerza no es repetible con el elastómero | A | M | **2** | 5–7 | CV de repetibilidad en banco | Fijar el material y el montaje temprano; calibrar cada unidad | Reportar solo aceleración e impulso |
+| 3 | **Batería:** seguridad, calidad y autonomía | M | A | **3** | 4–7 | Pruebas de descarga y temperatura | Celda con protección y de proveedor confiable; límite de brillo | LiPo con protección en soporte rígido |
+| 4 | **Carga por apilamiento:** contactos con cortos o desgaste | A | M | **4** | 5–6 | Prueba de corriente y temperatura | Sensor Hall que habilita la salida sin pod encima; límite de corriente; hombro mecánico; MCU alimentado por la batería | USB-C únicamente |
+| 5 | **Conectividad** (gateway BLE + ESP-NOW; iOS/Android) | M | A | **5** | 3–7 | Registro de desconexiones, pérdidas y consumo del gateway | Rutina autónoma en el pod; reenvío por `seq`; rol de gateway intercambiable; prueba temprana en la semana 4 | Gateway alterna ventanas BLE/ESP-NOW; BLE entre pods (3–4 seguidores); Wi-Fi/UDP |
+| 6 | **Software multiplataforma:** retrasos con el BLE nativo y compilación en iOS | M | A | **6** | 2–6 | Prueba de emparejamiento en un iPhone real en la semana 3 | *Development build* desde la semana 1; cuenta de Apple a tiempo **[Pendiente]** | Piloto solo Android y iOS en una segunda etapa |
+| 7 | **PCB:** errores de diseño o plazos de fabricación | M | A | **7** | 4–6 | Revisión del diseño (DRC) y pruebas de v0 | Congelar el diseño en la semana 4; versión de módulos como respaldo | Montaje en perfboard para el piloto de 5 unidades |
+| 8 | **Manufactura de carcasas:** tiempo de impresión y variación entre unidades | M | M | **8** | 6–8 | Tiempo medido en la semana 2 | Una pieza de prueba temprana; varias impresoras | Simplificar la geometría; menos piezas |
+| 9 | **Presupuesto:** el lote supera el fondo disponible | A | M | **9** | 1–8 | Seguimiento semanal de gastos | Cotizar todo en la semana 1; priorizar versión "reacción" | Lote de 5 unidades |
+| 10 | **Alcance y capacidad del equipo** (hardware, firmware, app, backend, sitio, piloto) | A | A | **10** | 1–8 | Entregables semanales vs. plan | Congelar el alcance de la semana 3; recorte por orden de prioridad | Retrasar la página de venta, el leaderboard y las recompensas |
+
+---
+
+# PASO 10 — Decisiones finales
+
+## Escenario A — MVP de ocho semanas (1–2 unidades demostrativas utilizables)
+
+- **Arquitectura:** ESP32 (DevKit o módulo) + módulo ADXL375 + piezo opcional + aro de LEDs + celda protegida con pestañas + TP4056 USB-C con protección + LDO AP2112K-3.3. Demo de la semana 3 con **un pod** y BLE directo. Desde la semana 4: **gateway BLE + ESP-NOW** con 2 pods. Apilamiento: prototipo con un par de pogo magnéticos y una base de maqueta, con decisión al cierre de la semana 5. App React Native con SQLite. Supabase para respaldo y autenticación. Recomendaciones por reglas y LLM opcional.
+- **Incluye:** LEDs, impacto, RT, aceleración e impulso, BLE, historial y gráficas, comparación con sesiones anteriores, rutinas sencillas, operación sin conexión y sincronización con reintentos.
+- **Excluye:** fuerza en newtons, HarmonyOS, leaderboard en línea, recompensas complejas, OTA, pagos y página de ventas elaborada (una página simple sí). El apilamiento y ESP-NOW multi-pod quedan sujetos a los hitos de las semanas 4–5.
+- **Costo:** la electrónica cotizada suma ≈ $951 (incluye ≈ $150 de pogo magnéticos). Con PCB, carcasa y complementos se espera ≈ $1,220–1,510 (≈ $1,070–1,360 sin los pogo) **[Estimado]**. Al límite de los $1,500 MXN; el precio del AP2112K y los complementos están **[Pendientes]**.
+- **Riesgos principales:** autenticidad y disponibilidad del acelerómetro, coexistencia BLE + ESP-NOW, plazo.
+- **Criterios de aceptación:** 100 impactos consecutivos registrados sin pérdida; RT dentro de ±5 ms de la referencia en ≥ 90 % de las pruebas; 3 h de autonomía; una persona completa el primer entrenamiento sin ayuda en ≤ 10 min.
+
+## Escenario B — Primera tirada de 5–10 unidades
+
+- **Arquitectura:** PCB propia (2 capas, fabricación externa) con ESP32-WROOM-32E, módulo ADXL375 en las primeras 5 unidades (CI en PCB propia en una segunda tirada), TP4056 con protección, LDO AP2112K y conectores; ensamblaje manual; carcasa PETG con superficie de EPDM/EVA o TPU; calibración por unidad; Supabase Pro durante el piloto; gateway BLE + ESP-NOW y apilamiento según los hitos de las semanas 4–5.
+- **Incluye:** todo lo del Escenario A, más prueba de fin de línea, hoja de control por unidad, etiquetas con clave de emparejamiento, empaque y guía de uso, y piloto con usuarios.
+- **Excluye:** certificación para venta, fuerza en newtons, ML propio, comunidad.
+- **Costo estimado:** ≈ $11,800 MXN de fabricación en efectivo para 10 unidades **[Estimado, ±25 %]**, más ≈ $460 MXN al mes de Supabase Pro y gastos únicos del banco de calibración.
+- **Riesgos principales:** PCB y plazos de envío, ensamblaje de LGA, calidad de las celdas, tiempo de impresión.
+- **Criterios de aceptación:** ≥ 90 % de las unidades pasan la prueba de fin de línea; variación entre unidades dentro de tolerancia definida; 0 eventos perdidos tras sincronización; ≥ 3 h de autonomía en todas las unidades.
+- **Nota:** 5 unidades en la semana 8 son posibles con riesgo alto; **10 probablemente requieran las semanas 9–12.**
+
+## Escenario C — Producto futuro
+
+- **Arquitectura:** diseño para inyección de plástico, certificación, carga por apilamiento robusta, galgas extensométricas o celda de carga con ADC rápido para fuerza directa, OTA firmada, backend escalable.
+- **Incluye:** IA avanzada (modelos entrenados con datos reales), análisis longitudinal, comunidad, leaderboard ampliado, HarmonyOS nativo, nuevas funciones de hardware.
+- **Excluye:** nada, sujeto a validación.
+- **Costo:** depende de volumen e inversión **[Pendiente]**.
+- **Riesgos principales:** homologación y requisitos regulatorios **[Pendiente]**, financiamiento, soporte posventa.
+- **Criterios de aceptación:** definidos tras el piloto, incluyendo disposición de pago y retención.
+
+## Decisiones que el equipo debe tomar antes de comprar componentes o fabricar la PCB
+
+1. ¿El PDS exige realmente la fuerza en newtons o basta con aceleración e impulso?
+2. ¿Los $1,500 MXN son para 1 unidad o para varias? ¿Quién financia el lote de 10 (≈ $11,800)?
+3. ¿Se acepta que el piloto inicial sea de 5 unidades en la semana 8 y 10 en las semanas 9–12?
+4. ¿Módulo ADXL375 para el prototipo y las primeras 5 unidades, y CI para la siguiente tirada? ¿Qué proveedor tiene stock real (pedir cotización de 12 unidades)?
+5. ¿Se conserva o se elimina el piezo (decidir con la prueba de la semana 2)?
+6. ¿Se confirman las decisiones vigentes: gateway BLE + ESP-NOW y apilamiento con pogo magnéticos, con hitos en las semanas 4 y 5?
+7. ¿Qué equipo y capacidades tiene el laboratorio para PCB (ancho de pista, vías, serigrafía)? ¿Se aprueba una PCB externa?
+8. ¿Qué material de superficie se fija (TPU vs. EPDM sobre EVA) tras la prueba de la semana 2–3?
+9. ¿Cuántas impresoras y horas hay para las 10 carcasas?
+10. ¿Qué cuenta de Apple y distribución (TestFlight) se usará?
+11. ¿Quién es el segmento objetivo y cuál es la competencia y su precio en México (cotizar)?
+12. ¿Cómo se manejarán el consentimiento y los datos personales del piloto (revisar con la institución)?
+13. ¿Qué clave de API del LLM y qué presupuesto mensual se asignan?
+14. ¿Quién será responsable de la prueba de fin de línea y de la calibración por unidad?
+
+---
+
+## Fuentes consultadas (1 de octubre de 2026)
+
+- **ADXL375, características:** Analog Devices (analog.com/ADXL375); módulo Adafruit (adafruit.com/product/5374) con USD 24.95 (1–9 u.), 22.46 (10–99 u.) y 19.96 (100+).
+- **ADXL375BCCZ-RL en LCSC:** lcsc.com/product-image/C662206.html (USD 7.44, 6.38, 5.74 y 5.20 por volumen; 0 en inventario al consultar).
+- **Mouser, sitios regionales (no el de México):** mouser.ec y mouser.hn, con existencias del ADXL375BCCZ; mouser.in con 5,000 unidades del ADXL375BCCZ-RL "esperadas" el 22-10-2026.
+- **ESP32-WROOM-32E-N4:** lcsc.com/product-image/C701341.html y jlcpcb.com/partdetail/C701341 (parte "Extended"; precios y existencias varían por página).
+- **Supabase:** guías de precios 2026 (makerkit.dev/blog/saas/supabase-pricing; focusreactive.com/blog/supabase-price/; cloudzero.com/blog/supabase-pricing/). Verificar siempre en supabase.com/pricing.
+- **HarmonyOS NEXT:** en.wikipedia.org/wiki/HarmonyOS_5 y notas de prensa (huaweicentral.com).
+- **No verificado:** precios y existencias en tiendas mexicanas, disponibilidad del ADXL375 en la biblioteca de JLCPCB PCBA, plazos de envío a México, soporte actual de React Native para BLE y mínimos de versión, normativa mexicana vigente y precio de la competencia.
+

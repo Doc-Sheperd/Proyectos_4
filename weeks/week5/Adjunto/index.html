@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="contact" content="201265@iberopuebla.mx" />
+    <meta name="author" content="Derek Rodríguez Cancino" />
+    <title>Semana 5 (v2) | Proyectos IV</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="../../../assets/fablab.png" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="../../../css/styles.css" rel="stylesheet">
+    <link href="../../../css/faces.css" rel="stylesheet">
+    <!-- Estilos propios de la semana 5 (v2)-->
+    <style>
+        /* Menú lateral: cabe en pantalla y marca las subsecciones */
+        .week-menu { flex-shrink: 0; max-height: calc(100vh - 160px); overflow-y: auto; gap: 6px; padding-right: 4px; }
+        .menu-link { padding: 10px 14px; }
+        .week-paper { flex: 1; min-width: 0; }
+        .menu-link.menu-sub { padding: 6px 14px 6px 28px; font-size: 0.88rem; font-weight: 400; }
+        .week-paper h2 { margin-top: 30px; padding-bottom: 6px; border-bottom: 2px solid #2c3e50; }
+        .week-paper h4 { scroll-margin-top: 120px; font-weight: 700; color: #2c3e50; margin-bottom: 12px; }
+        .week-paper h5.subtitulo { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 0.98rem; font-weight: 600; color: #a2680b; margin: 18px 0 8px; }
+        .week-paper h5.subtitulo::before { content: "⦿ "; }
+
+        /* Bloques: separación entre párrafos (faces.css los deja en 0) */
+        .command-block p, .yellowcommand-block p, .purpcommand-block p,
+        .greencommand-block p, .redcommand-block p { margin-bottom: 10px; }
+        .command-block p:last-child, .yellowcommand-block p:last-child, .purpcommand-block p:last-child,
+        .greencommand-block p:last-child, .redcommand-block p:last-child { margin-bottom: 0; }
+
+        /* Código en línea (faces.css lo pone en bloque) */
+        .week-paper p code, .week-paper li code, .week-paper td code {
+            display: inline; font-family: 'JetBrains Mono', Consolas, monospace; font-size: 0.9em;
+            color: #a2680b; background: rgba(210, 134, 13, 0.08); padding: 1px 5px; border-radius: 5px; margin: 0;
+        }
+
+        /* Diagramas de texto */
+        .code-area { margin: 12px 0 16px; overflow-x: auto; }
+        .code-area pre { font-size: 13px; line-height: 1.45; color: #2c3e50; white-space: pre; }
+
+        .nota p { font-size: 0.95rem; }
+        .intro-block { margin-top: 14px; }
+        .tabla-scroll { width: 100%; overflow-x: auto; }
+        .volver a { display: inline-block; padding: 6px 14px; border-radius: 10px; background: rgba(0,0,0,0.06); color: #2c3e50; text-decoration: none; font-weight: 600; }
+        .volver a:hover { background: rgba(0,0,0,0.12); color: #000; }
+
+        @media (max-width: 900px) {
+            .week-layout { flex-direction: column; }
+            .week-menu { position: static; width: 100%; max-height: none; flex-direction: row; flex-wrap: wrap; }
+            .menu-link.menu-sub { display: none; }
+            .week-paper { padding: 30px 20px; }
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column h-100" style="background-color:#fffffe">
+    <main class="flex-shrink-0">
+        <!-- Navigation-->
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+                <div class="container px-5">
+                    <!--<a class="navbar-brand">Fab Academy</a>-->
+                    <a class="navbar-brand d-flex align-items-center" href="../../">
+                        <img src="../../../assets/fablab.png" alt="FabLab Logo" width="40"height="40" class="me-2"> Proyectos IV </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">                   
+                            <li class="nav-item"><a class="nav-link" href="../../../index.html#yo">About Me</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../../../index.html#practicas">Semanas</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+        <section class="week-header">
+            <div class="week-glass">
+                <h1>SEMANA 5 (v2): Lista de componentes y arquitectura de comunicación</h1>
+                <div>Actualización del PDS: sensado de fuerza, estructura resistente a impactos, pad de golpeo y comunicación entre pods y app.</div>
+            </div>
+        </section>
+
+    <!-- Seccion de CONTENIDO-->
+        <section class="week-content">
+            <div class="week-layout">
+                <aside class="week-menu">
+                    <a href="#UNO" class="menu-link">Componentes v2</a>
+                    <a href="#UNO-1" class="menu-link menu-sub">Respuesta corta</a>
+                    <a href="#UNO-2" class="menu-link menu-sub">Cargas de diseño</a>
+                    <a href="#UNO-3" class="menu-link menu-sub">Comparativa de las rutas de sensado</a>
+                    <a href="#UNO-4" class="menu-link menu-sub">Plato flotante</a>
+                    <a href="#UNO-5" class="menu-link menu-sub">Lista de componentes v2</a>
+                    <a href="#UNO-6" class="menu-link menu-sub">Electrónica del canal de fuerza</a>
+                    <a href="#UNO-7" class="menu-link menu-sub">Firmware y fusión de datos</a>
+                    <a href="#UNO-8" class="menu-link menu-sub">Validación</a>
+                    <a href="#UNO-9" class="menu-link menu-sub">Cambios al calendario</a>
+                    <a href="#UNO-10" class="menu-link menu-sub">Riesgos nuevos</a>
+                    <a href="#UNO-11" class="menu-link menu-sub">Decisiones vigentes</a>
+                    <a href="#UNO-12" class="menu-link menu-sub">Fuentes consultadas</a>
+                    <a href="#DOS" class="menu-link">Comunicación v2</a>
+                    <a href="#DOS-1" class="menu-link menu-sub">Decisión</a>
+                    <a href="#DOS-2" class="menu-link menu-sub">Topología</a>
+                    <a href="#DOS-3" class="menu-link menu-sub">Configuración del radio</a>
+                    <a href="#DOS-4" class="menu-link menu-sub">Cómo se ejecuta una rutina</a>
+                    <a href="#DOS-5" class="menu-link menu-sub">Sincronización de relojes</a>
+                    <a href="#DOS-6" class="menu-link menu-sub">Entrega confiable</a>
+                    <a href="#DOS-7" class="menu-link menu-sub">Mensajes</a>
+                    <a href="#DOS-8" class="menu-link menu-sub">Si el gateway falla</a>
+                    <a href="#DOS-9" class="menu-link menu-sub">Energía</a>
+                    <a href="#DOS-10" class="menu-link menu-sub">Alternativas evaluadas</a>
+                    <a href="#DOS-11" class="menu-link menu-sub">Validación</a>
+                    <a href="#DOS-12" class="menu-link menu-sub">Decisiones vigentes</a>
+                    <a href="#DOS-13" class="menu-link menu-sub">Fuentes consultadas</a>
+                </aside>
+
+                <div class="week-paper">
+
+    <p class="volver"><a href="../index.html">← Volver al PDS v1.0 (semana 5)</a> · Este documento es el anexo técnico del PDS.</p>
+
+    <!-- ===================== COMPONENTES V2 ===================== -->
+    <h2 id="UNO">Componentes v2</h2>
+    <h3>Lista de componentes v2: sensado de impacto y estructura resistente</h3>
+   <div class="yellowcommand-block intro-block">
+    <p><b>Complemento al diseño técnico y a la revisión crítica del pod de boxeo</b> · Fecha de consulta: 8 de octubre de 2026</p>
+
+    <div class="nota">
+        <p><i><b>Etiquetas:</b> <b>[Confirmado]</b> = verificado en la fuente indicada. <b>[Cotizado]</b> = precio que ya tenía el equipo. <b>[Estimado]</b> = cálculo o rango propio. <b>[Hipótesis]</b> = supuesto por validar en banco. <b>[Pendiente]</b> = falta verificar.</i></p>
+        <p><i><b>Qué no cambia:</b> pod cilíndrico <b>Ø160 × 75 mm</b> (concepto Reflejo Fijo de la semana 6; antes Ø130 × 70 y Ø140 × 75), ESP32-WROOM-32E, ADXL375 como medición directa de aceleración, gateway BLE + ESP-NOW, apilamiento con conector pogo magnético rehundido a las 6 en punto, LDO AP2112K, TP4056 con protección, 18650 con pestañas, app React Native. Este documento solo cambia el <b>subsistema de sensado de fuerza</b>, la <b>estructura mecánica</b> que recibe el golpe y el <b>pad</b>.</i></p>
+    </div>
+</div>
+
+   <div class="greencommand-block">
+    <h4 id="UNO-1">1. Respuesta corta</h4>
+    <p><b>Recomendación: acelerómetro ADXL375 + 4 celdas de carga planas (tipo báscula de baño, 50 kg) bajo un plato de aluminio flotante + ADC rápido ADS1220. Se elimina el piezo y no se usa HX711.</b></p>
+    <ul>
+        <li><b>¿Galga suelta pegada en una lámina?</b> No para estas 8 semanas. Una celda tipo báscula <b>ya es eso</b>: una lámina de aluminio mecanizada con galgas pegadas, calibrada y por $22 <b>[Confirmado]</b>. Pegar galgas BF350 propias cuesta lo mismo en material, pero añade pegado, curado, compensación térmica y riesgo de despegue con los impactos.</li>
+        <li><b>¿Celda de carga + HX711?</b> No dentro del pod. El HX711 entrega como máximo 80 muestras/s: un golpe de ~10 ms queda en una sola muestra o ninguna.</li>
+        <li><b>¿Solo acelerómetro?</b> Funciona y es lo más simple, pero la "fuerza" sale de F = m·a y depende de si el pod está en el piso, la pared o apilado (contradicción C2). Se mantiene como <b>configuración de respaldo</b>.</li>
+        <li><b>¿Láminas?</b> Sí, pero como <b>estructura</b>: un plato de aluminio de 3 mm reparte el golpe hacia las celdas y hacia unos topes rígidos, de modo que ni las celdas ni la electrónica reciben la sobrecarga.</li>
+    </ul>
+</div>
+
+   <div class="command-block">
+    <h4 id="UNO-2">2. Cargas de diseño</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Dato</th><th>Valor</th><th>Fuente</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">Fuerza pico, boxeadores amateur élite (placa de fuerza vertical)</td><td>Jab ≈ 1,645 ± 537 N · cross ≈ 2,425 ± 545 N · gancho de mano trasera ≈ 2,624 ± 581 N</td><td>Finlay et al., PLOS ONE 2023 <b>[Confirmado]</b></td></tr>
+            <tr><td class="material-tag">Tasa de desarrollo de fuerza (RFD)</td><td>≈ 117,000 (jab) a ≈ 296,000 N/s (gancho trasero)</td><td>Misma fuente <b>[Confirmado]</b></td></tr>
+            <tr><td class="material-tag">Tiempo de subida del pico (F / RFD)</td><td>≈ 9–14 ms</td><td><b>[Estimado]</b> a partir de las dos filas anteriores</td></tr>
+            <tr><td class="material-tag">Usuarios objetivo (gimnasio, recreativo)</td><td>Probablemente por debajo de los valores élite</td><td><b>[Hipótesis]</b></td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><b>Consecuencias de diseño:</b></p>
+    <ol>
+        <li><b>Carga de supervivencia:</b> la estructura debe aguantar ≥ 3,500 N sin daño (élite + 1 σ + margen) <b>[Estimado]</b>. Eso lo absorben los topes y el chasis, no los sensores.</li>
+        <li><b>Rango de medición:</b> 4 celdas de 50 kg suman ≈ 1,960 N nominales. Se ponen topes al ≈ 90 % (≈ 1,750–1,800 N). Por encima, la celda marca <code>saturado</code> y la app usa el índice del acelerómetro. Esto cubre a la mayoría de usuarios recreativos <b>[Hipótesis]</b>; los ganchos élite saturan.</li>
+        <li><b>Muestreo:</b> con 9–14 ms de subida, hacen falta ≥ 1 kSPS para capturar el pico con 10+ puntos.</li>
+    </ol>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>ADC</th><th>Muestras/s</th><th>Puntos en la subida (9–14 ms)</th><th>Veredicto</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">HX711</td><td>10 / 80</td><td>0–1</td><td><b>Descartado</b></td></tr>
+            <tr><td class="material-tag">ADS1115 (módulo Unit, $47)</td><td>860</td><td>≈ 8–12</td><td>Plan B (subestima el pico)</td></tr>
+            <tr><td class="material-tag"><b>ADS1220</b></td><td>hasta 2,000 (modo turbo), PGA ×128</td><td>≈ 18–28</td><td><b>Elegido</b></td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+   <div class="command-block">
+    <h4 id="UNO-3">3. Comparativa de las rutas de sensado</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Criterio</th><th>A. Solo ADXL375</th><th>B. ADXL375 + 4 celdas + ADS1220</th><th>C. Galgas BF350 propias en lámina</th><th>D. Celda + HX711</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">Qué mide</td><td>Aceleración (directa); fuerza estimada</td><td>Aceleración <b>y fuerza transmitida</b> (directas)</td><td>Fuerza (si el pegado sale bien)</td><td>Fuerza estática</td></tr>
+            <tr><td class="material-tag">¿Depende del montaje (piso/pared/apilado)?</td><td><b>Sí</b></td><td><b>No</b></td><td>No</td><td>No</td></tr>
+            <tr><td class="material-tag">Captura el pico del golpe</td><td>Sí</td><td>Sí (2 kSPS)</td><td>Depende del ADC</td><td><b>No</b></td></tr>
+            <tr><td class="material-tag">Resistencia</td><td>Alta (10,000 g)</td><td>Alta si hay topes</td><td>Media (despegue, fatiga del adhesivo)</td><td>Media</td></tr>
+            <tr><td class="material-tag">Espacio en Ø160 mm (plato Ø118)</td><td>Mínimo</td><td>4 × (34 × 34 × 7 mm) en un círculo de Ø≈80 mm</td><td>Similar a B</td><td>Similar a B</td></tr>
+            <tr><td class="material-tag">Costo extra por pod</td><td>$0</td><td>≈ $270–400 <b>[Estimado]</b></td><td>≈ $60–120 + horas</td><td>≈ $110</td></tr>
+            <tr><td class="material-tag">Riesgo para 8 semanas</td><td>Bajo</td><td>Medio</td><td><b>Alto</b></td><td>No cumple</td></tr>
+            <tr><td class="material-tag">Veredicto</td><td>Respaldo</td><td><b>Recomendado</b></td><td>Versión futura</td><td>Descartado</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+   <div class="command-block">
+    <h4 id="UNO-4">4. Arquitectura mecánica: plato flotante con topes</h4>
+    <h5 class="subtitulo">4.1 Corte (de arriba hacia abajo)</h5>
+    <div class="code-area">
+<pre>   (golpe →)  frente del pod, de afuera hacia la pared · profundidad desde la pared
+   ┌──────────── Ø160 con burlete (cuerpo Ø154) ────────────┐
+   │ Pad Ø120: vinipiel 1 mm + EVA 12 mm + anillo EVA 4 mm  │ 57–74 mm  ← cóncavo, flecha ≈ 4 mm
+   │ Labio R61.5–77: arco 120° de 18 LED arriba, pogo a las 6│           ← diafragma de cámara de bici en el hueco de 1.5 mm
+   │══ Plato flotante de aluminio Ø118 × 3 mm ══════════════│ 54–57 mm
+   │  [celda]  [tope]          [tope]  [celda]              │ 44–52 mm  ← 4 celdas a 90°, 4 topes M4
+   │▓▓ Cubierta del chasis (PETG, costillas) ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│ 40–44 mm  ← ADXL375 atornillado aquí, centro
+   │  18650 en cuna con espuma                              │ 19–37 mm
+   │  PCB (ESP32, ADS1220, TP4056, AP2112K) sobre aisladores│ ≈ 10 mm
+   │  Tapa trasera Ø122 + o-ring + bayoneta ¼ de vuelta     │ 0–7 mm    ← placa de pared de 3 mm embutida
+   └────────────────────────────────────────────────────────┘ ≈ 75 mm total (máx. 78 en CAD)
+</pre>
+    </div>
+    <p>Altura <b>[Estimado]</b>: ≈ 75 mm (máximo 78 en CAD), dentro de RNF-01 / RD-04 (≤ 80 mm). Medidas alineadas con la especificación para CAD de la semana 6.</p>
+
+    <h5 class="subtitulo">4.2 Piezas y su función</h5>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Pieza</th><th>Especificación</th><th>Por qué</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">Plato flotante</td><td>Aluminio <b>6061-T6</b>, Ø118 × 3 mm (≈ 89 g), con 4 barrenos; celdas a R ≈ 40 mm. Con 5052-H32, subir a 4 mm</td><td>Reparte la carga del puño entre las 4 celdas y los topes; protege todo lo de abajo. Alternativa barata: 2 placas FR4 de 1.6 mm pegadas, menos rígida</td></tr>
+            <tr><td class="material-tag">4 celdas 50 kg</td><td>Medio puente, 34 × 34 × 7 mm, 1.0 mV/V. <b>Cada celda necesita un apoyo con hueco bajo su centro</b> (la parte que se flexiona no debe tocar el chasis)</td><td>Galgas ya pegadas y calibradas de fábrica <b>[Confirmado: Unit SEN-10245]</b></td></tr>
+            <tr><td class="material-tag">4 topes ajustables</td><td>Tornillo M4 con contratuerca, cabeza bajo el plato</td><td>El hueco se ajusta con una <b>galga de espesores</b> (≈ 0.2–0.3 mm <b>[Hipótesis: medir la deflexión real de la celda a 45 kg]</b>). Al llegar al 90 % de carga, el plato toca los topes y el resto va al chasis</td></tr>
+            <tr><td class="material-tag">Guía lateral</td><td>Holgura radial ≈ 0.5 mm + O-ring o anillo de PTFE</td><td>Los ganchos llegan en ángulo; las celdas no deben recibir cargas laterales</td></tr>
+            <tr><td class="material-tag">Retención anti-levantamiento</td><td>4 tornillos de hombro con arandela de hule</td><td>El plato no se sale al levantar o voltear el pod</td></tr>
+            <tr><td class="material-tag">Chasis</td><td>PETG o ASA, 5 perímetros, 40–50 % gyroid, <b>costillas radiales bajo topes y celdas</b></td><td>Los topes descargan aquí; las costillas llevan la carga hacia la pared y la base</td></tr>
+            <tr><td class="material-tag">Insertos roscados de latón</td><td>M3/M4, termo-insertados</td><td>Un tornillo directo en plástico impreso se afloja con los golpes</td></tr>
+            <tr><td class="material-tag">Bumper perimetral</td><td>Burlete de hule EPDM en ranura, mitad frontal del canto</td><td>Golpes que pegan en el borde y caídas</td></tr>
+            <tr><td class="material-tag">ADXL375</td><td>Atornillado al chasis, en el centro, sin espuma</td><td>Mide la aceleración del pod (medición directa pedida)</td></tr>
+            <tr><td class="material-tag">PCB</td><td>Sobre 4 aisladores de silicona M3</td><td>La electrónica no recibe el choque directo</td></tr>
+            <tr><td class="material-tag">Batería</td><td>Cuna con espuma, bajo la cubierta, fuera de la ruta de carga</td><td>Seguridad ante impactos</td></tr>
+            <tr><td class="material-tag">Conectores</td><td>JST-PH con seguro; alivio de tensión en los cables de las celdas</td><td>Vibración</td></tr>
+            <tr><td class="material-tag">Fijador de rosca</td><td>Medio (tipo 243)</td><td>Que los tornillos no se aflojen tras miles de golpes</td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h5 class="subtitulo">4.3 Por qué funciona en un pod pequeño</h5>
+    <ul>
+        <li><b>Estructura sobredimensionada en las piezas baratas</b> (aluminio, costillas, topes), no en los sensores.</li>
+        <li><b>Rigidez:</b> si cada celda deflecta ≈ 0.2–0.3 mm a 50 kg, la frecuencia propia del plato con el pad (≈ 0.15 kg) queda cerca de 1 kHz <b>[Estimado]</b>, muy por encima del contenido del golpe (≈ 100 Hz).</li>
+        <li><b>Independencia del montaje:</b> las celdas miden la fuerza entre plato y chasis, que es la fuerza del golpe menos la inercia del plato, <b>esté donde esté el pod</b>.</li>
+    </ul>
+
+    <h5 class="subtitulo">4.4 Pad (superficie de golpeo): decisión</h5>
+    <p><b>Prototipo: vinipiel tensada sobre EVA de alta densidad</b> (decisión de la semana 6, "Reflejo Fijo"). Es la construcción de una manopla de foco y de un parche de tambor: todo se compra en México sin impresora de filamento flexible y la funda se cambia en minutos. El TPU 95A impreso queda como alternativa.</p>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Capa</th><th>Especificación</th><th>Proveedor</th><th>Costo por pod</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">Piel</td><td>Vinipiel de tapicería ≈ 1 mm, tensada con <b>aro tensor de PETG</b> (Ø120/Ø108 × 4 mm, 8 × M3 al plato)</td><td>Tiendas de telas y tapicerías</td><td>≈ $10–20 <b>[Estimado]</b></td></tr>
+            <tr><td class="material-tag">Núcleo</td><td>EVA de celda cerrada en 2 capas: <b>base 6 mm firme</b> (≈ 200–230 kg/m³, Shore A 40–45, tipo ortopédica) que evita tocar fondo + <b>confort 6 mm</b> (≈ 100–120 kg/m³, tatami de gimnasio) + <b>anillo</b> de 4 mm en el borde: al tensar la vinipiel el centro queda ≈ 4 mm más bajo (pad cóncavo sin molde)</td><td>Tapetes de gimnasio tipo rompecabezas (autoservicio, ML)</td><td>≈ $15–30 <b>[Estimado]</b></td></tr>
+            <tr><td class="material-tag">Sello</td><td>Diafragma de cámara de bicicleta en el hueco de 1.5 mm entre pad y labio</td><td>Refaccionaria de bicicletas</td><td>≈ $5–10 <b>[Estimado]</b></td></tr>
+            <tr><td class="material-tag"><b>Total pad</b></td><td></td><td></td><td><b>≈ $30–60</b></td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><b>Mejora condicionada: poliuretano colado de poliéter.</b> Piel Shore 60–70A + núcleo Shore 20–30A (o EVA), colados en dos tiempos en el mismo molde para que se unan sin adhesivo y anclados al plato por barrenos. El poliéter resiste la hidrólisis (sudor y limpieza con agua) y el desgaste por impacto mejor que el poliéster. <b>Solo entra si en la semana 1 un proveedor confirma entrega en &lt; 2 semanas</b>; se compara contra TPU + EVA en el banco de las semanas 2–3.</p>
+    <p><b>Descartados:</b></p>
+    <ul>
+        <li><b>Espuma de colchón de alta densidad:</b> 25–40 kg/m³ y ≈ 2–3 kPa al 40 % de compresión, frente a ≈ 125–330 kPa que ejerce un puño <b>[Estimado]</b>. Toca fondo al inicio del golpe, deja la mano contra el aluminio, absorbe sudor y se aplasta con el uso.</li>
+        <li><b>Memory foam:</b> recupera la forma lentamente; no sirve para golpes repetidos.</li>
+        <li><b>Sorbothane:</b> fluye bajo carga (señal variable con la temperatura) y es de importación.</li>
+        <li><b>Espuma de PU colada de 17–25 lb/ft³:</b> técnicamente válida como núcleo, pero de importación con plazo incierto.</li>
+    </ul>
+    <p><b>Criterios de comparación en banco:</b> repetibilidad del pico, duración del golpe, señal de "tocar fondo", pérdida de altura tras 1,000 golpes, cambio de señal entre 20 °C y 35 °C y comodidad (3–5 personas).</p>
+</div>
+
+   <div class="command-block">
+    <h4 id="UNO-5">5. Lista de componentes v2 (1 pod)</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>#</th><th>Componente</th><th>Cambio</th><th>Proveedor</th><th>Precio MXN</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">1</td><td>ESP32-WROOM-32E</td><td>Se mantiene (DevKit local como alternativa más barata <b>[Pendiente]</b>)</td><td>Mouser MX</td><td>281 <b>[Cotizado]</b></td></tr>
+            <tr><td class="material-tag">2</td><td>Módulo ADXL375</td><td>Se mantiene; <b>se monta en el chasis</b></td><td>Amazon MX</td><td>344 <b>[Cotizado]</b></td></tr>
+            <tr><td class="material-tag">3</td><td><b>Celda de carga 50 kg SEN-10245 × 4</b></td><td><b>Nuevo</b></td><td>Unit</td><td>88 (22 c/u) <b>[Confirmado]</b></td></tr>
+            <tr><td class="material-tag">4</td><td><b>ADS1220IPWR</b> (24 bits, 2 kSPS, PGA ×128, SPI)</td><td><b>Nuevo</b></td><td>Unit (outlet)</td><td>95.40 <b>[Confirmado]</b></td></tr>
+            <tr><td class="material-tag">5</td><td><b>Adaptador TSSOP-16 → DIP</b></td><td><b>Nuevo</b>: el ADS1220 tiene paso 0.65 mm; va en el adaptador para que la PCB principal respete ≥ 0.8 mm</td><td>Local</td><td>15–40 <b>[Estimado]</b></td></tr>
+            <tr><td class="material-tag">6</td><td>Disco piezoeléctrico + LM393</td><td><b>Se elimina</b>: la celda detecta toques ligeros mejor que el piezo</td><td>—</td><td>−10</td></tr>
+            <tr><td class="material-tag">7</td><td>Celda 18650 protegida con pestañas</td><td>Se mantiene</td><td>Steren / ML</td><td>125 <b>[Cotizado]</b></td></tr>
+            <tr><td class="material-tag">8</td><td>Arco de 120° con 18 LED WS2812B (tira de 144 LED/m, 3 tramos de 6) + difusor PETG</td><td><b>Cambia</b> (semana 6): arco superior en lugar de aro completo</td><td>Unit / ML</td><td>40–70 <b>[Estimado]</b></td></tr>
+            <tr><td class="material-tag">9</td><td>TP4056 USB-C con protección</td><td>Se mantiene</td><td>Unit</td><td>9 <b>[Cotizado]</b></td></tr>
+            <tr><td class="material-tag">10</td><td>AP2112K-3.3</td><td>Se mantiene (reemplaza AMS1117)</td><td>—</td><td>10–20 <b>[Estimado]</b></td></tr>
+            <tr><td class="material-tag">11</td><td>Conector pogo magnético (par, frontal y trasero, a las 6) + Hall</td><td>Se mantiene; <b>compra diferida a semana 4–5</b></td><td>Amazon / ML</td><td>≈ 150 <b>[Cotizado]</b></td></tr>
+            <tr><td class="material-tag">12</td><td><b>Plato de aluminio 6061-T6 Ø118 × 3 mm</b></td><td><b>Nuevo</b></td><td>Taller de corte / torno</td><td>60–150 <b>[Estimado]</b></td></tr>
+            <tr><td class="material-tag">13</td><td><b>Topes M4, tornillos de hombro, insertos de latón, arandelas de hule, fijador</b></td><td><b>Nuevo</b></td><td>Ferretería / Unit</td><td>50–90 <b>[Estimado]</b></td></tr>
+            <tr><td class="material-tag">14</td><td>Pasivos, conectores JST-PH, aisladores de silicona, programador</td><td>Ajustado</td><td>Unit</td><td>80–130 <b>[Estimado]</b></td></tr>
+            <tr><td class="material-tag">15</td><td>PCB 2 capas</td><td>Se mantiene</td><td>Laboratorio / externa</td><td>30–120 <b>[Estimado]</b></td></tr>
+            <tr><td class="material-tag">16</td><td>Carcasa PETG/ASA (cuerpo, labio, tapa, aro tensor, difusor) + burlete EPDM + placa de pared</td><td>Ajustado (Ø160 × 75)</td><td>Filamento, ferretería, MDF/acrílico</td><td>140–280 <b>[Estimado]</b></td></tr>
+            <tr><td class="material-tag">17</td><td><b>Pad Ø120: vinipiel tensada + EVA alta densidad 12 mm + anillo EVA 4 mm + diafragma</b></td><td><b>Decidido</b> (ver 4.4; semana 6)</td><td>Tapicería / tapetes EVA / refaccionaria</td><td>30–60 <b>[Estimado]</b></td></tr>
+            <tr><td class="material-tag">—</td><td>HX711</td><td><b>No se usa</b></td><td>—</td><td>0</td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h5 class="subtitulo">5.1 Totales</h5>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Escenario</th><th>Total estimado</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag"><b>B sin pogo</b> (pogo diferido a semana 4–5)</td><td><b>≈ $1,400–1,900</b></td></tr>
+            <tr><td class="material-tag">B con pogo</td><td>≈ $1,550–2,050</td></tr>
+            <tr><td class="material-tag">A (solo ADXL375 + piezo, con insertos, aisladores y bumper)</td><td>≈ $1,130–1,500 sin pogo</td></tr>
+            <tr><td class="material-tag">Costo incremental de la ruta de fuerza (B − A)</td><td><b>≈ $270–400</b></td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><b>Lectura honesta:</b> la configuración B <b>cabe en $1,500 solo en el extremo bajo</b> y con el par de pogo diferido. Palancas para entrar:</p>
+    <ol>
+        <li>ESP32 DevKit local en lugar del módulo a $281 (ahorro probable ≈ $80–130 <b>[Pendiente: cotizar]</b>).</li>
+        <li>Plato de FR4 laminado en vez de aluminio para el prototipo (≈ −$50) y aluminio en la versión final.</li>
+        <li>Rubros mecánicos en el extremo bajo (filamento propio, tornillería a granel).</li>
+    </ol>
+    <p>Si aun así no cabe, la ruta de fuerza se presenta como <b>mejora con presupuesto aparte de ≈ $300–400</b>, sin cambiar el resto del pod: el plato, los topes y el chasis reforzado se fabrican igual y las celdas se agregan después.</p>
+</div>
+
+   <div class="command-block">
+    <h4 id="UNO-6">6. Electrónica del canal de fuerza</h4>
+    <ul>
+        <li><b>Puente:</b> las 4 celdas de medio puente se cablean como un puente completo (configuración estándar de báscula). Salida a carga completa ≈ 1 mV/V × 3.3 V ≈ 3.3 mV <b>[Estimado]</b>.</li>
+        <li><b>ADS1220:</b> entrada diferencial AIN0–AIN1, PGA ×128, <b>referencia ratiométrica</b> tomando la excitación del puente (REFP0/REFN0) para que el ruido de la batería se cancele. Modo turbo, 2,000 SPS. Resolución esperada del orden de unos pocos newtons <b>[Estimado; medir el ruido en banco]</b>.</li>
+        <li><b>Ahorro de energía:</b> el interruptor interno de lado bajo del ADS1220 corta la excitación del puente fuera de sesión. Consumo del canal ≈ 3–4 mA en sesión <b>[Estimado]</b>, despreciable frente a los ≈ 215 mA del pod.</li>
+        <li><b>Bus:</b> ADS1220 y ADXL375 comparten el bus SPI del ESP32 con CS separados. El ADS1220 usa SPI modo 1 y el ADXL375 modo 3; configurar el modo por dispositivo en ESP-IDF. <b>DRDY</b> del ADS1220 a un GPIO con interrupción.</li>
+        <li><b>Protección:</b> RC de filtro anti-aliasing en la entrada (corte ≈ 1 kHz <b>[Estimado]</b>) y TVS si los cables de las celdas son largos.</li>
+    </ul>
+</div>
+
+   <div class="command-block">
+    <h4 id="UNO-7">7. Firmware y fusión de datos</h4>
+    <ol>
+        <li><b>Detección de contacto (<code>t1</code>):</b> el primero de dos eventos: interrupción de umbral del ADXL375 o fuerza &gt; umbral bajo (≈ 20–30 N <b>[Hipótesis]</b>) en el ADS1220. Así se reemplaza al piezo.</li>
+        <li><b>Fuerza del golpe:</b> <code>F ≈ F_celdas + m_plato · a</code>. La corrección por la inercia del plato (≈ 0.15 kg × 100 g ≈ 150 N) no es despreciable <b>[Estimado]</b>; se calcula con el ADXL375.</li>
+        <li><b>Saturación:</b> si <code>F_celdas</code> llega al nivel de los topes, se marca <code>saturado</code> y la app muestra el índice del acelerómetro con la leyenda "≥ X N".</li>
+        <li><b>Tara automática</b> al iniciar cada sesión (el peso del pad y del plato, o un pod apilado, quedan fuera).</li>
+        <li><b>Nuevos campos del evento:</b> <code>force_peak_N</code> (u16), <code>force_impulse</code> (u32), bandera <code>force_sat</code>. El paquete sigue cabiendo en ≈ 50 bytes.</li>
+        <li><b>Detección de apilamiento:</b> un pod encima produce una carga estática de ≈ 5 N por pod <b>[Estimado]</b> si se apoya en el plato; si se apoya en el hombro del chasis, la detecta el Hall como ya estaba previsto.</li>
+    </ol>
+</div>
+
+   <div class="purpcommand-block">
+    <h4 id="UNO-8">8. Validación (añadir al plan de pruebas, sección I)</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Prueba</th><th>Procedimiento</th><th>Criterio propuesto</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">Calibración estática</td><td>Pesas o mancuernas conocidas (5–40 kg) sobre el plato, centradas y descentradas 25 mm</td><td>Error ≤ ±3 % centrado; ≤ ±8 % descentrado <b>[Hipótesis]</b></td></tr>
+            <tr><td class="material-tag">Dinámica</td><td>Péndulo o caída de masa conocida; comparar el impulso de las celdas con m·Δv</td><td>Error ≤ ±15 % en el pico; CV &lt; 10 % <b>[Hipótesis]</b></td></tr>
+            <tr><td class="material-tag">Independencia del montaje</td><td>Misma serie en piso, pared y sobre otro pod</td><td>Diferencia entre montajes ≤ 10 %</td></tr>
+            <tr><td class="material-tag">Topes</td><td>Carga creciente hasta pasar el tope; verificar retorno a cero</td><td>Sin deriva de cero &gt; 1 % FS después</td></tr>
+            <tr><td class="material-tag">Resistencia</td><td>10,000 impactos con inspección cada 1,000</td><td>Sin aflojamiento de tornillos, grietas en costillas ni cambio de ganancia &gt; 5 %</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+   <div class="command-block">
+    <h4 id="UNO-9">9. Cambios al calendario</h4>
+    <ul>
+        <li><b>Semana 1:</b> pedir celdas, ADS1220, vinipiel y EVA junto con el resto (electrónica en Unit; pad en tiendas locales).</li>
+        <li><b>Semana 2:</b> banco de celdas: plato de prueba + 4 celdas + ADS1220 en protoboard; medir deflexión real, ruido y frecuencia de muestreo. Esto adelanta la decisión que antes estaba en las semanas 5–6, porque el CAD de la carcasa v2 y la PCB v1 (semana 4) dependen de si las celdas van o no.</li>
+        <li><b>Semana 3:</b> la demo del pod 1.0 puede ir con o sin celdas; si el banco salió bien, se integran.</li>
+        <li><b>Semana 4:</b> congelar la geometría del plato, los topes y el chasis; la PCB v1 incluye el footprint del adaptador del ADS1220.</li>
+        <li><b>Semana 6:</b> calibración con la fuerza medida en lugar del índice.</li>
+    </ul>
+    <p><b>Criterio de continuar o descartar al cierre de la semana 3:</b> si el ruido supera ±20 N, el pico se pierde o el montaje no cabe en 80 mm, se queda la configuración A y el plato se fija sin celdas.</p>
+</div>
+
+   <div class="redcommand-block">
+    <h4 id="UNO-10">10. Riesgos nuevos</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Riesgo</th><th>Mitigación</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">Celdas genéricas con ganancia distinta entre sí</td><td>Calibrar el conjunto, no cada celda; verificar con carga descentrada</td></tr>
+            <tr><td class="material-tag">Hueco de los topes mal ajustado</td><td>Ajuste con galga de espesores y contratuerca; prueba de topes en banco</td></tr>
+            <tr><td class="material-tag">Cables de las celdas se rompen con la vibración</td><td>Alivio de tensión con adhesivo y bridas; conector JST-PH</td></tr>
+            <tr><td class="material-tag">Golpes en ángulo meten carga lateral</td><td>Guía radial con holgura de 0.5 mm y O-ring; prueba con golpes descentrados</td></tr>
+            <tr><td class="material-tag">ADS1220 en adaptador ocupa espacio</td><td>Montar el adaptador plano sobre la PCB, o usar ADS1115 (plan B)</td></tr>
+            <tr><td class="material-tag">Ganchos élite saturan las celdas</td><td>Bandera de saturación + índice del acelerómetro; para v2, celdas de 100 kg <b>[Pendiente: buscar formato plano]</b></td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+   <div class="greencommand-block">
+    <h4 id="UNO-11">Decisiones que actualizan "Decisiones vigentes"</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Tema</th><th>Decisión propuesta</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">Sensado de fuerza</td><td>ADXL375 (aceleración) + 4 celdas de 50 kg bajo plato flotante + ADS1220 a 2 kSPS. Fuerza en N medida, con saturación declarada</td></tr>
+            <tr><td class="material-tag">Piezo</td><td>Se elimina</td></tr>
+            <tr><td class="material-tag">HX711</td><td>No se usa</td></tr>
+            <tr><td class="material-tag">Tamaño</td><td>Ø160 × 75 mm (máx. 78 en CAD), masa ≈ 0.6 kg</td></tr>
+            <tr><td class="material-tag">Estructura</td><td>Plato de aluminio 6061-T6 Ø118 × 3 mm, 4 topes ajustables, chasis con costillas e insertos de latón, burlete de EPDM</td></tr>
+            <tr><td class="material-tag">Pad</td><td>Vinipiel tensada con aro sobre EVA de alta densidad (pad Ø120 cóncavo) + diafragma; TPU 95A como alternativa; PU colado de poliéter como mejora si hay entrega local &lt; 2 semanas; espuma de colchón descartada</td></tr>
+            <tr><td class="material-tag">Hito</td><td>Banco de celdas en la semana 2; decisión al cierre de la semana 3; respaldo: solo ADXL375</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+   <div class="yellowcommand-block">
+    <h4 id="UNO-12">Fuentes consultadas (8 de octubre de 2026)</h4>
+    <ul>
+        <li><code>⦿</code> Finlay, Page, Greig y Bridge (2023). <i>Test-retest reliability and sensitivity of senior elite amateur boxers maximal punch force, as quantified by a vertically mounted force plate.</i> PLOS ONE 18(8): e0289791.</li>
+        <li><code>⦿</code> Texas Instruments, ADS1220 (ti.com/product/ADS1220): 24 bits, hasta 2,000 SPS, PGA 1–128, TSSOP-16 y VQFN-16.</li>
+        <li><code>⦿</code> Unit Electronics: celda de carga 50 kg SEN-10245 ($22); ADS1220IPWR ($95.40, outlet); módulo ADS1115 ($47); TPU 95A 0.8 kg ($813).</li>
+        <li><code>⦿</code> Poliuretano: Gantrade y Gallagher (poliéter vs. poliéster); Smooth-On (VytaFlex 50, FlexFoam-iT! 25); patentes de espuma para colchón (densidad y CLD).</li>
+        <li><code>⦿</code> <b>No verificado:</b> deflexión real de la celda SEN-10245, precio local del adaptador TSSOP→DIP y del plato de aluminio, precio de una ESP32 DevKit local, fuerzas típicas de usuarios recreativos.</li>
+    </ul>
+</div>
+
+<!-- ===================== COMUNICACIÓN V2 ===================== -->
+    <h2 id="DOS">Comunicación v2</h2>
+    <h3>Arquitectura de comunicación v2: pods ↔ pods ↔ app</h3>
+   <div class="yellowcommand-block intro-block">
+    <p><b>Complemento a la revisión crítica (Pasos 3 y 5) y a la lista de componentes v2</b> · Fecha de consulta: 8 de octubre de 2026</p>
+
+    <div class="nota">
+        <p><i><b>Etiquetas:</b> <b>[Confirmado]</b> = verificado en la documentación de Espressif (ESP-IDF v6.1). <b>[Estimado]</b> = cálculo o rango propio. <b>[Hipótesis]</b> = por validar en banco. <b>[Pendiente]</b> = falta verificar.</i></p>
+        <p><i><b>Hardware sin cambios:</b> ESP32-WROOM-32E en todos los pods, teléfono con la app React Native.</i></p>
+    </div>
+</div>
+
+   <div class="greencommand-block">
+    <h4 id="DOS-1">1. Decisión</h4>
+    <p><b>Se mantiene BLE (teléfono ↔ un pod) + ESP-NOW (entre pods). Lo que cambia es quién manda.</b></p>
+    <p>En la versión anterior, la app dirigía la rutina y el gateway reenviaba mensajes. En la v2, <b>el pod gateway es el director de la sesión</b>: tiene la rutina completa, decide qué pod se enciende y cuándo, recoge los resultados y se los pasa al teléfono. El teléfono solo carga la rutina, muestra los resultados en vivo y guarda el historial.</p>
+    <p><b>Por qué esta es la mejor opción:</b></p>
+    <ol>
+        <li><b>El enlace más lento queda fuera del ciclo de juego.</b> El BLE con iPhone tiene un intervalo de conexión de ≥ 15 ms <b>[Pendiente: confirmar en la guía de accesorios de Apple]</b>. ESP-NOW entre pods es del orden de unos pocos ms <b>[Estimado]</b>. Si decide el gateway, cada estímulo solo paga ESP-NOW.</li>
+        <li><b>La sesión sobrevive a todo lo del teléfono:</b> pantalla bloqueada, app en segundo plano, una llamada entrante o una desconexión.</li>
+        <li><b>Solo un pod corre BLE y Wi-Fi a la vez.</b> El ESP32 tiene un solo radio de 2.4 GHz y lo reparte por tiempo entre Wi-Fi y Bluetooth <b>[Confirmado]</b>. Los demás pods apagan el Bluetooth.</li>
+        <li><b>No depende de iOS.</b> El teléfono mantiene una sola conexión BLE, sin importar cuántos pods haya.</li>
+    </ol>
+</div>
+
+   <div class="command-block">
+    <h4 id="DOS-2">2. Topología</h4>
+    <div class="code-area">
+<pre>                 ┌───────────────┐
+                 │  App (RN)     │  SQLite local ── HTTPS (después) ──► Supabase
+                 └──────┬────────┘
+                        │ BLE GATT (1 conexión)
+                        │ carga rutina · recibe eventos · ACK
+                 ┌──────▼────────┐
+                 │  POD GATEWAY  │  "Director de sesión"
+                 │  BLE + ESP-NOW│  motor de rutina · reloj maestro · cola de eventos
+                 └──┬───┬───┬────┘
+          ESP-NOW   │   │   │   canal Wi-Fi fijo, modo STA sin conectarse a ningún AP
+         (unicast   │   │   │
+          cifrado)  │   │   │
+              ┌─────▼┐ ┌▼────┐ ┌▼────┐
+              │Pod 2 │ │Pod 3│ │Pod N│   Bluetooth APAGADO · solo ESP-NOW
+              └──────┘ └─────┘ └─────┘
+</pre>
+    </div>
+    <ul>
+        <li><code>⦿ Gateway:</code> cualquier pod puede serlo; la app elige el de mayor batería al iniciar.</li>
+        <li><code>⦿ Seguidores:</code> ejecutan órdenes, miden localmente (tiempo de reacción, aceleración, fuerza) y reportan.</li>
+        <li><code>⦿ Límite de pods:</code> ESP-NOW admite hasta 20 pares, de los cuales máximo 17 cifrados (7 por omisión, configurable) <b>[Confirmado]</b>. Para un kit de 4–12 pods sobra.</li>
+    </ul>
+</div>
+
+   <div class="command-block">
+    <h4 id="DOS-3">3. Configuración del radio</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Regla</th><th>Motivo</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">Gateway en modo STA, sin conectarse a ninguna red</td><td>La recepción ESP-NOW junto con BLE solo es estable en modo STA <b>[Confirmado: tabla de coexistencia, ESP-IDF]</b>. En modo SoftAP la coexistencia con BLE es inestable</td></tr>
+            <tr><td class="material-tag">Canal fijo para todo el kit (1, 6 u 11), elegido al emparejar</td><td>Todos los pods deben estar en el mismo canal; si no, el envío falla <b>[Confirmado]</b>. La app puede proponer el canal menos saturado</td></tr>
+            <tr><td class="material-tag">Pila Wi-Fi y pila Bluetooth en núcleos distintos</td><td>Recomendación de Espressif para la coexistencia <b>[Confirmado]</b></td></tr>
+            <tr><td class="material-tag">Parámetros de ahorro de energía de ESP-NOW por omisión en el gateway</td><td>Valores personalizados pueden degradar el Bluetooth <b>[Confirmado]</b></td></tr>
+            <tr><td class="material-tag">Pila BLE NimBLE (no Bluedroid)</td><td>Menos memoria; deja espacio a Wi-Fi + BLE + rutina <b>[Estimado]</b></td></tr>
+            <tr><td class="material-tag">Seguidores sin Bluetooth durante la sesión</td><td>Sin coexistencia que gestionar; el radio se dedica a ESP-NOW</td></tr>
+            <tr><td class="material-tag">Cabecera con <code>kit_id</code> en cada mensaje</td><td>Dos kits en el mismo gimnasio no se mezclan</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+   <div class="command-block">
+    <h4 id="DOS-4">4. Cómo se ejecuta una rutina</h4>
+    <h5 class="subtitulo">4.1 Antes de la sesión</h5>
+    <ol>
+        <li>La app se conecta por BLE al gateway y le envía la rutina completa (bloques, duración, pods, colores, reglas).</li>
+        <li>El gateway reparte a cada seguidor la rutina y la configuración (umbrales, brillo) por ESP-NOW. ESP-NOW v2 admite hasta 1470 bytes por paquete <b>[Confirmado]</b>; aun así se usan paquetes ≤ 250 B por compatibilidad con v1.</li>
+        <li>Sincronización de relojes (sección 5). El gateway confirma a la app que todos están listos.</li>
+    </ol>
+
+    <h5 class="subtitulo">4.2 Durante la sesión</h5>
+    <div class="code-area">
+<pre>Gateway                       Pod 3                          App
+   │ decide: "pod 3, rojo"      │                              │
+   │── STIM(id=57, t_on=T) ────►│                              │
+   │                            │ enciende LED en T, t0 local  │
+   │                            │ ... golpe ... t1 local       │
+   │                            │ RT, pico g, fuerza N         │
+   │◄─────── EVT(seq=57, ...) ──│                              │
+   │── ACK(seq=57) ────────────►│ (borra el evento del buffer) │
+   │ decide el siguiente estímulo                              │
+   │── EVT por notificación BLE ──────────────────────────────►│
+   │◄────────────────────────────────────── ACK(seq hasta 57) ─│
+</pre>
+    </div>
+    <ul>
+        <li><b><code>t_on</code> con anticipación:</b> el gateway programa el encendido ≈ 20 ms en el futuro con el reloj sincronizado <b>[Hipótesis: ajustar en banco]</b>. La variación de ESP-NOW se absorbe y los patrones con varios pods se encienden juntos.</li>
+        <li><b>El tiempo de reacción no depende de la red:</b> <code>t0</code> y <code>t1</code> se toman en el mismo pod.</li>
+        <li><b>Rutinas reactivas</b> ("el siguiente pod se enciende al golpear el actual") esperan el <code>EVT</code>, que tarda unos ms por ESP-NOW <b>[Estimado]</b>.</li>
+    </ul>
+
+    <h5 class="subtitulo">4.3 Al terminar</h5>
+    <p>El gateway envía un resumen, la app confirma que tiene todos los <code>seq</code> y ordena a los pods volver a reposo.</p>
+</div>
+
+   <div class="command-block">
+    <h4 id="DOS-5">5. Sincronización de relojes</h4>
+    <ul>
+        <li>El gateway transmite un <b>beacon <code>SYNC</code> por broadcast cada 500 ms</b> con su tiempo en µs. Sirve también como latido (heartbeat).</li>
+        <li>Cada seguidor calcula su desfase y deriva con un filtro simple (promedio móvil, descartando valores atípicos).</li>
+        <li><b>Precisión esperada: del orden de 1 ms</b> <b>[Hipótesis: medir con analizador lógico]</b>. Basta para encendidos simultáneos y para ordenar eventos.</li>
+        <li>Los broadcast de ESP-NOW <b>no se pueden cifrar</b> <b>[Confirmado]</b>. Por eso el <code>SYNC</code> lleva <code>kit_id</code> y un HMAC truncado con la clave del kit.</li>
+    </ul>
+</div>
+
+   <div class="command-block">
+    <h4 id="DOS-6">6. Entrega confiable (cero eventos perdidos)</h4>
+    <p>La confirmación de envío de ESP-NOW <b>solo indica recepción en la capa MAC, no que la aplicación recibió el dato</b>. Espressif recomienda un ACK propio y números de secuencia para descartar duplicados <b>[Confirmado]</b>. Se aplica en dos saltos:</p>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Salto</th><th>Mecanismo</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">Seguidor → gateway</td><td><code>EVT</code> con <code>seq</code>; el gateway responde <code>ACK</code>; sin ACK en ≈ 30 ms <b>[Hipótesis]</b>, reintento (hasta 5). El seguidor guarda el evento hasta recibir el ACK</td></tr>
+            <tr><td class="material-tag">Gateway → app</td><td>Notificación BLE; la app responde con el último <code>seq</code> recibido de forma contigua. El gateway conserva los eventos hasta esa confirmación</td></tr>
+            <tr><td class="material-tag">Reconexión</td><td>La app pide "reenvíame desde <code>seq = N</code>" por pod</td></tr>
+            <tr><td class="material-tag">Duplicados</td><td>Clave (<code>dev_id</code>, <code>boot_id</code>, <code>seq</code>), sin cambios respecto al Paso 3</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+   <div class="command-block">
+    <h4 id="DOS-7">7. Mensajes</h4>
+    <h5 class="subtitulo">7.1 ESP-NOW (cabecera común: ver, kit_id, type, src, seq)</h5>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Tipo</th><th>Dirección</th><th>Contenido</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag"><code>SYNC</code></td><td>Gateway → todos (broadcast)</td><td>Tiempo maestro, estado de la sesión, gateway actual, HMAC</td></tr>
+            <tr><td class="material-tag"><code>CFG</code> / <code>ROUTINE</code></td><td>Gateway → pod</td><td>Umbrales, brillo, fragmento de rutina</td></tr>
+            <tr><td class="material-tag"><code>STIM</code></td><td>Gateway → pod</td><td><code>stim_id</code>, color/patrón, <code>t_on</code>, tiempo límite</td></tr>
+            <tr><td class="material-tag"><code>CANCEL</code></td><td>Gateway → pod</td><td>Apaga el estímulo (tiempo agotado, fin de bloque)</td></tr>
+            <tr><td class="material-tag"><code>EVT</code></td><td>Pod → gateway</td><td>Evento de impacto: RT, pico g, fuerza N, banderas, batería</td></tr>
+            <tr><td class="material-tag"><code>ACK</code></td><td>Gateway → pod</td><td>Último <code>seq</code> confirmado</td></tr>
+            <tr><td class="material-tag"><code>STATUS</code></td><td>Pod → gateway (cada ~5 s)</td><td>Batería, temperatura, reinicios, RSSI</td></tr>
+            <tr><td class="material-tag"><code>ELECT</code></td><td>Cualquiera → todos</td><td>Elección de nuevo gateway (sección 8)</td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h5 class="subtitulo">7.2 BLE GATT (gateway ↔ app)</h5>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Característica</th><th>Propiedades</th><th>Uso</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag"><code>Control</code></td><td>Escritura con respuesta</td><td>Iniciar/pausar/detener, cargar rutina, reenviar desde <code>seq</code>, emparejar pods</td></tr>
+            <tr><td class="material-tag"><code>Events</code></td><td>Notificación</td><td>Eventos de todos los pods (<code>dev_id</code> + evento)</td></tr>
+            <tr><td class="material-tag"><code>Ack</code></td><td>Escritura sin respuesta</td><td>Último <code>seq</code> recibido por pod</td></tr>
+            <tr><td class="material-tag"><code>Status</code></td><td>Lectura + notificación</td><td>Lista de pods, batería, RSSI, gateway actual</td></tr>
+            <tr><td class="material-tag"><code>Bulk</code></td><td>Notificación</td><td>Formas de onda en modo diagnóstico, resumen de sesión</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><b>Parámetros BLE:</b> pedir MTU alto (≥ 185 B) para meter varios eventos en una notificación; intervalo de conexión de 15–30 ms durante la sesión y más largo en reposo <b>[Pendiente: verificar lo que aceptan iOS y Android]</b>. Emparejamiento con LE Secure Connections y clave impresa en la etiqueta.</p>
+</div>
+
+   <div class="redcommand-block">
+    <h4 id="DOS-8">8. Si el gateway falla</h4>
+    <ol>
+        <li>Cada seguidor tiene <b>la rutina completa</b> desde el inicio.</li>
+        <li>Si falta el <code>SYNC</code> del gateway durante &gt; 1.5 s <b>[Hipótesis]</b>, los seguidores entran en elección: gana el de <b>mayor batería</b> y, en empate, la MAC menor. Todos aplican la misma regla, así que no hace falta negociar.</li>
+        <li>El nuevo gateway retoma la rutina en el siguiente estímulo, enciende su BLE y se anuncia con una bandera "gateway".</li>
+        <li>La app detecta la caída, busca el anuncio con esa bandera y se reconecta. Los eventos pendientes se recuperan con "reenviar desde <code>seq</code>".</li>
+    </ol>
+</div>
+
+   <div class="command-block">
+    <h4 id="DOS-9">9. Energía</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Rol</th><th>Consumo de radio estimado</th><th>Nota</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">Seguidor</td><td>Wi-Fi en recepción continua ≈ 100 mA <b>[Estimado]</b></td><td>Ya incluido en el cálculo de batería (≈ 215 mA total, 3 h con margen)</td></tr>
+            <tr><td class="material-tag">Gateway</td><td>Wi-Fi + BLE conectados, algo más que un seguidor <b>[Pendiente: medir]</b></td><td>Se elige el de mayor batería y el rol rota entre sesiones</td></tr>
+            <tr><td class="material-tag">Reposo (sin sesión)</td><td>Wi-Fi apagado; BLE solo anunciando cada 1 s en el pod que espera a la app</td><td>Los demás duermen y despiertan por movimiento (acelerómetro)</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p>ESP-NOW permite ventanas de sueño en modo STA <b>[Confirmado]</b>, pero durante una sesión no conviene usarlas porque añaden latencia a los estímulos.</p>
+</div>
+
+   <div class="command-block">
+    <h4 id="DOS-10">10. Alternativas evaluadas</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Opción</th><th>Veredicto</th><th>Motivo</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag"><b>Gateway BLE + ESP-NOW, gateway como director</b></td><td><b>Elegida</b></td><td>Latencia de juego baja, sesión independiente del teléfono, una sola conexión BLE</td></tr>
+            <tr><td class="material-tag">Gateway BLE + ESP-NOW, app como director (versión anterior)</td><td>Reemplazada</td><td>Cada estímulo paga la latencia del BLE; la sesión se detiene si el teléfono se desconecta</td></tr>
+            <tr><td class="material-tag">Teléfono conectado por BLE a cada pod</td><td>Descartada</td><td>iOS gestiona mal varias conexiones simultáneas</td></tr>
+            <tr><td class="material-tag">BLE entre pods</td><td><b>Plan B</b></td><td>Más robusto ante interferencia, peor sincronía y firmware más complejo; máximo 3–4 seguidores</td></tr>
+            <tr><td class="material-tag">Gateway en SoftAP + WebSocket hacia la app, ESP-NOW entre pods</td><td><b>Plan C</b></td><td>No usa BLE, así que no hay coexistencia; la app ya funciona sin internet. Desventaja: el teléfono pierde internet durante la sesión</td></tr>
+            <tr><td class="material-tag">BLE Mesh</td><td>Descartada</td><td>Latencia alta y complejidad</td></tr>
+            <tr><td class="material-tag">Wi-Fi del gimnasio (MQTT/UDP)</td><td>Descartada</td><td>Aislamiento de clientes, contraseñas y portales cautivos</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+   <div class="purpcommand-block">
+    <h4 id="DOS-11">11. Validación (semana 2)</h4>
+    <p>La coexistencia es el mayor riesgo de esta arquitectura y solo necesita <b>2–3 ESP32 DevKit</b>. Se adelanta la prueba de la semana 4 a la <b>semana 2</b>.</p>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Prueba</th><th>Montaje</th><th>Criterio propuesto</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">Coexistencia</td><td>Gateway con BLE conectado a un iPhone y a un Android + 2 seguidores enviando 5 eventos/s durante 30 min</td><td>Pérdida en la capa de aplicación = 0; reintentos &lt; 2 % <b>[Hipótesis]</b></td></tr>
+            <tr><td class="material-tag">Latencia ESP-NOW</td><td>GPIO alternado en emisor y receptor, con analizador lógico</td><td>Mediana &lt; 5 ms, p99 &lt; 20 ms <b>[Hipótesis]</b></td></tr>
+            <tr><td class="material-tag">Sincronía</td><td>Dos pods encienden un LED en el mismo <code>t_on</code>; medir la diferencia</td><td>&lt; 2 ms en el 95 % de los casos <b>[Hipótesis]</b></td></tr>
+            <tr><td class="material-tag">Caída del gateway</td><td>Apagar el gateway a mitad de rutina</td><td>Nuevo gateway en &lt; 3 s; 0 eventos perdidos tras la reconexión</td></tr>
+            <tr><td class="material-tag">Gimnasio real</td><td>30 min con Wi-Fi y teléfonos alrededor, pods a 5–10 m</td><td>Mismos criterios de pérdida</td></tr>
+            <tr><td class="material-tag">Consumo</td><td>Medir la corriente del gateway y de un seguidor</td><td>Confirmar ≥ 3 h para ambos roles</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><b>Si la coexistencia falla:</b> se pasa al plan C (SoftAP), que reutiliza todo el protocolo ESP-NOW y solo cambia el enlace con el teléfono.</p>
+</div>
+
+   <div class="greencommand-block">
+    <h4 id="DOS-12">Decisiones que actualizan "Decisiones vigentes"</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead>
+            <tr><th>Tema</th><th>Decisión propuesta</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="material-tag">Comunicación</td><td>Gateway BLE + ESP-NOW, <b>con el gateway como director de sesión</b>; la app carga rutinas, muestra y guarda</td></tr>
+            <tr><td class="material-tag">Radio</td><td>Gateway en STA sin AP, canal fijo por kit, pilas en núcleos distintos, NimBLE; seguidores sin Bluetooth</td></tr>
+            <tr><td class="material-tag">Sincronía</td><td><code>SYNC</code> broadcast cada 500 ms con HMAC; encendidos programados con <code>t_on</code></td></tr>
+            <tr><td class="material-tag">Entrega</td><td>ACK de aplicación en ambos saltos, <code>seq</code> y reenvío</td></tr>
+            <tr><td class="material-tag">Caída del gateway</td><td>Rutina completa en todos los pods; elección por mayor batería y MAC menor</td></tr>
+            <tr><td class="material-tag">Plan B / C</td><td>B: BLE entre pods (≤ 4). C: gateway en SoftAP + WebSocket</td></tr>
+            <tr><td class="material-tag">Hito</td><td>Prueba de coexistencia en la <b>semana 2</b> con DevKits</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+   <div class="yellowcommand-block">
+    <h4 id="DOS-13">Fuentes consultadas (8 de octubre de 2026)</h4>
+    <ul>
+        <li><code>⦿</code> Espressif, ESP-IDF v6.1, <i>RF Coexistence</i>: radio único de 2.4 GHz por multiplexación en el tiempo; tabla de coexistencia ESP-NOW/BLE; recomendaciones de núcleos y de ahorro de energía.</li>
+        <li><code>⦿</code> Espressif, ESP-IDF v6.1, <i>ESP-NOW</i>: límites de pares y cifrado, tamaños v1/v2, sin cifrado en multicast, ACK en la capa MAC y recomendación de ACK de aplicación, ahorro de energía solo en modo STA.</li>
+        <li><code>⦿</code> <b>No verificado:</b> intervalo mínimo de conexión BLE aceptado por iOS, latencia real de ESP-NOW con coexistencia, consumo del gateway.</li>
+    </ul>
+</div>
+
+                    </div>
+                </div>
+        </section>
+
+     <!--FIN CONTENIDO-->
+
+
+    </main>
+
+    <!-- Footer-->
+    <footer>
+        <div class="col-auto"><div class="small m-0 text-gray">Proyectos IV · Derek Rodríguez Cancino · Ibero Puebla · México · 201265@iberopuebla.mx</div></div>
+    </footer>
+
+    <!-- Bootstrap core JS-->
+    <!--script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script-->
+    <script> AOS.init(); </script>
+    <!-- Core theme JS-->
+    <script>
+
+        document.querySelectorAll(".cad-tabs-wrapper").forEach(wrapper => {
+
+        let currentGroup = wrapper.querySelector(".cad-group:not([style*='none'])")?.id 
+                            || wrapper.querySelector(".cad-group").id;
+
+        let menuIndex = 0;
+
+        function getMenus(){
+            return wrapper.querySelectorAll(
+            `#${currentGroup} .cad-menu`
+            );
+        }
+
+        function showMenu(){
+            const menus = getMenus();
+            menus.forEach(m => m.classList.remove("active"));
+            if(menus.length > 0){
+            menus[menuIndex].classList.add("active");
+            }
+        }
+
+        wrapper.querySelectorAll(".cad-arrow").forEach(btn=>{
+            btn.addEventListener("click", e=>{
+            const dir = btn.classList.contains("left") ? -1 : 1;
+            const menus = getMenus();
+
+            menuIndex += dir;
+
+            // carrusel infinito
+            if(menuIndex < 0) menuIndex = menus.length - 1;
+            if(menuIndex >= menus.length) menuIndex = 0;
+
+            showMenu();
+            });
+        });
+
+        wrapper.querySelectorAll(".cad-tab").forEach(tab=>{
+            tab.addEventListener("click", ()=>{
+
+            wrapper.querySelectorAll(".cad-tab")
+                .forEach(t=>t.classList.remove("active"));
+            tab.classList.add("active");
+
+            const group = tab.getAttribute("onclick")
+                ?.match(/'([^']+)'/)[1];
+
+            wrapper.querySelectorAll(".cad-group")
+                .forEach(g=>g.style.display="none");
+
+            const target = wrapper.querySelector("#"+group);
+            if(target){
+                target.style.display="block";
+                currentGroup = group;
+                menuIndex = 0;
+                showMenu();
+            }
+
+            });
+        });
+
+        showMenu();
+
+        });
+
+    </script>
+    <script>
+        const links = document.querySelectorAll('.menu-link');
+
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                links.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        // Resalta en el menú la sección que se está leyendo
+        const targets = [...links].map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+        const spy = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+                }
+            });
+        }, { rootMargin: '-130px 0px -65% 0px' });
+        targets.forEach(t => spy.observe(t));
+    </script>
+
+</body>
+
+</html>
