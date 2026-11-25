@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="contact" content="201265@iberopuebla.mx" />
+    <meta name="author" content="Derek Rodríguez Cancino" />
+    <title>Semana 9 | Proyectos IV</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="../../assets/fablab.png" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="../../css/styles.css" rel="stylesheet">
+    <link href="../../css/faces.css" rel="stylesheet">
+    <!-- Estilos propios de la semana 9-->
+    <style>
+        /* Menú lateral: cabe en pantalla y marca las subsecciones */
+        .week-menu { flex-shrink: 0; max-height: calc(100vh - 160px); overflow-y: auto; gap: 6px; padding-right: 4px; }
+        .menu-link { padding: 10px 14px; }
+        .week-paper { flex: 1; min-width: 0; }
+        .menu-link.menu-sub { padding: 6px 14px 6px 28px; font-size: 0.88rem; font-weight: 400; }
+        .week-paper h2 { margin-top: 30px; padding-bottom: 6px; border-bottom: 2px solid #2c3e50; }
+        .week-paper h4 { scroll-margin-top: 120px; font-weight: 700; color: #2c3e50; margin-bottom: 12px; }
+        .week-paper h5.subtitulo { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 0.98rem; font-weight: 600; color: #a2680b; margin: 18px 0 8px; }
+        .week-paper h5.subtitulo::before { content: "⦿ "; }
+
+        /* Bloques: separación entre párrafos (faces.css los deja en 0) */
+        .command-block p, .yellowcommand-block p, .purpcommand-block p,
+        .greencommand-block p, .redcommand-block p { margin-bottom: 10px; }
+        .command-block p:last-child, .yellowcommand-block p:last-child, .purpcommand-block p:last-child,
+        .greencommand-block p:last-child, .redcommand-block p:last-child { margin-bottom: 0; }
+
+        /* Código en línea (faces.css lo pone en bloque) */
+        .week-paper p code, .week-paper li code, .week-paper td code {
+            display: inline; font-family: 'JetBrains Mono', Consolas, monospace; font-size: 0.9em;
+            color: #a2680b; background: rgba(210, 134, 13, 0.08); padding: 1px 5px; border-radius: 5px; margin: 0;
+        }
+
+        /* Diagramas de texto */
+        .code-area { margin: 12px 0 16px; overflow-x: auto; }
+        .code-area pre { font-size: 13px; line-height: 1.45; color: #2c3e50; white-space: pre; }
+
+        .nota p { font-size: 0.95rem; }
+        .tabla-scroll { width: 100%; overflow-x: auto; }
+
+        @media (max-width: 900px) {
+            .week-layout { flex-direction: column; }
+            .week-menu { position: static; width: 100%; max-height: none; flex-direction: row; flex-wrap: wrap; }
+            .menu-link.menu-sub { display: none; }
+            .week-paper { padding: 30px 20px; }
+        }
+
+        /* Notas, figuras y frases */
+        .nota { background: rgba(255, 196, 4, 0.08); padding: 12px 16px; border-left: 4px solid #ffc404; border-radius: 10px; margin: 12px 0 16px; }
+        .figura { margin: 18px 0; text-align: center; }
+        .figura svg { width: 100%; height: auto; background: #ffffff; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .figura figcaption { font-size: 0.9rem; font-style: italic; color: #555; margin-top: 10px; }
+        .frase { font-style: italic; font-size: 1.1rem; text-align: center; color: #2c3e50 !important; padding: 14px 18px; margin: 12px 0 18px !important; border-radius: 12px; background: rgba(112, 210, 13, 0.08); }
+
+        /* Prompts para generar imágenes */
+        .prompt-box {
+            font-family: 'JetBrains Mono', Consolas, monospace; font-size: 13px; line-height: 1.6; color: #2c3e50;
+            padding: 16px 18px; margin: 10px 0 14px; border-radius: 16px; background: rgba(255,255,255,0.55);
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.08), inset 0 -4px 10px rgba(255,255,255,0.6), 0 10px 25px rgba(0,0,0,0.05);
+        }
+        .prompt-box::before { content: "PROMPT"; display: block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: #a2680b; margin-bottom: 6px; }
+
+
+        .reflexion p { line-height: 1.8; }
+        .prompt-box { white-space: pre-wrap; overflow-x: auto; }
+
+        /* Etiquetas Cumple / Parcial / Falta */
+        .ok, .no, .mid { display: inline-block; padding: 1px 8px; border-radius: 10px; font-weight: 700; font-size: 0.88em; }
+        .ok  { background: rgba(112, 210, 13, 0.18); color: #2d7a0b; }
+        .no  { background: rgba(210, 56, 13, 0.15); color: #ae2f0b; }
+        .mid { background: rgba(255, 196, 4, 0.22); color: #8a6200; }
+
+        /* Costos D/F/S */
+        .tag-d, .tag-f, .tag-s { font-weight: 700; text-align: center; }
+        span.tag-d, span.tag-f, span.tag-s { display: inline-block; min-width: 24px; padding: 0 6px; border-radius: 6px; }
+        .tag-d { color: #ffffff !important; background: #d2860d; }
+        .tag-f { color: #17708a !important; background: rgba(28, 197, 235, 0.16); }
+        .tag-s { color: #555 !important; background: #e6e9ed; }
+
+        /* Números y totales */
+        .material-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .material-table tr.tot td { background: #2c3e50; color: #ffffff; font-weight: 700; }
+        .material-table tr.tot td b { color: #ffffff; }
+
+        /* Cálculos paso a paso */
+        .calc {
+            font-family: 'JetBrains Mono', Consolas, monospace; font-size: 13px; line-height: 1.55; color: #2c3e50;
+            white-space: pre; overflow-x: auto; padding: 16px 18px; margin: 12px 0 16px; border-radius: 14px;
+            background: #fafafa; border: 1px dashed rgba(210, 134, 13, 0.45);
+        }
+        .prompt-box.resultado { border: 1px solid rgba(112, 210, 13, 0.45); }
+        .prompt-box.resultado::before { content: "RESULTADO DEL PROMPT"; color: #3d7a0b; }
+        span.tag-d { color: #ffffff !important; background: #d2860d; }
+        td.tag-d { color: #a2680b !important; background: rgba(210, 134, 13, 0.16); }
+
+        /* Negativos, tarjetas de cifras, flujo y descarga */
+        .material-table td.num.neg { color: #ae2f0b; }
+        .material-table tr.tot td.num.neg { color: #ffb3a0; }
+        .chips { display: flex; flex-wrap: wrap; gap: 12px; margin: 14px 0 16px; }
+        .chip { flex: 1 1 160px; padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,0.85); box-shadow: 0 6px 16px rgba(0,0,0,0.07); border-top: 3px solid #d2860d; }
+        .chip b { display: block; font-size: 1.35rem; color: #2c3e50; }
+        .chip span { display: block; font-size: 0.85rem; color: #555; line-height: 1.4; }
+        .material-table.flujo { font-size: 12px; }
+        .material-table.flujo td, .material-table.flujo th { padding: 6px 7px; }
+        .material-table.flujo td.material-tag { white-space: nowrap; position: sticky; left: 0; background: #ffffff; }
+        .material-table.flujo tr.tot td.material-tag { background: #2c3e50; color: #ffffff; }
+        .descarga { display: inline-block; padding: 10px 22px; border-radius: 12px; background: #2c3e50; color: #ffffff !important; font-weight: 700; letter-spacing: 0.5px; text-decoration: none; box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+        .descarga:hover { background: #d2860d; }
+        /* Semana 8 y 9: etiquetas de los formatos del taller */
+        .prompt-box.plan::before { content: "PLAN DE PROTOTIPADO"; color: #17708a; }
+        .prompt-box.reporte::before { content: "REPORTE DE PROTOTIPO"; color: #3d7a0b; }
+        .prompt-box.plan { border: 1px solid rgba(28, 197, 235, 0.45); }
+        .prompt-box.reporte { border: 1px solid rgba(112, 210, 13, 0.45); }
+        .prompt-box.dato::before { content: "FORMATO DEL DATO (EVT)"; color: #17708a; }
+    </style>
+</head>
+
+<body class="d-flex flex-column h-100" style="background-color:#fffffe">
+    <main class="flex-shrink-0">
+        <!-- Navigation-->
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+                <div class="container px-5">
+                    <!--<a class="navbar-brand">Fab Academy</a>-->
+                    <a class="navbar-brand d-flex align-items-center" href="../../">
+                        <img src="../../assets/fablab.png" alt="FabLab Logo" width="40"height="40" class="me-2"> Proyectos IV </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">                   
+                            <li class="nav-item"><a class="nav-link" href="../../index.html#yo">About Me</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../../index.html#practicas">Semanas</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+        <section class="week-header">
+            <div class="week-glass">
+                <h1>SEMANA 9: Integración, go-to-market y pitch</h1>
+                <div>Última clase de contenido. Esta semana decide cómo Lumetriq usa las dos semanas de trabajo antes de la evaluación: qué se integra y cómo se prueba, con quién se prueba, cómo se lanza, cuánto cuesta conseguir un gimnasio, qué hace falta para vender legalmente y cómo se cuenta todo en un pitch de 3 minutos y una demo de 7.</div>
+            </div>
+        </section>
+
+    <!-- Seccion de CONTENIDO-->
+        <section class="week-content">
+            <div class="week-layout">
+                <aside class="week-menu">
+                    <a href="#UNO" class="menu-link">Fronteras del sistema</a>
+                    <a href="#DOS" class="menu-link">Pruebas T1–T6</a>
+                    <a href="#TRES" class="menu-link">Pruebas con usuarios</a>
+                    <a href="#CUATRO" class="menu-link">Early adopters y canales</a>
+                    <a href="#CINCO" class="menu-link">Economía unitaria</a>
+                    <a href="#SEIS" class="menu-link">Landing</a>
+                    <a href="#SIETE" class="menu-link">Regulación</a>
+                    <a href="#OCHO" class="menu-link">Pitch de 3 minutos</a>
+                    <a href="#NUEVE" class="menu-link">Demo de 7 minutos</a>
+                    <a href="#DIEZ" class="menu-link">Ruta de cierre</a>
+                    <a href="#ONCE" class="menu-link">Prompts de construcción</a>
+                    <a href="#ENT" class="menu-link">Entregables</a>
+                    <a href="#SALIDA" class="menu-link">Preguntas de salida</a>
+                    <a href="#SALIDA-1" class="menu-link menu-sub">Fuentes consultadas</a>
+                    <a href="#Learning" class="menu-link">Reflexión</a>
+                </aside>
+
+                <div class="week-paper">
+
+    <div class="nota">
+        <p><i><b>Cómo leer esta página:</b> versión del 25 de noviembre de 2026. Los números de negocio salen del business case de la semana 7 (paquete de 4 pods a $6,000 con IVA, $5,172.41 sin IVA; componentes $1,000 por pod) y los de ingeniería, del PDS v1.2 de la semana 5. <b>[Estimado]</b> = cálculo propio; <b>[Supuesto]</b> = dato que se mide en el piloto; <b>PENDIENTE</b> = afirmación sin evidencia todavía. Lumetriq no cobra mensualidad, así que las fórmulas de economía unitaria de la clase se adaptan a un pago único con recompras (sección 5).</i></p>
+    </div>
+
+    <!-- ===================== 1. FRONTERAS ===================== -->
+    <h2 id="UNO">Integración: las fallas viven en las fronteras</h2>
+   <div class="command-block">
+    <h3>Las fronteras de Lumetriq</h3>
+    <p>El ejemplo de la clase tiene cuatro fronteras. Lumetriq tiene cinco, porque entre el sensor y la app hay dos saltos de radio: los pods hablan entre sí por ESP-NOW y solo uno, el gateway, habla con el teléfono por BLE (arquitectura de la semana 5).</p>
+    <figure class="figura">
+        <svg viewBox="0 0 960 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cadena de cinco fronteras: sensores, pod seguidor, pod gateway, app, nube con IA, y pantalla del usuario">
+            <style>
+                .bx { fill: #eef1f7; stroke: #4d5a78; stroke-width: 1.5; }
+                .bt { font: bold 13px Arial, sans-serif; fill: #032472; }
+                .bs { font: 11.5px Arial, sans-serif; fill: #4d5a78; }
+                .fl { font: bold 13px Arial, sans-serif; fill: #b10a0a; }
+                .fs { font: 11px Arial, sans-serif; fill: #b10a0a; }
+                .ar { stroke: #b10a0a; stroke-width: 2; fill: none; }
+            </style>
+            <defs><marker id="m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#b10a0a"></path></marker></defs>
+            <rect class="bx" x="10" y="60" width="150" height="80" rx="10"></rect>
+            <text class="bt" x="85" y="90" text-anchor="middle">Sensores</text>
+            <text class="bs" x="85" y="108" text-anchor="middle">4 celdas + ADS1220</text>
+            <text class="bs" x="85" y="124" text-anchor="middle">ADXL375</text>
+            <rect class="bx" x="205" y="60" width="150" height="80" rx="10"></rect>
+            <text class="bt" x="280" y="90" text-anchor="middle">Pod seguidor</text>
+            <text class="bs" x="280" y="108" text-anchor="middle">ESP32: tiempo,</text>
+            <text class="bs" x="280" y="124" text-anchor="middle">fuerza y golpe</text>
+            <rect class="bx" x="400" y="60" width="150" height="80" rx="10"></rect>
+            <text class="bt" x="475" y="90" text-anchor="middle">Pod gateway</text>
+            <text class="bs" x="475" y="108" text-anchor="middle">dirige la sesión</text>
+            <text class="bs" x="475" y="124" text-anchor="middle">y la rutina</text>
+            <rect class="bx" x="595" y="60" width="150" height="80" rx="10"></rect>
+            <text class="bt" x="670" y="90" text-anchor="middle">App</text>
+            <text class="bs" x="670" y="108" text-anchor="middle">React Native</text>
+            <text class="bs" x="670" y="124" text-anchor="middle">+ SQLite</text>
+            <rect class="bx" x="790" y="60" width="160" height="80" rx="10"></rect>
+            <text class="bt" x="870" y="90" text-anchor="middle">Nube</text>
+            <text class="bs" x="870" y="108" text-anchor="middle">Supabase + Edge</text>
+            <text class="bs" x="870" y="124" text-anchor="middle">Function → LLM</text>
+            <line class="ar" x1="160" y1="100" x2="203" y2="100" marker-end="url(#m)"></line>
+            <text class="fl" x="182" y="50" text-anchor="middle">F1</text><text class="fs" x="182" y="160" text-anchor="middle">SPI</text>
+            <line class="ar" x1="355" y1="100" x2="398" y2="100" marker-end="url(#m)"></line>
+            <text class="fl" x="377" y="50" text-anchor="middle">F2</text><text class="fs" x="377" y="160" text-anchor="middle">ESP-NOW</text>
+            <line class="ar" x1="550" y1="100" x2="593" y2="100" marker-end="url(#m)"></line>
+            <text class="fl" x="572" y="50" text-anchor="middle">F3</text><text class="fs" x="572" y="160" text-anchor="middle">BLE</text>
+            <line class="ar" x1="745" y1="100" x2="788" y2="100" marker-end="url(#m)"></line>
+            <text class="fl" x="767" y="50" text-anchor="middle">F4</text><text class="fs" x="767" y="160" text-anchor="middle">HTTPS</text>
+            <rect class="bx" x="595" y="200" width="355" height="60" rx="10"></rect>
+            <text class="bt" x="772" y="225" text-anchor="middle">Coach y alumnos</text>
+            <text class="bs" x="772" y="244" text-anchor="middle">pantalla, ranking y landing con el precio</text>
+            <line class="ar" x1="670" y1="140" x2="670" y2="198" marker-end="url(#m)"></line>
+            <text class="fl" x="690" y="178">F5</text>
+            <text class="bs" x="10" y="200">El tiempo de reacción y la fuerza se</text>
+            <text class="bs" x="10" y="216">calculan dentro del pod: no dependen</text>
+            <text class="bs" x="10" y="232">de F2–F4. A la nube solo va la redacción</text>
+            <text class="bs" x="10" y="248">de la recomendación.</text>
+        </svg>
+        <figcaption>Las cinco fronteras de Lumetriq. Cuando algo falla, se busca la primera frontera donde el dato ya viene mal.</figcaption>
+    </figure>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Frontera</th><th>Pregunta</th><th>Registro que se pone antes de necesitarlo</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">F1 · Sensores → ESP32 (SPI)</td><td>¿La lectura es confiable?</td><td>Modo diagnóstico: señal cruda del ADS1220 y del ADXL375 con marca de tiempo en µs, por la característica <code>Bulk</code></td></tr>
+            <tr><td class="material-tag">F2 · Seguidor → gateway (ESP-NOW)</td><td>¿El evento sale y llega?</td><td>Contadores de envíos, reintentos y pérdidas en cada pod, que viajan en el mensaje <code>STATUS</code> cada 5 s</td></tr>
+            <tr><td class="material-tag">F3 · Gateway → app (BLE)</td><td>¿El teléfono recibe todo, sin duplicados?</td><td>Último <code>seq</code> recibido por pod en SQLite contra el último enviado por el pod</td></tr>
+            <tr><td class="material-tag">F4 · App → nube → LLM (HTTPS)</td><td>¿La recomendación es utilizable?</td><td>Entrada y salida crudas de cada llamada en la Edge Function; la salida se valida contra un esquema y cada cifra se compara con el JSON de entrada</td></tr>
+            <tr><td class="material-tag">F5 · App → usuario</td><td>¿Ve lo correcto, a tiempo?</td><td>Cada dato en pantalla muestra su hora; estado "sin conexión, último dato hace N s"</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <br>
+    <h4>Los bugs más probables en Lumetriq</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Síntoma</th><th>Causa frecuente</th><th>Primera prueba</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">El pod se reinicia al encender el arco o al transmitir</td><td>Caída de voltaje: 0.33 A del arco (medido) más los picos de ≈ 0.4 A de la radio</td><td>Medir VBAT y el riel de 3.3 V con osciloscopio durante un estímulo; el diseño ya tiene 470 µF en VBAT y 22 µF en 5 V</td></tr>
+            <tr><td class="material-tag">La fuerza tiene ruido o deriva</td><td>El elevador MT3608 mete ruido en la referencia del ADS1220</td><td>Leer el plato sin carga con el MT3608 encendido y apagado; criterio: ruido ≤ ±20 N</td></tr>
+            <tr><td class="material-tag">Faltan golpes en el historial</td><td>Se confía en el ACK de la capa MAC de ESP-NOW, sin reenvío desde <code>seq</code></td><td>Sesión de 100 golpes: comparar <code>seq</code> en los pods y en SQLite (RF-04)</td></tr>
+            <tr><td class="material-tag">El golpe aparece tarde en la app</td><td>Intervalo de conexión BLE largo o un evento por notificación</td><td>Marca de tiempo en el pod, en el gateway y en la app; MTU ≥ 185 B y varios eventos por notificación</td></tr>
+            <tr><td class="material-tag">La app muestra datos viejos como actuales</td><td>No hay estado "sin conexión"</td><td>Apagar el Bluetooth del teléfono 20 s y mirar qué dice la app</td></tr>
+            <tr><td class="material-tag">La recomendación llega vacía o con cifras inventadas</td><td>Tiempo agotado, límite de la API o salida fuera de formato</td><td>Guardar entrada y salida crudas; el verificador de la semana 5 rechaza cifras que no están en el JSON</td></tr>
+            <tr><td class="material-tag">Dos kits en el mismo gimnasio se mezclan</td><td>Mensajes sin <code>kit_id</code> o canal compartido</td><td>Encender dos kits a la vez y revisar que cada app vea solo sus pods</td></tr>
+            <tr><td class="material-tag">Funciona en el laboratorio y falla en el gimnasio</td><td>Wi-Fi y teléfonos saturan 2.4 GHz; golpes reales; sudor</td><td>3 h de clases reales con 4 pods a 5–10 m (T6)</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+    <!-- ===================== 2. PRUEBAS ===================== -->
+    <h2 id="DOS">Pruebas mínimas de sistema (T1–T6)</h2>
+   <div class="command-block">
+    <h3>De la más barata a la más cara, con criterios del PDS</h3>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>#</th><th>Prueba</th><th>Qué se mide</th><th>Aprobado si</th><th>Origen del número</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">T1</td><td>Instalación sin ayuda</td><td>Un coach que no conoce el producto coloca 4 pods en sus placas, los enciende y los empareja</td><td>Menos de 5 min sin intervención</td><td><span class="mid">No está en el PDS</span>: propuesta, igual que el ejemplo de la clase</td></tr>
+            <tr><td class="material-tag">T2</td><td>Latencia de punta a punta</td><td>Del golpe a que la app muestra tiempo y fuerza (video a 240 cuadros por segundo con el pod y el teléfono en la toma)</td><td>p95 ≤ 1 s</td><td><span class="mid">Falta en el PDS</span>: RF-01 (≤ 10 ms entre pods) y RF-02 (±5 ms) se miden dentro del pod</td></tr>
+            <tr><td class="material-tag">T3</td><td>Desconexión y recuperación</td><td>100 golpes con 4 pods y 3 cortes de BLE de 60 s; además, apagar el gateway a mitad de la rutina</td><td>0 eventos faltantes y 0 duplicados; nuevo gateway en &lt; 3 s</td><td>RF-04 y arquitectura de la semana 5</td></tr>
+            <tr><td class="material-tag">T4</td><td>Autonomía de batería</td><td>Corriente promedio con el perfil del PDS y descarga completa</td><td>≥ 3 h por carga</td><td>RD-01</td></tr>
+            <tr><td class="material-tag">T5</td><td>Falla de la API de IA</td><td>Qué hace la app si la Edge Function no responde</td><td>En &lt; 3 s muestra una recomendación de plantilla marcada "sin IA" y la sesión no se detiene</td><td>Decisión de la semana 5 (plantillas); los 3 s son propuesta</td></tr>
+            <tr><td class="material-tag">T6</td><td>Operación continua en el gimnasio</td><td>3 h de clases reales con 4 pods + 1,000 golpes</td><td>0 reinicios, 0 eventos perdidos, ganancia de las celdas con cambio ≤ 5 %</td><td>RD-02 (parcial) y RI-02</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <br>
+    <h4>Cómo se calcula T4, con nuestros números</h4>
+    <div class="calc">Supuestos (el equipo los reemplaza por la descarga medida):
+  Celda 18650 de 1,800 mAh (la del prototipo); útil hasta el corte
+  de 3.40 V ≈ 1,500 mAh [Estimado]
+  Objetivo del PDS (RD-01): ≥ 3 h  →  consumo máximo = 1,500 / 3 = 500 mA
+
+Perfil del PDS, pod gateway (el peor rol):
+  Arco de LED: 326 mA medido (cian al 100 %) × 40 % de brillo
+               × 30 % del tiempo encendido                 =  39 mA
+  LED apagados: 18 × ≈ 0.6 mA                              =  11 mA [Estimado]
+  ESP32 con BLE + ESP-NOW + sensores: 133 mA a 3.3 V, que pasan
+  por el AMS1117 (5 V) y el MT3608 desde 3.7 V con 85 % de eficiencia:
+               133 × 5 / (3.7 × 0.85)                       = 211 mA
+  Consumo promedio                                          = 261 mA
+
+Autonomía = 1,500 mAh / 261 mA = 5.7 h  →  cumple (&gt; 3 h)
+Con la celda del lote (2,200 mAh, ≈ 1,830 mAh útiles)       = 7.0 h</div>
+    <p><b>Lectura:</b> el ESP32 se lleva el 81 % del consumo, y el camino MT3608 + AMS1117 desperdicia energía. Si T4 sale corta, la primera palanca es un regulador de baja caída directo de la batería, no una celda más grande.</p>
+    <br>
+    <h4>Definición de listo</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Condición</th><th>Cómo la cumple Lumetriq</th><th>Estado</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">El hardware funciona sin la laptop</td><td>Batería propia y el gateway dirige la sesión sin el teléfono</td><td><span class="mid">Por probar</span> con el pod completo</td></tr>
+            <tr><td class="material-tag">App desplegada o en APK</td><td>APK de Android generado con EAS; iPhone con TestFlight si da tiempo</td><td><span class="mid">Pendiente</span></td></tr>
+            <tr><td class="material-tag">Landing publicada</td><td>GitHub Pages, en el mismo sitio del curso</td><td><span class="mid">Pendiente</span>: hecha, falta publicarla</td></tr>
+            <tr><td class="material-tag">El dato fluye del sensor a la pantalla sin intervención</td><td>Golpe → pod → gateway → app, con ACK y reenvío</td><td><span class="mid">Pendiente</span>: punto de control de la semana A</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><b>Si no integra completo:</b> se documenta qué funciona, qué no y en qué frontera falla, con el registro de esa frontera.</p>
+    <br>
+    <h4>Prompt 1 con nuestros datos (se ejecuta en casa)</h4>
+    <div class="prompt-box">Nombre y qué hace: Lumetriq. Pods de pared para box y HIIT que
+  encienden una luz, miden el tiempo de reacción y la fuerza de cada
+  golpe, y arman un ranking del grupo que sigue entre clases.
+Arquitectura (semana 5): ESP32 en cada pod; 4 celdas + ADS1220 y
+  ADXL375 por SPI; pods entre sí por ESP-NOW en canal fijo; un pod
+  gateway dirige la sesión y habla con la app (React Native + SQLite)
+  por BLE GATT; la app sincroniza con Supabase por HTTPS y una Edge
+  Function llama al LLM solo para redactar la recomendación.
+Requerimientos del PDS: RF-01 desfase entre pods ≤ 10 ms; RF-02
+  tiempo de reacción ±5 ms; RF-03 fuerza 50–1,750 N con ±15 %;
+  RF-04 100 % de eventos con cortes BLE de 60 s; RD-01 ≥ 3 h.
+Qué ya funciona por separado: arco de 18 LED (consumo medido);
+  landing; PCB diseñada; [el equipo completa: ADS1220 con celdas].
+Qué nunca hemos probado junto: pod completo con radio y LED a la
+  vez; ESP-NOW + BLE en el gateway; app con eventos reales.</div>
+</div>
+
+    <!-- ===================== 3. USUARIOS ===================== -->
+    <h2 id="TRES">Pruebas con usuarios</h2>
+   <div class="command-block">
+    <h3>El protocolo de 30 minutos, adaptado a Lumetriq</h3>
+    <p><b>Con quién:</b> cinco personas. Tres del segmento (coaches o dueños de gimnasios de box y HIIT en Puebla; de preferencia los que dejaron sus datos en el prototipo de negocio de la semana 8) y dos de otro equipo del curso.</p>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Min</th><th>Qué pasa</th><th>Qué se observa</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">0–3</td><td>Guion fijo: "Estamos probando el producto, no a usted. Piense en voz alta."</td><td>Nada del producto se explica</td></tr>
+            <tr><td class="material-tag">3–10</td><td>Tarea 1: colocar 2 pods en sus placas (ya montadas en un tablero), encenderlos y emparejarlos con la app</td><td>¿Lo logra sin ayuda? ¿Pone el arco de luz arriba? Tiempo, errores, dudas</td></tr>
+            <tr><td class="material-tag">10–20</td><td>Tarea 2: correr "Sigue la luz" un minuto con otra persona y decir quién ganó y qué significa la fuerza</td><td>¿Entiende el ranking y los newtons? ¿Sabe qué pod golpear sin preguntar?</td></tr>
+            <tr><td class="material-tag">20–25</td><td>Tarea 3: encontrar el precio en la landing y dejar su interés en el formulario</td><td>¿Encuentra el precio? ¿Completa el formulario?</td></tr>
+            <tr><td class="material-tag">25–30</td><td>Entrevista de cierre</td><td>Qué esperaba, qué le costó, cuánto pagaría y a qué coach se lo recomendaría</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><b>Reglas del observador:</b> no ayuda, no explica, no defiende el diseño. Si el usuario se atora, anota el minuto y espera 30 s. Si pregunta "¿esto qué hace?", responde "¿qué esperaba que hiciera?". Se pregunta por compromisos, no por opiniones: "¿Dejó su teléfono para el piloto?" en lugar de "¿le gustaría?".</p>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Registro por tarea</th><th>Usuario 1</th><th>Usuario 2</th><th>Usuario 3</th><th>Usuario 4</th><th>Usuario 5</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">¿Completó sin ayuda?</td><td colspan="5" rowspan="5" style="text-align:center;">[Por llenar en la semana de trabajo B]</td></tr>
+            <tr><td class="material-tag">Tiempo</td></tr>
+            <tr><td class="material-tag">Errores y dudas</td></tr>
+            <tr><td class="material-tag">SEQ (1–7)</td></tr>
+            <tr><td class="material-tag">Cita textual</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><b>Severidad:</b> <span class="no">crítico</span> si impide terminar la tarea (por ejemplo, no logra emparejar los pods) y se corrige primero; <span class="mid">mayor</span> si la termina con ayuda o con un error recuperable; <span class="ok">menor</span> si es una molestia sin consecuencia. La síntesis se hace con el Prompt 2 de la clase: tabla por tarea, hallazgos por severidad, tres cambios de alto impacto y bajo esfuerzo, lo que la muestra no permite concluir y la señal de negocio separando compromisos de opiniones.</p>
+</div>
+
+    <!-- ===================== 4. GTM ===================== -->
+    <h2 id="CUATRO">Go-to-market: early adopters y canales</h2>
+   <div class="command-block">
+    <h3>Los primeros 20 gimnasios</h3>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Rasgo</th><th>Cómo se ve en Lumetriq</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">Tiene el dolor agudo</td><td>Coach que es dueño de un gimnasio chico de box o HIIT, da él mismo las clases y perdió alumnos en los últimos meses</td></tr>
+            <tr><td class="material-tag">Ya intentó resolverlo</td><td>Usa conos, silbato, apps de cronómetro o hace retos con premios para que los alumnos vuelvan</td></tr>
+            <tr><td class="material-tag">Tiene poder de decisión</td><td>Es dueño u operador: compra sin pedir permiso. Por eso las cadenas quedaron fuera del SAM en la semana 4</td></tr>
+            <tr><td class="material-tag">Habla con otros como él</td><td>Los coaches de box se conocen por torneos, exhibiciones y redes. El ranking entre gimnasios es una razón para recomendarlo</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p class="frase">Cliente número 1: todavía no lo podemos nombrar. Por la regla de la clase, hoy tenemos un mercado y no una estrategia de lanzamiento. El primer nombre sale de las 10 visitas del prototipo de negocio de la semana 8.</p>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Canal</th><th>Cuándo conviene a Lumetriq</th><th>Qué aprendemos</th><th>Riesgo</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">Venta directa con demo en el gimnasio</td><td>Primeros 20 gimnasios</td><td>Objeciones, instalación real y qué modo usan</td><td>2.5 h por demo; no escala</td></tr>
+            <tr><td class="material-tag">Tienda de equipo de box y fitness</td><td>Cuando el gimnasio ya compra ahí guantes y costales</td><td>Qué dice el vendedor del mostrador</td><td>Pide comisión y el margen del año 1 es de 11.6 %: hoy no alcanza</td></tr>
+            <tr><td class="material-tag">Landing con pre-registro</td><td>Desde ya, antes de fabricar</td><td>Si un dueño deja datos por una promesa y un precio</td><td>Sin video del pod funcionando convierte poco</td></tr>
+            <tr><td class="material-tag">Torneos y exhibiciones de box</td><td>Demo visual fuerte: reto de reacción con ranking en vivo</td><td>Si los coaches se lo recomiendan entre sí</td><td>Requiere pods robustos y que el reto se arme en minutos</td></tr>
+            <tr><td class="material-tag">Crowdfunding</td><td>No por ahora</td><td>—</td><td>Lumetriq le vende a gimnasios, no al público; obliga a entregar en fecha</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><b>Cobrar antes de entregar:</b> durante el curso solo se mide intención (pre-registro con precio visible). Un anticipo implica obligaciones fiscales y de entrega; se consulta antes de pedirlo.</p>
+</div>
+
+    <!-- ===================== 5. ECONOMÍA UNITARIA ===================== -->
+    <h2 id="CINCO">Economía unitaria: CAC, LTV, deserción y payback</h2>
+   <div class="command-block">
+    <h3>Prompt 3 con los números de la semana 7</h3>
+    <p><b>Adaptación:</b> el ejemplo de la clase cobra una mensualidad y subsidia el hardware. Lumetriq vende el paquete en un pago único con la suscripción incluida, así que (1) el cliente es el gimnasio, (2) el hardware no se subsidia y la inversión por cliente es solo el CAC, (3) el LTV sale de la compra inicial más las recompras, y (4) la "deserción" es el gimnasio que deja de usar la app y de comprar. Como la app sigue funcionando sin cobrar, el costo de nube e IA se resta durante toda la vida del cliente.</p>
+    <div class="calc">DATOS HEREDADOS DE LA SEMANA 7 (año 1)
+  Precio por paquete sin IVA                                 = $5,172.41
+  Componentes + equipo por paquete (4,000 + 36)              = $4,036.00
+  Nube + IA por paquete al año (IA 54.84 + servidor 5,610/300) = $73.54
+  Compra típica: 3 paquetes por gimnasio (semana 4)
+  Publicidad: 10 % del precio = $600 por paquete
+  Tarifa de las horas del equipo (semana 7)                  = $195/h
+
+SUPUESTOS (se miden en el piloto)
+  Cierre: 1 de cada 3 demos
+  Cada demo, con traslado: 2.5 h
+  Viáticos y muestras por gimnasio cerrado: $300
+  Deserción anual (deja la app y deja de comprar): 30 %
+  Recompra: 1 paquete al año mientras el gimnasio sigue activo
+
+CÁLCULO
+  Vida media = 1 ÷ 0.30                                      = 3.33 años
+  Servicio durante la vida = 73.54 × 3.33                    = $245.13 por paquete
+  Contribución por paquete = 5,172.41 − 4,036 − 245.13       = $891.28
+  Paquetes por gimnasio = 3 + (3.33 − 1)                     = 5.33
+  LTV = 891.28 × 5.33                                        = $4,753
+  CAC = 3 demos × 2.5 h × $195 + $300 + 3 × $600             = $3,562.50
+  Inversión por cliente = CAC (el gimnasio paga el hardware) = $3,562.50
+  LTV ÷ inversión = 4,753 ÷ 3,562.50                         = 1.33
+  Payback: la compra inicial deja 3 × 891.28 = $2,673.84; los $888.66
+  que faltan llegan con la primera recompra (año 2)          ≈ 12 meses</div>
+    <p><b>Lectura:</b> el payback queda justo en el límite de 12 meses, pero la relación LTV ÷ inversión de 1.33 está lejos de 3. <span class="no">Con estos supuestos el modelo no cierra.</span> Es la información que se quiere tener antes de fabricar 300 paquetes.</p>
+    <br>
+    <h4>Qué palanca mueve más (cada insumo cambia 25 % por separado)</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Cambio de 25 %</th><th class="num">LTV ÷ inversión</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">Caso base</td><td class="num">1.33</td></tr>
+            <tr><td class="material-tag">Precio sube a $7,500 por paquete</td><td class="num"><span class="ok">2.90</span></td></tr>
+            <tr><td class="material-tag">Precio baja a $4,500</td><td class="num"><span class="no">−0.69</span> (cada paquete pierde dinero)</td></tr>
+            <tr><td class="material-tag">Deserción baja de 30 % a 22.5 %</td><td class="num">1.46</td></tr>
+            <tr><td class="material-tag">Deserción sube de 30 % a 37.5 %</td><td class="num">1.23</td></tr>
+            <tr><td class="material-tag">CAC baja a $2,672</td><td class="num">1.78</td></tr>
+            <tr><td class="material-tag">CAC sube a $4,453</td><td class="num">1.07</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p>El <b>precio</b> mueve todo, porque el margen por paquete es delgado; le sigue el <b>CAC</b> y al final la <b>deserción</b>. La deserción pesa poco porque cada año que el gimnasio sigue activo también cuesta $73.54 de nube e IA por paquete: la suscripción incluida ($1,000) alcanza para ≈ 13 años de ese costo.</p>
+    <br>
+    <h4>Palancas combinadas, con lógica de negocio</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Escenario</th><th class="num">CAC</th><th class="num">LTV</th><th class="num">LTV ÷ inversión</th><th>Payback</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">Caso base</td><td class="num">$3,563</td><td class="num">$4,753</td><td class="num">1.33</td><td>≈ 12 meses</td></tr>
+            <tr><td class="material-tag">Referidos entre coaches: cierre 1 de 2 demos, viáticos $200, publicidad 5 %</td><td class="num">$2,075</td><td class="num">$4,753</td><td class="num">2.29</td><td>Al cobrar: la compra inicial cubre el CAC</td></tr>
+            <tr><td class="material-tag">Menos deserción (30 % → 20 %) por el ranking entre clases</td><td class="num">$3,563</td><td class="num">$5,381</td><td class="num">1.51</td><td>≈ 24 meses</td></tr>
+            <tr><td class="material-tag">Referidos + menos deserción</td><td class="num">$2,075</td><td class="num">$5,381</td><td class="num">2.59</td><td>Al cobrar</td></tr>
+            <tr class="tot"><td>Precio de $6,500 (el del año 2 del business case) + referidos</td><td class="num">$2,150</td><td class="num">$7,052</td><td class="num">3.28</td><td>Al cobrar</td></tr>
+            <tr><td class="material-tag">Precio de $6,500 + referidos + menos deserción</td><td class="num">$2,150</td><td class="num">$8,398</td><td class="num">3.91</td><td>Al cobrar</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p class="frase">Lo que tendría que ser verdad para que el negocio cierre: que un gimnasio acepte $6,500 por paquete y que la mitad de las ventas lleguen por recomendación de otro coach. Eso es lo que mide el piloto; no se ajustaron los números hasta que salieran bien.</p>
+    <p><b>Ventaja del pago único:</b> con mensualidad, el payback depende de que el cliente no cancele. Con pago único, en cuanto la compra inicial cubre el CAC, el gimnasio ya pagó su adquisición el día que compra.</p>
+</div>
+
+    <!-- ===================== 6. LANDING ===================== -->
+    <h2 id="SEIS">La landing y el contenido de lanzamiento</h2>
+   <div class="command-block">
+    <h3>Nuestra landing contra la anatomía de la clase</h3>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Elemento</th><th>Cómo está hoy</th><th>Estado</th><th>Cambio</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">Headline</td><td>"Golpea cuando se encienda": describe la acción, no la propuesta de valor</td><td><span class="mid">Ajustar</span></td><td>"Un reto de reacción que tus alumnos quieren repetir, con un ranking que sigue semana tras semana" (versión 3 de la semana 4)</td></tr>
+            <tr><td class="material-tag">Visual principal</td><td>Dibujo interactivo del pod con una prueba de reacción en el navegador</td><td><span class="mid">Ajustar</span></td><td>Foto del pod montado en un gimnasio con alguien golpeando</td></tr>
+            <tr><td class="material-tag">Tres beneficios</td><td>El circuito se dirige solo; tiempo y fuerza por golpe; ranking que sigue entre clases</td><td><span class="ok">Cumple</span></td><td>—</td></tr>
+            <tr><td class="material-tag">Demo corta</td><td>No hay video</td><td><span class="no">Falta</span></td><td>Video de 30 s: montar, encender, golpear, ver el ranking</td></tr>
+            <tr><td class="material-tag">Evidencia</td><td>Dos citas reales de las entrevistas de la semana 4</td><td><span class="ok">Cumple</span></td><td>Sumar una cita de las pruebas de usuario</td></tr>
+            <tr><td class="material-tag">Precio visible</td><td>$6,000 por 4 pods con IVA y $18,000 por un circuito de 12</td><td><span class="ok">Cumple</span></td><td>—</td></tr>
+            <tr><td class="material-tag">Un solo CTA</td><td>Tres acciones (agenda demo, ver cómo funciona, cotizar) y el botón abre el correo</td><td><span class="mid">Ajustar</span></td><td>Un solo botón: "Quiero una demo", que abre un formulario de Tally o Google Forms</td></tr>
+            <tr><td class="material-tag">Publicación</td><td>Solo en el proyecto</td><td><span class="no">Falta</span></td><td>GitHub Pages</td></tr>
+            <tr><td class="material-tag">Metadatos</td><td>Título y descripción</td><td><span class="mid">Ajustar</span></td><td>Agregar Open Graph (og:title, og:description, og:image) para WhatsApp</td></tr>
+            <tr><td class="material-tag">Medición</td><td>Sin contador</td><td><span class="no">Falta</span></td><td>Visitas, clics en el CTA y pre-registros: el embudo de la demanda</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <br>
+    <h4>Tres publicaciones de lanzamiento</h4>
+    <ol>
+        <li><b>El problema:</b> un coach de box cuenta cómo hace de semáforo en la clase, con su cita textual (de las pruebas de usuario).</li>
+        <li><b>El producto en uso:</b> el video de 30 s: se monta el pod, se enciende la luz, un alumno golpea y aparece en el ranking.</li>
+        <li><b>Cómo se construye:</b> el plato flotante sobre 4 celdas, las placas de acero y el arco de LED medido en el banco, con lo que falló.</li>
+    </ol>
+</div>
+
+    <!-- ===================== 7. REGULACIÓN ===================== -->
+    <h2 id="SIETE">Regulación mínima viable</h2>
+   <div class="command-block">
+    <h3>Checklist regulatorio (Prompt 4)</h3>
+    <p>No somos abogados: esta tabla es una ruta de verificación. <b>VERIFICADO</b> lleva enlace a la fuente; <b>POR VERIFICAR</b> se confirma antes de vender a un tercero.</p>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Tema</th><th>¿Aplica?</th><th>Qué exige y qué documento resulta</th><th>Quién lo emite</th><th>Costo y tiempo</th><th>Estatus</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">Radio y homologación</td><td>Sí: BLE y ESP-NOW en 2.4 GHz</td><td>Certificado de homologación del producto y su marcado. El módulo ESP32-WROOM certificado facilita el trámite, pero no lo sustituye. La autoridad pasa del IFT a la Comisión Reguladora de Telecomunicaciones (CRT); los lineamientos del IFT siguen vigentes mientras tanto</td><td>CRT, con pruebas de un organismo de certificación</td><td>Sin dato verificado</td><td>POR VERIFICAR (<a href="https://tuv.com/ae-en/market-access-services/regulations-and-standards/mexico-instituto-federal-de-telecomunicaciones-ift-transition-to-comision-de-19451">transición IFT → CRT, TÜV</a>)</td></tr>
+            <tr><td class="material-tag">Datos personales</td><td>Sí: nombre del alumno, resultados y contacto del coach</td><td>Aviso de privacidad (integral y simplificado en la app) desde que se recaban los datos. Los datos de salud son sensibles: el campo de dolor reportado pide consentimiento expreso o se elimina. Menores de edad: consentimiento del tutor</td><td>Lumetriq lo redacta; autoridad: Secretaría Anticorrupción y Buen Gobierno</td><td>Sin costo de trámite</td><td>VERIFICADO: <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LFPDPPP.pdf">LFPDPPP, DOF 20/03/2025</a></td></tr>
+            <tr><td class="material-tag">Seguridad y etiquetado</td><td>Sí</td><td>Etiqueta con modelo, fabricante y garantía. El pod carga por USB-C a 5 V y no se conecta a la red: hay que confirmar si le aplica alguna NOM de seguridad eléctrica</td><td>Organismo de certificación</td><td>Sin dato verificado</td><td>POR VERIFICAR</td></tr>
+            <tr><td class="material-tag">Batería de litio</td><td>Sí: 18650 dentro del pod</td><td>Condiciones de envío de baterías de litio dentro del equipo y celda de marca con protección (RR-02)</td><td>Paquetería</td><td>Sin dato verificado</td><td>POR VERIFICAR</td></tr>
+            <tr><td class="material-tag">Licencias de software y del modelo de IA</td><td>Sí</td><td>Uso comercial de React Native, ESP-IDF o el núcleo de Arduino, NimBLE y Supabase; términos comerciales de la API del LLM</td><td>Archivo de licencia de cada repositorio y términos de cada API</td><td>Sin costo</td><td>POR VERIFICAR (revisar el archivo LICENSE de cada dependencia)</td></tr>
+            <tr><td class="material-tag">Términos de venta y consumidor</td><td>Sí, aunque el cliente sea un negocio</td><td>Términos de servicio, garantía por escrito (6 meses propuesta) y política de devolución</td><td>Lumetriq; autoridad: PROFECO</td><td>Sin costo de trámite</td><td>POR VERIFICAR</td></tr>
+            <tr><td class="material-tag">Economía circular</td><td>Sí, cuando SEMARNAT publique el acuerdo de REP para electrónicos</td><td>Plan de manejo y responsabilidad del productor hasta el fin de vida (semana 8)</td><td>SEMARNAT</td><td>Sin dato verificado</td><td>VERIFICADO: <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LGEC.pdf">Ley General de Economía Circular, DOF 19/01/2026</a></td></tr>
+            <tr><td class="material-tag">Exportación</td><td>No por ahora</td><td>FCC (EE. UU.) y marcado CE (Unión Europea)</td><td>—</td><td>—</td><td>No aplica</td></tr>
+            <tr><td class="material-tag">Marca</td><td>Sí</td><td>Búsqueda fonética de "Lumetriq" y registro en la clase de aparatos de entrenamiento</td><td>IMPI</td><td>Sin dato verificado</td><td>POR VERIFICAR</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <br>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Se puede durante una prueba de mercado de 5–10 pods</th><th>Debe estar resuelto antes de vender a un tercero</th></tr></thead>
+        <tbody>
+            <tr><td>Prestar pods a gimnasios piloto como prototipo académico, sin venta (RR-02)<br>Aviso de privacidad y consentimiento firmado de cada participante<br>Pre-registros sin cobro</td><td>Homologación del producto con radio<br>Aviso de privacidad publicado en la app<br>Términos de venta, garantía y factura<br>Registro de marca en trámite</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><i>Sin fuente oficial que separe ambas listas: la separación es nuestro criterio y la confirmamos con el organismo de certificación.</i></p>
+</div>
+
+    <!-- ===================== 8. PITCH ===================== -->
+    <h2 id="OCHO">El pitch de 3 minutos</h2>
+   <div class="command-block">
+    <h3>Guion (Prompt 5 con nuestro material)</h3>
+    <p><b>1. Impacto y problema.</b> Pensemos en un coach de box en Puebla, como los que entrevistamos. Para entrenar reflejos grita, aplaude y señala conos. Mientras hace de semáforo no corrige técnica, y nadie se lleva un número a casa. Cada alumno que se aburre y se va le cuesta al gimnasio 850 pesos al mes. El administrador que entrevistamos lo resumió así: hoy todo es gratis. El problema no es medir: es lograr que el alumno quiera volver.</p>
+    <p><b>2. Solución y por qué nosotros.</b> Lumetriq son pods que se atornillan al muro. La luz dice dónde golpear y cada golpe da tiempo de reacción y fuerza. El ranking del grupo sigue de una semana a otra, así que vale la pena volver. Los conos no llevan la cuenta, y los pods de luz que ya existen no miden la fuerza ni guardan el ranking entre clases. En la demostración lo verán reaccionar en vivo.</p>
+    <p><b>3. Mercado y modelo.</b> En México hay 2,939 gimnasios y estudios que podrían comprarlo, y 1,131 están donde podemos llegar. Vendemos paquetes de 4 pods a 6,000 pesos, con la app incluida y sin mensualidad. Tres paquetes cuestan lo que pagan menos de dos alumnos en un año. Con 800 paquetes en dos años, el proyecto vale hoy 1.4 millones de pesos y el inversionista recupera 2.1 veces lo que puso.</p>
+    <p><b>4. Tracción.</b> Entrevistamos a cuatro personas de gimnasios y en las cuatro apareció lo mismo: que entrenar sea más divertido. El prototipo ya tiene su placa de circuito y el arco de luz medido, y con ese consumo una batería da más de tres horas. Todavía no tenemos pre-registros. Nuestra economía por cliente es de 1.3 contra una meta de 3, y sabemos qué la mueve: el precio y la recomendación entre coaches.</p>
+    <p><b>5. Equipo.</b> Somos tres estudiantes de ingeniería de la Ibero Puebla: hardware, app y negocio. Diseñamos, construimos y calculamos todo esto, y no cobramos sueldo: somos socios.</p>
+    <p><b>6. Ask y cierre.</b> Pedimos tres gimnasios de box en Puebla para un piloto de 30 días, con un paquete cada uno. Vamos a medir lo único que nos falta: cuántos compran después de probarlo y cuántos nos recomiendan. El coach no necesita otro cronómetro. Necesita que sus alumnos quieran volver.</p>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Parte</th><th class="num">Palabras</th><th class="num">Segundos hablados (130 por minuto)</th><th class="num">Presupuesto</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">1. Impacto y problema</td><td class="num">74</td><td class="num">34.2</td><td class="num">35 s · 76</td></tr>
+            <tr><td class="material-tag">2. Solución y por qué nosotros</td><td class="num">70</td><td class="num">32.3</td><td class="num">35 s · 76</td></tr>
+            <tr><td class="material-tag">3. Mercado y modelo</td><td class="num">67</td><td class="num">30.9</td><td class="num">35 s · 76</td></tr>
+            <tr><td class="material-tag">4. Tracción</td><td class="num">71</td><td class="num">32.8</td><td class="num">35 s · 76</td></tr>
+            <tr><td class="material-tag">5. Equipo</td><td class="num">25</td><td class="num">11.5</td><td class="num">15 s · 32</td></tr>
+            <tr><td class="material-tag">6. Ask y cierre</td><td class="num">47</td><td class="num">21.7</td><td class="num">25 s · 54</td></tr>
+            <tr class="tot"><td>Total</td><td class="num">354</td><td class="num">163.4 (2:43)</td><td class="num">180 s · 390</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p>Quedan ≈ 17 s de aire para pausas. No usa "innovador", "plataforma", "solución integral" ni "revolucionario"; abre y cierra con el mismo coach; la única confesión es la economía por cliente de 1.3.</p>
+    <br>
+    <h4>(a) Afirmaciones que todavía no tienen evidencia</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Afirmación del guion</th><th>Estado</th><th>Cómo se cierra</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">"850 pesos al mes" por alumno</td><td>PENDIENTE: supuesto de la semana 7</td><td>Preguntar la mensualidad en las 10 visitas de la semana 8</td></tr>
+            <tr><td class="material-tag">"Una batería da más de tres horas"</td><td>PENDIENTE: cálculo con el consumo medido</td><td>Prueba T4 de descarga completa</td></tr>
+            <tr><td class="material-tag">"Todavía no tenemos pre-registros"</td><td>Cierto hoy</td><td>Cambiarlo por la cifra real después de las visitas</td></tr>
+            <tr><td class="material-tag">Roles del equipo</td><td>PENDIENTE</td><td>Confirmar quién lleva hardware, app y negocio</td></tr>
+            <tr><td class="material-tag">"Tres gimnasios de box en Puebla"</td><td>PENDIENTE</td><td>Nombrarlos cuando haya cartas de intención</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <br>
+    <h4>(b) Las preguntas más difíciles del jurado</h4>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Pregunta</th><th>Dónde está la respuesta</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">¿Cuánto cuesta fabricar un pod y cómo lo saben?</td><td>BOM de $1,000 cotizado en lotes de 100 (semana 7) y revisión DFM: $1,513 con ensamble e indirectos (semana 8)</td></tr>
+            <tr><td class="material-tag">¿Por qué no lo hace BlazePod?</td><td>Mapa competitivo y lienzo Blue Ocean (semana 4): BlazePod vende a la sesión y al usuario; medir fuerza exige un plato flotante con celdas, otra mecánica</td></tr>
+            <tr><td class="material-tag">¿Qué pasa si sube el precio de la API de IA?</td><td>Semanas 5 y 7: la IA solo redacta, cuesta el 1.2 % del costo unitario y la app usa plantillas si falla</td></tr>
+            <tr><td class="material-tag">¿Cuántos paquetes necesitan para no perder dinero?</td><td>Punto de equilibrio (semana 7): 19 paquetes en el año 1 y 174 en el año 2</td></tr>
+            <tr><td class="material-tag">¿Qué hace que un gimnasio vuelva a comprar?</td><td>Esta semana: deserción supuesta de 30 % y recompra de 1 paquete al año; el piloto lo mide</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><b>Práctica en parejas:</b> partes 1, 2 y 6 en voz alta (≈ 90 s); el otro equipo responde "¿qué entendí?" y "¿qué no te creí?". El pitch se graba en video durante la semana B y se reescribe después de verlo.</p>
+</div>
+
+    <!-- ===================== 9. DEMO ===================== -->
+    <h2 id="NUEVE">La demo de 7 minutos</h2>
+   <div class="command-block">
+    <h3>Un solo camino: instalar, entrenar, competir y comprar</h3>
+    <p>El jurado califica producto físico (30 %), app conectada (25 %) y landing (15 %). La demo recorre los tres y termina en la compra. Los pods no necesitan internet; solo la recomendación de IA y la landing usan el hotspot del teléfono.</p>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Tiempo</th><th>Quién opera</th><th>Qué se hace y se dice</th><th>Plan B</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">0:00 – 0:45</td><td>Narrador</td><td>Sostiene un pod. "El coach hoy hace de semáforo. Esto dirige el circuito y lleva la cuenta. Les voy a mostrar el camino completo: instalar, entrenar, competir y comprarlo."</td><td>Foto del pod montado</td></tr>
+            <tr><td class="material-tag">0:45 – 3:15</td><td>Operador</td><td>Coloca 2 pods en sus placas, ya montadas en un tablero; los enciende y los empareja golpeando cada uno. Arranca "Sigue la luz" y un voluntario del jurado golpea. La app, proyectada, muestra tiempo y fuerza en menos de 1 s. Narrador: "en clase son 12 pods; hoy traemos dos".</td><td>Video de respaldo de 90 s</td></tr>
+            <tr><td class="material-tag">3:15 – 4:45</td><td>Operador</td><td>Provocar el evento: el voluntario golpea suave y luego fuerte. Los newtons cambian, el ranking se reordena y la recomendación se redacta con esas métricas. Se muestran la entrada (métricas de la ronda) y la salida (recomendación).</td><td>Datos precargados y video</td></tr>
+            <tr><td class="material-tag">4:45 – 5:45</td><td>Operador</td><td>Fallo manejado: apaga el Bluetooth del teléfono 20 s mientras el voluntario sigue golpeando. Los pods siguen, porque el gateway dirige la sesión. La app muestra "sin conexión, último dato hace 20 s"; al reconectar recupera los golpes por <code>seq</code> sin perder ninguno.</td><td>Video de la prueba T3</td></tr>
+            <tr><td class="material-tag">5:45 – 6:30</td><td>Narrador</td><td>QR impreso: el jurado abre la landing en su teléfono y ve la propuesta, el precio de $6,000 por 4 pods y el botón. Un integrante se pre-registra y se ve llegar a la hoja de registros.</td><td>Captura de la landing y de la hoja</td></tr>
+            <tr><td class="material-tag">6:30 – 7:00</td><td>Narrador</td><td>"Hoy funciona esto. Falta la prueba de 10,000 golpes y validar el precio con dueños. Siguiente paso: el piloto en 3 gimnasios."</td><td>Ninguno: es solo voz</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><b>Atajos que se declaran en voz alta:</b> 2 pods en lugar de 12; el tablero sustituye al muro; el voluntario golpea con guante de bolsa, no con guante de pelea.</p>
+    <h4>Lista de verificación 15 minutos antes</h4>
+    <ol>
+        <li>Pods y teléfono cargados; cable USB-C de respaldo.</li>
+        <li>Placas montadas en el tablero y guante para el voluntario.</li>
+        <li>Firmware congelado, con la versión anotada.</li>
+        <li>Ranking de prueba limpio.</li>
+        <li>Hotspot del teléfono probado (para la IA y la landing).</li>
+        <li>App instalada, con la sesión iniciada.</li>
+        <li>Landing abierta en una pestaña y QR impreso.</li>
+        <li>Videos de respaldo en el teléfono y en la laptop.</li>
+        <li>Proyección del teléfono probada y cronómetro visible.</li>
+    </ol>
+    <p><b>Lo que no se hace:</b> depender del Wi-Fi del salón, configurar en vivo, cambiar firmware el día de la evaluación, abrir código sin que lo pidan o llenar tiempo con modos secundarios.</p>
+</div>
+
+    <!-- ===================== 10. RUTA ===================== -->
+    <h2 id="DIEZ">Ruta de cierre</h2>
+   <div class="command-block">
+    <h3>Plan hacia atrás para las dos semanas de trabajo</h3>
+    <p>Responsables por rol: <b>H</b> = hardware y firmware, <b>A</b> = app y nube, <b>N</b> = negocio y landing. <i>[Asignar el nombre de cada integrante.]</i></p>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Semana</th><th>Tarea</th><th>Responsable</th><th>Referencia</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag" rowspan="6">A: construir y conectar</td><td>Pod completo armado con las mejoras de ensamble de la semana 8</td><td>H</td><td>DFM, semana 8</td></tr>
+            <tr><td>App conectada al gateway y APK generado</td><td>A</td><td>Prompt 6</td></tr>
+            <tr><td>Landing con un solo CTA, formulario y Open Graph, publicada en GitHub Pages</td><td>N</td><td>Prompt 6</td></tr>
+            <tr><td>Pruebas T1 a T3 aprobadas</td><td>H + A</td><td>Prompt 1</td></tr>
+            <tr><td>Checklist regulatorio entregado</td><td>N</td><td>Prompt 4</td></tr>
+            <tr><td colspan="3"><b>Punto de control:</b> el golpe llega a la pantalla sin que nadie intervenga</td></tr>
+            <tr><td class="material-tag" rowspan="6">B: probar, corregir y contar</td><td>5 pruebas de usuario, 2 cruzadas con otro equipo</td><td>N</td><td>Prompt 2</td></tr>
+            <tr><td>Pruebas T4 a T6 y correcciones críticas</td><td>H + A</td><td>Prompt 1</td></tr>
+            <tr><td>Pitch grabado, visto y reescrito</td><td>Todos</td><td>Prompt 5</td></tr>
+            <tr><td>Demo ensayada 3 veces con cronómetro y videos de respaldo</td><td>Todos</td><td>Sección 9</td></tr>
+            <tr><td>README, diagrama de arquitectura actualizado, manual de usuario y secciones 17 a 22 de la página final</td><td>Todos</td><td>Guía del proyecto final</td></tr>
+            <tr><td colspan="3"><b>Congelamiento:</b> después del último ensayo solo se corrigen bugs críticos</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><b>Reglas:</b> un commit por sesión de trabajo en el repositorio con README; si nos atoramos en una frontera, pedimos asesoría con el registro de esa frontera en la mano.</p>
+</div>
+
+    <!-- ===================== 11. PROMPT 6 ===================== -->
+    <h2 id="ONCE">Prompts de construcción (Prompt 6)</h2>
+   <div class="command-block">
+    <h3>Formato real del dato y orden de construcción de la app</h3>
+    <p>El formato sale del mensaje <code>EVT</code> de la arquitectura de la semana 5. Es el ejemplo que se pega en cada prompt para que el modelo de código no invente el formato.</p>
+    <div class="prompt-box dato">{"kit_id":"A3F2","dev_id":"pod-3","boot_id":17,"seq":57,
+ "stim_id":57,"rt_ms":243,"peak_g":61.4,"force_n":812,
+ "flags":["ok"],"batt_v":3.86,"t_pod_us":184230117}</div>
+    <br>
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>#</th><th>Prompt de construcción (React Native)</th><th>Criterio para pasar al siguiente</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">1</td><td>Pantalla principal con datos simulados: anillo de reacción, golpes, fuerza media y los pods con su estado</td><td>Muestra los 5 estados (cargando, normal, alerta, sin conexión, error) con un selector de prueba</td></tr>
+            <tr><td class="material-tag">2</td><td>Ranking del grupo e historial en SQLite, con datos simulados</td><td>El ranking semanal persiste al cerrar la app</td></tr>
+            <tr><td class="material-tag">3</td><td>Flujo de instalación de 3 pasos de la semana 6</td><td>Una persona de otro equipo lo sigue sin preguntar</td></tr>
+            <tr><td class="material-tag">4</td><td>Conexión BLE al gateway: lectura de <code>Status</code> y notificaciones de <code>Events</code>, con un ESP32 que emite eventos falsos</td><td>100 eventos llegan y 0 se duplican por (dev_id, boot_id, seq)</td></tr>
+            <tr><td class="material-tag">5</td><td>ACK, reenvío desde <code>seq</code> y estado "último dato hace N s"</td><td>Con un corte de 60 s no falta ningún evento (RF-04)</td></tr>
+            <tr><td class="material-tag">6</td><td>Sincronización con Supabase y recomendación por la Edge Function, con plantilla si falla</td><td>T5 aprobada</td></tr>
+            <tr><td class="material-tag">7</td><td>Conexión con el pod real y la rutina "Sigue la luz"</td><td>T2 y T3 aprobadas con el pod</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p><b>Landing (v0 o Framer):</b> secciones en este orden: headline con la versión 3, video de 30 s, tres beneficios, cita real, precio y un solo CTA con formulario; metadatos title, description y Open Graph. La propuesta de valor se pega tal cual, sin reescribirla.</p>
+    <h4>Cinco errores de vibe coding con hardware, y cómo los evitamos</h4>
+    <ol>
+        <li><b>Que el modelo invente el formato del dato:</b> cada prompt lleva el JSON real de arriba.</li>
+        <li><b>Probar solo con datos perfectos:</b> el simulador manda eventos repetidos, fuera de orden y cortes.</li>
+        <li><b>Que la app dirija la rutina:</b> en Lumetriq la dirige el gateway; el prompt dice "la app no manda estímulos".</li>
+        <li><b>Mostrar datos viejos como actuales:</b> cada pantalla muestra la hora del dato y el estado sin conexión.</li>
+        <li><b>Poner la clave de la IA en la app:</b> va en la Edge Function (semana 5), nunca en el teléfono.</li>
+    </ol>
+</div>
+
+    <!-- ===================== ENTREGABLES ===================== -->
+    <h2 id="ENT">Entregables</h2>
+   <div class="command-block">
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Entregable</th><th>Dónde está</th><th>Estado</th></tr></thead>
+        <tbody>
+            <tr><td colspan="3"><b>Al cierre de la clase</b></td></tr>
+            <tr><td class="material-tag">Economía unitaria con los números propios</td><td>Sección 5</td><td><span class="ok">Hecho</span></td></tr>
+            <tr><td class="material-tag">Esqueleto del pitch con pendientes marcados</td><td>Sección 8</td><td><span class="ok">Hecho</span></td></tr>
+            <tr><td class="material-tag">Guion de la demo con plan B por tramo</td><td>Sección 9</td><td><span class="ok">Hecho</span></td></tr>
+            <tr><td class="material-tag">Ruta de las dos semanas con responsables</td><td>Sección 10</td><td><span class="mid">Falta poner nombres</span></td></tr>
+            <tr><td colspan="3"><b>Antes de la evaluación final</b></td></tr>
+            <tr><td class="material-tag">Sistema integrado funcionando</td><td>Pruebas T1–T6</td><td><span class="mid">Pendiente</span></td></tr>
+            <tr><td class="material-tag">Reporte de 5 pruebas de usuario</td><td>Sección 3</td><td><span class="mid">Pendiente</span></td></tr>
+            <tr><td class="material-tag">Landing publicada</td><td>Sección 6</td><td><span class="mid">Pendiente</span></td></tr>
+            <tr><td class="material-tag">Checklist regulatorio</td><td>Sección 7</td><td><span class="ok">Primera versión</span></td></tr>
+            <tr><td class="material-tag">Pitch ensayado y grabado</td><td>Sección 8</td><td><span class="mid">Pendiente</span></td></tr>
+            <tr><td class="material-tag">Demo ensayada 3 veces con video de respaldo</td><td>Sección 9</td><td><span class="mid">Pendiente</span></td></tr>
+            <tr><td class="material-tag">Página de proyecto final, repositorio con README y documentación técnica</td><td>Sección 10</td><td><span class="mid">Pendiente</span></td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+    <!-- ===================== SALIDA ===================== -->
+    <h2 id="SALIDA">Lo que el equipo debe poder responder al salir</h2>
+   <div class="command-block">
+    <div class="tabla-scroll">
+    <table class="material-table">
+        <thead><tr><th>Pregunta</th><th>Respuesta</th></tr></thead>
+        <tbody>
+            <tr><td class="material-tag">¿En qué frontera es más probable que falle y qué registro pondrán?</td><td>En el gateway, entre F2 y F3: ESP-NOW y BLE comparten el mismo radio del ESP32. Registro: contadores de reintentos en <code>STATUS</code> y último <code>seq</code> por pod en SQLite.</td></tr>
+            <tr><td class="material-tag">¿Cuál es su CAC, su LTV y su LTV ÷ inversión? ¿Qué palanca mueve más?</td><td>CAC $3,562.50, LTV $4,753 y LTV ÷ inversión de 1.33. El precio es la palanca más fuerte; con $6,500 por paquete y la mitad de las ventas por recomendación llega a 3.28.</td></tr>
+            <tr><td class="material-tag">¿Qué tema regulatorio puede impedir vender y qué fuente lo confirma?</td><td>La homologación del producto con radio, ahora ante la CRT (POR VERIFICAR con un organismo de certificación). El aviso de privacidad está VERIFICADO en la LFPDPPP (DOF 20/03/2025).</td></tr>
+            <tr><td class="material-tag">¿Qué evidencia tiene cada parte del pitch?</td><td>Problema y solución: entrevistas y mapa competitivo de la semana 4. Mercado y modelo: semanas 4 y 7. Tracción: entrevistas y la medición del arco. Pendientes: mensualidad de $850, autonomía medida, pre-registros, roles y gimnasios del piloto.</td></tr>
+            <tr><td class="material-tag">¿Cuál es el camino de la demo, qué evento provocan y cuál es el plan B?</td><td>Instalar, entrenar, competir y comprar. Evento: golpe suave contra fuerte del jurado, que cambia la fuerza, el ranking y la recomendación. Fallo: Bluetooth apagado 20 s sin perder golpes. Plan B: videos de respaldo de cada tramo.</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+   <div class="yellowcommand-block">
+    <h4 id="SALIDA-1">Fuentes consultadas</h4>
+    <ul style="font-size:0.9rem;">
+        <li>Instrucciones del curso: <a href="https://aristarco.github.io/Proyectos4/semana9/">Semana 9 — Integración, go-to-market y pitch</a></li>
+        <li>Cámara de Diputados: <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LFPDPPP.pdf">Ley Federal de Protección de Datos Personales en Posesión de los Particulares</a> (DOF 20/03/2025) y <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LGEC.pdf">Ley General de Economía Circular</a> (DOF 19/01/2026).</li>
+        <li>Transición IFT → CRT: <a href="https://tuv.com/ae-en/market-access-services/regulations-and-standards/mexico-instituto-federal-de-telecomunicaciones-ift-transition-to-comision-de-19451">TÜV Rheinland, nota de acceso a mercado</a> · Lineamientos de homologación del IFT: <a href="https://ift.org.mx/sites/default/files/upr-l-c-10-24.pdf">cédula de información</a></li>
+        <li>Nielsen, J. (2000). <i>Why You Only Need to Test with 5 Users</i>. Nielsen Norman Group · Skok, D. <i>SaaS Metrics 2.0</i> · Fitzpatrick, R. (2013). <i>The Mom Test</i> · Moore, G. (1991). <i>Crossing the Chasm</i>.</li>
+        <li>Documentos del proyecto: business case y BOM (semana 7), PDS v1.2 y arquitectura de comunicación v2 (semana 5), concepto y wireframes (semana 6), mercado y propuesta de valor (semana 4), revisión DFM (semana 8) y landing de Lumetriq.</li>
+    </ul>
+</div>
+
+    <h2 id="Learning">Reflexión sobre aprendizajes</h2>
+   <div class="greencommand-block reflexion">
+    <p>
+            Esta semana me obligó a ver Lumetriq como un sistema y no como un pod. Al dibujar las fronteras me di cuenta de que tenemos cinco, no cuatro, porque los pods hablan entre sí antes de hablar con el teléfono, y de que el punto más frágil es el gateway, donde ESP-NOW y Bluetooth comparten el mismo radio. Por eso entendí la regla de poner registros antes de necesitarlos: si en la demo se pierde un golpe, sin el número de secuencia no sabríamos dónde. El cálculo de autonomía con el consumo que medimos me gustó porque confirma las 3 horas del PDS con datos propios, y además mostró que el ESP32 gasta casi todo, no los LED. La parte más incómoda fue la economía unitaria. Adaptar las fórmulas a un pago único me hizo ver que con nuestros supuestos un gimnasio deja 1.33 veces lo que cuesta conseguirlo, lejos del 3 que se usa como referencia, y que la palanca más fuerte es el precio, no la retención. No ajusté los números hasta que salieran bien: lo que aprendí es qué tendría que ser verdad, que un gimnasio pague $6,500 y que la mitad llegue por recomendación, y eso es justo lo que el piloto tiene que medir. Escribir el pitch con un tope de palabras también me enseñó a decir solo lo que puedo respaldar: varias frases buenas tuvieron que quedar como pendientes porque todavía no tenemos la evidencia.
+           </p>
+</div>
+
+                    </div>
+                </div>
+        </section>
+
+     <!--FIN CONTENIDO-->
+
+
+    </main>
+
+    <!-- Footer-->
+    <footer>
+        <div class="col-auto"><div class="small m-0 text-gray">Proyectos IV · Derek Rodríguez Cancino · Ibero Puebla · México · 201265@iberopuebla.mx</div></div>
+    </footer>
+
+    <script>
+        const links = document.querySelectorAll('.menu-link');
+
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                links.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        // Resalta en el menú la sección que se está leyendo
+        const targets = [...links].map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+        const spy = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+                }
+            });
+        }, { rootMargin: '-130px 0px -65% 0px' });
+        targets.forEach(t => spy.observe(t));
+    </script>
+
+</body>
+
+</html>
