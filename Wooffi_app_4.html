@@ -1,0 +1,1876 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Wooffi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* =========================================================
+   Wooffi — sistema de diseño
+   Layout: app móvil de una columna; en escritorio se centra
+   dentro de un "teléfono" como simulador.
+   ========================================================= */
+:root {
+  /* Paleta de marca (estricta) */
+  --blue:   #176FB7;  /* primario: encabezados activos, guardar, navegación */
+  --orange: #F66F3A;  /* acción inmediata, alertas, Pro, CTA */
+  --cream:  #F4F0DD;  /* fondo general y tarjetas secundarias */
+  --brown:  #996631;  /* texto secundario cálido, iconos de alimento, fases */
+  --sky:    #85B3CC;  /* estados secundarios, tolva, proyecciones, inactivos */
+  --white:  #FFFFFF;  /* solo interior de tarjetas elevadas */
+  --ink:    #1E293B;  /* texto principal */
+
+  /* Derivados de la paleta */
+  --line: color-mix(in srgb, var(--brown) 22%, transparent);
+  --sky-soft: color-mix(in srgb, var(--sky) 28%, var(--white));
+  --blue-soft: color-mix(in srgb, var(--blue) 10%, var(--white));
+  --orange-soft: color-mix(in srgb, var(--orange) 12%, var(--white));
+  --cream-deep: color-mix(in srgb, var(--cream) 82%, var(--brown));
+  --ok: #2E9E5B;   /* semántico: conectado */
+  --bad: #D64541;  /* semántico: desconectado */
+
+  --f-display: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Inter", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --r-lg: 22px;
+  --r-md: 14px;
+  --r-sm: 10px;
+  --shadow: 0 1px 2px rgba(30, 41, 59, .06), 0 8px 24px -12px rgba(30, 41, 59, .18);
+  --tabbar-h: 68px;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--cream-deep);
+  color: var(--ink);
+  font: 400 15px/1.5 var(--f-body);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+h1, h2, h3 { font-family: var(--f-display); margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+p { margin: 0; }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--brown); }
+.tiny { font-size: 12.5px; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid color-mix(in srgb, var(--blue) 55%, transparent); outline-offset: 2px; }
+
+/* ---------- Escenario / teléfono ---------- */
+.stage { min-height: 100%; display: flex; justify-content: center; }
+.phone {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--cream);
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 600px) {
+  .stage { align-items: center; padding: 24px 0; }
+  .phone {
+    min-height: 0;
+    height: min(880px, calc(100vh - 48px));
+    border-radius: 40px;
+    border: 10px solid var(--ink);
+    box-shadow: 0 30px 80px -30px rgba(30, 41, 59, .45);
+    overflow: hidden;
+  }
+}
+
+/* ---------- Splash ---------- */
+.splash {
+  position: fixed; inset: 0; z-index: 100;
+  background: var(--blue);
+  color: var(--cream);
+  display: grid; place-items: center;
+  transition: opacity .45s ease, visibility .45s;
+}
+.splash.gone { opacity: 0; visibility: hidden; }
+.splash-inner { display: grid; justify-items: center; gap: 10px; padding: 24px; text-align: center; }
+.splash-logo { width: 104px; height: 104px; filter: drop-shadow(0 10px 24px rgba(0,0,0,.25)); animation: bob 1.6s ease-in-out infinite; }
+.splash-logo use { --x: 0; }
+.wordmark { font-size: 44px; font-weight: 800; letter-spacing: -.03em; color: var(--cream); }
+.splash-tag { color: color-mix(in srgb, var(--cream) 80%, var(--sky)); font-weight: 500; }
+.splash-mqtt { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-top: 14px; color: var(--cream); }
+.splash .btn { margin-top: 12px; min-width: 160px; }
+@keyframes bob { 50% { transform: translateY(-6px); } }
+
+/* ---------- Header ---------- */
+.app-header {
+  position: sticky; top: 0; z-index: 20;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 12px max(16px, env(safe-area-inset-left, 0px));
+  background: var(--cream);
+  border-bottom: 1px solid var(--line);
+  display: grid; gap: 10px;
+}
+.header-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.greet { min-width: 0; flex: 1; }
+.greet-time { font-size: 12px; color: var(--brown); letter-spacing: .04em; }
+.greet-title { font-size: 22px; font-weight: 800; color: var(--blue); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.icon-btn { border: 0; background: var(--white); border-radius: 12px; height: 40px; min-width: 40px; display: grid; place-items: center; color: var(--blue); box-shadow: var(--shadow); padding: 0 10px; }
+.icon-btn svg { width: 22px; height: 22px; }
+.back-btn { font-weight: 600; font-family: var(--f-display); font-size: 14px; }
+
+.conn { display: inline-flex; align-items: center; gap: 7px; padding: 5px 10px; border-radius: 999px; background: var(--white); font: 500 11.5px var(--f-mono); letter-spacing: .06em; border: 1px solid var(--line); }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--sky); flex: none; }
+.conn-online .dot, .dot.ok { background: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 22%, transparent); }
+.conn-offline .dot, .dot.bad { background: var(--bad); }
+.conn-connecting .dot, .dot.wait { background: var(--orange); animation: pulse 1s infinite; }
+.conn-online { color: var(--ok); } .conn-offline { color: var(--bad); } .conn-connecting { color: var(--brown); }
+@keyframes pulse { 50% { opacity: .35; } }
+
+.plan-switch { display: inline-flex; background: var(--white); border-radius: 999px; padding: 3px; border: 1px solid var(--line); }
+.plan-switch button { border: 0; background: transparent; padding: 5px 11px; border-radius: 999px; font: 600 12px var(--f-display); color: var(--brown); }
+.plan-switch button[aria-checked="true"][data-plan="free"] { background: var(--blue); color: var(--white); }
+.plan-switch button[aria-checked="true"][data-plan="pro"] { background: var(--orange); color: var(--white); }
+
+/* ---------- Vistas ---------- */
+.views { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px max(16px, env(safe-area-inset-right, 0px)) calc(var(--tabbar-h) + 24px) max(16px, env(safe-area-inset-left, 0px)); }
+.view { display: none; flex-direction: column; gap: 14px; animation: in .25s ease; }
+.view.active { display: flex; }
+@keyframes in { from { transform: translateY(6px); opacity: .6; } }
+
+/* ---------- Tarjetas ---------- */
+.card { background: var(--white); border-radius: var(--r-lg); padding: 18px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 12px; }
+.card-soft { background: color-mix(in srgb, var(--cream) 60%, var(--white)); box-shadow: none; border: 1px solid var(--line); }
+.card-title { font-size: 18px; font-weight: 700; }
+.eyebrow { font: 600 11px var(--f-display); text-transform: uppercase; letter-spacing: .12em; color: var(--brown); }
+.label { display: block; font: 600 13px var(--f-display); color: var(--ink); }
+.label em { font: italic 400 12px var(--f-body); color: var(--brown); margin-left: 4px; }
+.row-between { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.gap { gap: 12px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* ---------- Campos ---------- */
+.field { display: flex; flex-direction: column; gap: 6px; }
+input[type="text"], input[type="number"], input[type="url"], input[type="password"], select, textarea {
+  width: 100%; min-width: 0;
+  border: 1.5px solid var(--line); border-radius: var(--r-sm);
+  background: var(--white); padding: 11px 12px; font-size: 15px;
+  transition: border-color .15s;
+}
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 15%, transparent); }
+textarea { resize: vertical; }
+.suffix { position: relative; display: flex; align-items: center; }
+.suffix input { padding-right: 62px; }
+.suffix > span { position: absolute; right: 12px; font: 500 12.5px var(--f-mono); color: var(--brown); pointer-events: none; }
+.suffix.mini { flex-direction: column; align-items: stretch; gap: 4px; }
+.suffix.mini small { font-size: 12px; color: var(--brown); font-weight: 500; }
+.suffix.mini > span { bottom: 12px; }
+.suffix.mini input { padding-right: 30px; }
+.check { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; font-size: 14px; }
+.check input { width: 20px; height: 20px; accent-color: var(--blue); }
+input[type="range"] { width: 100%; accent-color: var(--orange); }
+
+.segmented { display: inline-flex; border: 1.5px solid var(--line); border-radius: 12px; padding: 3px; gap: 3px; }
+.segmented button { border: 0; background: transparent; padding: 8px 14px; border-radius: 9px; font-weight: 600; color: var(--brown); }
+.segmented button[aria-checked="true"] { background: var(--blue); color: var(--white); }
+
+.detect { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: var(--sky-soft); border-radius: var(--r-md); padding: 12px; }
+.detect strong { display: block; font-size: 15px; color: var(--blue); overflow-wrap: anywhere; }
+.detect .label { font-size: 11.5px; color: var(--brown); }
+
+/* ---------- Botones ---------- */
+.btn { border: 0; border-radius: var(--r-md); padding: 12px 16px; font: 700 15px var(--f-display); display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: transform .08s, filter .15s, background .15s; }
+.btn:active { transform: scale(.98); }
+.btn:disabled { opacity: .55; cursor: not-allowed; }
+.btn-block { width: 100%; }
+.btn-lg { padding: 15px 18px; font-size: 16px; }
+.btn-sm { padding: 7px 12px; font-size: 13px; border-radius: 10px; }
+.btn-primary { background: var(--blue); color: var(--white); }
+.btn-primary:hover { filter: brightness(1.07); }
+.btn-accent { background: var(--orange); color: var(--white); box-shadow: 0 8px 18px -8px color-mix(in srgb, var(--orange) 80%, transparent); }
+.btn-accent:hover { filter: brightness(1.05); }
+.btn-ghost { background: var(--blue-soft); color: var(--blue); }
+.btn-ghost:hover { background: var(--sky-soft); }
+.btn-light { background: var(--cream); color: var(--blue); }
+.link-btn { border: 0; background: none; padding: 4px 0; color: var(--blue); font: 600 13px var(--f-display); text-decoration: underline; text-underline-offset: 3px; }
+.link-btn.on-accent { color: var(--white); }
+.link-btn.on-dark { color: var(--sky); }
+.btn-col { display: grid; gap: 8px; }
+
+/* ---------- Chips / pills ---------- */
+.chip { font: 500 11.5px var(--f-mono); padding: 4px 10px; border-radius: 999px; background: var(--cream); color: var(--brown); white-space: nowrap; }
+.chip.ok { background: color-mix(in srgb, var(--ok) 14%, var(--white)); color: var(--ok); }
+.chip.warn { background: var(--orange-soft); color: var(--orange); }
+.pill { font: 700 10.5px var(--f-display); letter-spacing: .08em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; }
+.pill-pro { background: var(--orange); color: var(--white); }
+.pill-ai { background: var(--orange-soft); color: var(--orange); }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip-btn { border: 1.5px solid var(--sky); background: var(--white); color: var(--blue); border-radius: 12px; padding: 9px 14px; font: 600 14px var(--f-mono); }
+.chip-btn.active { background: var(--blue); border-color: var(--blue); color: var(--white); }
+.chip-input { display: inline-flex; align-items: center; border: 1.5px solid var(--sky); border-radius: 12px; padding-right: 10px; background: var(--white); flex: 1; min-width: 88px; }
+.chip-input input { border: 0 !important; box-shadow: none !important; padding: 9px 6px 9px 12px; font-family: var(--f-mono); }
+.chip-input span { font: 500 13px var(--f-mono); color: var(--brown); }
+.chip-input.active { border-color: var(--blue); }
+
+/* ---------- Hero / tolva ---------- */
+.hero { background: linear-gradient(160deg, var(--white) 55%, var(--blue-soft)); }
+.hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.hero .card-title { font-size: 21px; color: var(--blue); }
+.hopper { display: grid; gap: 6px; }
+.hopper-head { display: flex; justify-content: space-between; align-items: baseline; }
+.hopper-pct { font-size: 26px; color: var(--blue); font-weight: 500; }
+.bar { height: 14px; border-radius: 999px; background: var(--sky-soft); overflow: hidden; }
+.bar > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--sky), var(--blue)); transition: width .6s ease; }
+.bar.low > span { background: linear-gradient(90deg, var(--orange), color-mix(in srgb, var(--orange) 70%, var(--brown))); }
+.dispense { display: grid; gap: 10px; }
+
+/* ---------- Horarios ---------- */
+.sched-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.sched-item { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--r-md); background: color-mix(in srgb, var(--cream) 55%, var(--white)); border: 1px solid var(--line); }
+.sched-item.off { opacity: .55; }
+.sched-item input[type="time"] { border: 0; background: transparent; font: 500 17px var(--f-mono); color: var(--ink); padding: 0; width: 100%; min-width: 0; }
+.sched-grams { display: inline-flex; align-items: center; gap: 4px; justify-self: end; }
+.sched-grams input { width: 64px; padding: 6px 8px; text-align: right; font-family: var(--f-mono); }
+.sched-grams span { font: 500 12.5px var(--f-mono); color: var(--brown); }
+.sched-grams.locked strong { font: 500 16px var(--f-mono); color: var(--orange); }
+.kibble { width: 18px; height: 18px; color: var(--brown); }
+.del-btn { border: 0; background: none; color: var(--brown); font-size: 18px; padding: 0 2px; line-height: 1; }
+.switch { position: relative; width: 44px; height: 26px; flex: none; }
+.switch input { opacity: 0; width: 100%; height: 100%; position: absolute; margin: 0; cursor: pointer; z-index: 1; }
+.switch span { position: absolute; inset: 0; border-radius: 999px; background: var(--sky); transition: background .2s; }
+.switch span::after { content: ""; position: absolute; width: 20px; height: 20px; top: 3px; left: 3px; border-radius: 50%; background: var(--white); transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+.switch input:checked + span { background: var(--blue); }
+.switch input:checked + span::after { transform: translateX(18px); }
+.switch input:focus-visible + span { outline: 3px solid color-mix(in srgb, var(--blue) 45%, transparent); outline-offset: 2px; }
+.empty { text-align: center; padding: 14px; color: var(--brown); font-size: 13.5px; border: 1.5px dashed var(--line); border-radius: var(--r-md); }
+
+.owner-card { flex-direction: row; justify-content: space-between; align-items: center; }
+.owner-card .label { font-size: 11.5px; color: var(--brown); }
+
+/* ---------- Tamaños ---------- */
+.size-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.size-card { border: 1.5px solid var(--line); background: var(--white); border-radius: var(--r-md); padding: 10px 6px 9px; display: grid; justify-items: center; align-content: end; gap: 2px; color: var(--sky); min-height: 118px; transition: border-color .15s, background .15s; }
+.size-card strong { font: 700 13px var(--f-display); color: var(--ink); }
+.size-card span { font-size: 11px; color: var(--brown); }
+.size-card[aria-checked="true"] { border-color: var(--blue); background: var(--blue-soft); color: var(--blue); }
+.sil { display: block; height: auto; margin-bottom: 4px; }
+.sil-s { width: 38px; aspect-ratio: 120/90; }
+.sil-m { width: 56px; aspect-ratio: 120/90; }
+.sil-l { width: 78px; aspect-ratio: 120/90; }
+
+/* ---------- Stepper ---------- */
+.stepper { display: grid; grid-template-columns: 52px 1fr 52px; gap: 8px; }
+.stepper button { border: 0; border-radius: var(--r-sm); background: var(--blue-soft); color: var(--blue); font: 700 22px var(--f-display); }
+.stepper input { text-align: center; font: 500 22px var(--f-mono) !important; color: var(--blue); }
+
+/* ---------- Gráfica / historial ---------- */
+.chart-box { position: relative; height: 220px; }
+.chart-box.tall { height: 270px; }
+.history { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; max-height: 160px; overflow-y: auto; }
+.history li { display: flex; justify-content: space-between; font: 400 13px var(--f-mono); padding: 6px 2px; border-bottom: 1px solid var(--line); }
+.history .delta-up { color: var(--orange); } .history .delta-down { color: var(--blue); }
+
+.sticky-cta { position: sticky; bottom: calc(var(--tabbar-h) + 12px); z-index: 5; padding-top: 4px; }
+.sticky-cta .btn { box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--blue) 70%, transparent); }
+
+/* ---------- Alimento ---------- */
+.food-sum { display: grid; gap: 6px; }
+.food-sum dl { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; margin: 0; font-size: 13.5px; }
+.food-sum dt { color: var(--brown); } .food-sum dd { margin: 0; font-family: var(--f-mono); text-align: right; }
+
+/* ---------- Pro bloqueado ---------- */
+.locked { position: relative; }
+.locked-preview { display: grid; gap: 14px; filter: blur(3px); opacity: .7; }
+.skel { height: 12px; border-radius: 6px; background: var(--sky-soft); }
+.w40 { width: 40%; } .w60 { width: 60%; } .w90 { width: 90%; }
+.bar-skel { height: 16px; background: linear-gradient(90deg, var(--orange-soft), var(--sky-soft)); }
+.chart-skel { height: 150px; background: linear-gradient(180deg, var(--sky-soft), var(--white)); }
+.locked-overlay { position: absolute; inset: 12px 0 auto; margin-inline: 6px; background: color-mix(in srgb, var(--white) 94%, transparent); border-radius: var(--r-lg); padding: 22px 18px; display: grid; gap: 12px; justify-items: center; text-align: center; box-shadow: var(--shadow); border: 1px solid var(--orange-soft); }
+.locked-overlay h3 { font-size: 20px; }
+.lock-badge { width: 54px; height: 54px; border-radius: 18px; background: var(--orange); color: var(--white); display: grid; place-items: center; }
+.lock-badge svg { width: 28px; height: 28px; }
+.perks { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; text-align: left; width: 100%; }
+.perks li { padding-left: 26px; position: relative; font-size: 14px; }
+.perks li::before { content: ""; position: absolute; left: 4px; top: 5px; width: 12px; height: 12px; border-radius: 4px; background: var(--brown); transform: rotate(45deg) scale(.75); }
+
+/* ---------- Pro contenido ---------- */
+#pro-content { display: flex; flex-direction: column; gap: 14px; }
+.alert { display: flex; gap: 12px; background: var(--orange); color: var(--white); border-radius: var(--r-lg); padding: 16px; box-shadow: 0 12px 26px -14px color-mix(in srgb, var(--orange) 90%, transparent); }
+.alert.calm { background: var(--blue); }
+.alert-ico { width: 26px; height: 26px; flex: none; margin-top: 2px; }
+.alert-body { display: grid; gap: 6px; min-width: 0; }
+.alert-body strong { font: 700 16px var(--f-display); }
+.alert-body p { font-size: 13.5px; opacity: .95; }
+.alert-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 4px; }
+
+.phase-eyebrow { color: var(--brown); }
+.phase-track { display: flex; gap: 6px; }
+.phase-step { font: 600 11.5px var(--f-display); padding: 5px 10px; border-radius: 999px; border: 1.5px solid var(--brown); color: var(--brown); }
+.phase-step.active { background: var(--brown); color: var(--white); }
+.phase-step.done { border-color: var(--sky); color: var(--sky); }
+.bar-phase > span { background: linear-gradient(90deg, var(--brown), var(--orange)); }
+.bar-phase.maint > span { background: linear-gradient(90deg, var(--sky), var(--blue)); }
+
+.ico-brown { width: 26px; height: 26px; color: var(--brown); }
+.code-box { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2px 10px; background: var(--cream); border: 1.5px dashed var(--brown); border-radius: var(--r-md); padding: 12px 14px; }
+.code { font-size: 26px; font-weight: 500; color: var(--blue); letter-spacing: .06em; }
+.code-box .tiny { grid-column: 1; }
+.code-box .link-btn { grid-row: 1 / span 2; grid-column: 2; }
+.vet-summary { background: var(--sky-soft); border-radius: var(--r-md); padding: 12px; font-size: 13.5px; display: grid; gap: 4px; }
+.vet-summary strong { font-family: var(--f-display); }
+.vet-head { flex-direction: row; align-items: center; gap: 12px; }
+
+.inputs-check { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 13.5px; }
+.inputs-check li { display: flex; gap: 8px; align-items: center; }
+.inputs-check .mk { width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 700; flex: none; }
+.inputs-check .yes .mk { background: var(--blue); color: var(--white); }
+.inputs-check .no .mk { background: var(--cream); color: var(--brown); border: 1px solid var(--line); }
+
+.ai-result { display: grid; gap: 12px; border-top: 1px dashed var(--line); padding-top: 12px; }
+.ai-big { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.ai-big div { background: color-mix(in srgb, var(--cream) 55%, var(--white)); border-radius: var(--r-md); padding: 10px; text-align: center; }
+.ai-big strong { display: block; font: 500 21px var(--f-mono); color: var(--orange); }
+.ai-big span { font-size: 11px; color: var(--brown); }
+.ai-steps { margin: 0; padding-left: 18px; font-size: 13.5px; display: grid; gap: 4px; }
+.ai-src { font-size: 11.5px; color: var(--brown); }
+.thinking { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--brown); }
+.spinner { width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid var(--sky-soft); border-top-color: var(--orange); animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.topics { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; overflow-wrap: anywhere; }
+.topics b { color: var(--blue); font-weight: 500; }
+
+/* ---------- Consola MQTT ---------- */
+.console { position: absolute; left: 0; right: 0; bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px)); z-index: 30; padding: 0 max(12px, env(safe-area-inset-right, 0px)) 6px max(12px, env(safe-area-inset-left, 0px)); pointer-events: none; }
+.console > * { pointer-events: auto; }
+.console-toggle { width: 100%; display: flex; justify-content: space-between; align-items: center; border: 0; border-radius: 12px; padding: 8px 12px; background: var(--ink); color: var(--sky); font-size: 12px; letter-spacing: .04em; opacity: .92; }
+.console-toggle[aria-expanded="true"] { border-radius: 12px 12px 0 0; opacity: 1; }
+#console-count { background: color-mix(in srgb, var(--sky) 25%, transparent); padding: 1px 8px; border-radius: 999px; color: var(--cream); }
+.console-body { background: var(--ink); border-radius: 0 0 12px 12px; padding: 6px 10px 10px; }
+.console-tools { display: flex; justify-content: space-between; align-items: center; color: var(--sky); padding-bottom: 6px; border-bottom: 1px solid color-mix(in srgb, var(--sky) 25%, transparent); }
+.console-log { list-style: none; margin: 0; padding: 0; max-height: 34vh; overflow-y: auto; font-size: 11.5px; line-height: 1.45; }
+.console-log li { padding: 6px 0; border-bottom: 1px solid color-mix(in srgb, var(--sky) 14%, transparent); color: var(--cream); overflow-wrap: anywhere; }
+.console-log .t { color: var(--sky); margin-right: 6px; }
+.console-log .dir-out { color: var(--orange); font-weight: 500; }
+.console-log .dir-in { color: #7FD69D; font-weight: 500; }
+.console-log .dir-sys { color: var(--sky); }
+.console-log .topic { color: var(--sky); }
+.console-log pre { margin: 3px 0 0; white-space: pre-wrap; color: var(--cream); font: inherit; }
+
+/* ---------- Tabbar ---------- */
+.tabbar { position: absolute; left: 0; right: 0; bottom: 0; z-index: 31; height: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px)); padding: 6px max(8px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(8px, env(safe-area-inset-left, 0px)); background: var(--white); border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(4, 1fr); }
+.tab { border: 0; background: none; display: grid; justify-items: center; align-content: center; gap: 3px; color: var(--sky); font: 600 11.5px var(--f-display); border-radius: 12px; }
+.tab svg { width: 24px; height: 24px; }
+.tab.active { color: var(--blue); }
+.tab.active svg { transform: translateY(-1px); }
+.tab[data-tab="pro"].active { color: var(--orange); }
+@media (max-width: 599px) {
+  .views { overflow: visible; }
+  .tabbar, .console { position: fixed; max-width: 430px; margin-inline: auto; }
+}
+
+/* ---------- Toast ---------- */
+.toast { position: absolute; left: 50%; bottom: calc(var(--tabbar-h) + 84px); transform: translate(-50%, 20px); background: var(--ink); color: var(--cream); padding: 10px 16px; border-radius: 12px; font-size: 13.5px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 50; width: max-content; max-width: calc(100% - 32px); text-align: center; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast.accent { background: var(--orange); color: var(--white); }
+@media (max-width: 599px) { .toast { position: fixed; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+</style>
+
+
+<!-- ============ SVG reutilizables ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Isotipo Wooffi: plato con huella de croquetas -->
+    <symbol id="iso-wooffi" viewBox="0 0 64 64">
+      <rect x="2" y="2" width="60" height="60" rx="18" fill="#176FB7"/>
+      <ellipse cx="32" cy="35" rx="10" ry="8.5" fill="#F66F3A"/>
+      <circle cx="19" cy="24" r="4.6" fill="#F4F0DD"/>
+      <circle cx="27" cy="17" r="4.6" fill="#F4F0DD"/>
+      <circle cx="37" cy="17" r="4.6" fill="#F4F0DD"/>
+      <circle cx="45" cy="24" r="4.6" fill="#F4F0DD"/>
+      <path d="M12 44h40a20 9 0 0 1-40 0z" fill="#F4F0DD"/>
+      <path d="M16 44h32" stroke="#85B3CC" stroke-width="2.4" stroke-linecap="round"/>
+    </symbol>
+    <!-- Silueta de perro (se escala para Pequeño / Mediano / Grande) -->
+    <symbol id="dog-sil" viewBox="0 0 120 90">
+      <g fill="currentColor">
+        <rect x="30" y="36" width="58" height="26" rx="13"/>
+        <rect x="18" y="22" width="22" height="30" rx="10" transform="rotate(-18 29 37)"/>
+        <circle cx="24" cy="26" r="13"/>
+        <rect x="4" y="24" width="18" height="11" rx="5.5"/>
+        <circle cx="5" cy="27" r="3.2"/>
+        <path d="M24 14c4-6 10-6 12-2l-3 14-9-2z"/>
+        <rect x="34" y="54" width="8" height="28" rx="4"/>
+        <rect x="46" y="54" width="8" height="26" rx="4"/>
+        <rect x="70" y="54" width="8" height="26" rx="4"/>
+        <rect x="80" y="52" width="8" height="30" rx="4"/>
+        <path d="M84 42c8-4 14-12 16-22 1-4 6-3 5 1-2 12-9 22-19 26z"/>
+      </g>
+    </symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-pet" viewBox="0 0 24 24"><g fill="currentColor"><ellipse cx="12" cy="15.5" rx="4.6" ry="3.8"/><circle cx="5.5" cy="10.5" r="2.1"/><circle cx="9" cy="6.3" r="2.1"/><circle cx="15" cy="6.3" r="2.1"/><circle cx="18.5" cy="10.5" r="2.1"/></g></symbol>
+    <symbol id="i-food" viewBox="0 0 24 24"><path d="M6 3h12l-1 4H7zM7 7h10l1 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="10" cy="13" r="1.3" fill="currentColor"/><circle cx="14" cy="15" r="1.3" fill="currentColor"/><circle cx="11" cy="17.5" r="1.3" fill="currentColor"/></symbol>
+    <symbol id="i-pro" viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.8v2.6M12 18.6v2.6M2.8 12h2.6M18.6 12h2.6M5.5 5.5l1.8 1.8M16.7 16.7l1.8 1.8M5.5 18.5l1.8-1.8M16.7 7.3l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 9.5a5 5 0 0 1 8 0l-3 2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20.5a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-steth" viewBox="0 0 24 24"><path d="M6 3v6a4 4 0 0 0 8 0V3M10 13v2a5 5 0 0 0 10 0v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="20" cy="11" r="2" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============ Pantalla 0: Splash ============ -->
+<div id="splash" class="splash" role="status" aria-live="polite">
+  <div class="splash-inner">
+    <svg class="splash-logo" aria-hidden="true"><use href="#iso-wooffi"/></svg>
+    <h1 class="wordmark">Wooffi</h1>
+    <p class="splash-tag">Tu comedero inteligente</p>
+    <p class="splash-mqtt mono"><span class="dot" id="splash-dot"></span><span id="splash-status">Conectando con tu comedero…</span></p>
+    <button class="btn btn-light" id="splash-enter" type="button">Entrar</button>
+  </div>
+</div>
+
+<div class="stage">
+<div class="phone" id="app">
+
+  <!-- ============ Header ============ -->
+  <header class="app-header">
+    <div class="header-row">
+      <button class="icon-btn back-btn" id="back-btn" type="button" hidden>← Regresar</button>
+      <div class="greet" id="greet-block">
+        <p class="greet-time mono" id="greet-clock">--:--</p>
+        <h2 class="greet-title" id="greeting">Hola</h2>
+      </div>
+    </div>
+    <div class="header-row header-meta">
+      <div id="connection-status" class="conn conn-connecting" title="Conexión con tu comedero">
+        <span class="dot"></span><span class="conn-text">CONECTANDO...</span>
+      </div>
+      <div class="plan-switch" role="radiogroup" aria-label="Plan activo (modo de prueba)">
+        <button type="button" role="radio" data-plan="free" id="plan-free">Plan Básico</button>
+        <button type="button" role="radio" data-plan="pro" id="plan-pro">Wooffi Pro</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="views" id="views">
+
+    <!-- ============ Pantalla 1: Onboarding / Dueño ============ -->
+    <section class="view" id="view-owner" data-sub="true">
+      <div class="card">
+        <p class="eyebrow">Bienvenida</p>
+        <h3 class="card-title">¿Cómo te llamas?</h3>
+        <p class="muted">Usaremos tu nombre para saludarte. La hora y la zona horaria se detectan solas desde tu teléfono para sincronizar los horarios del comedero.</p>
+        <label class="field">
+          <span class="label">Nombre del dueño</span>
+          <input id="owner-name" type="text" autocomplete="given-name" placeholder="Ej. Dani" maxlength="40">
+        </label>
+        <div class="detect">
+          <div><span class="label">Hora detectada</span><strong class="mono" id="detect-time">--:--</strong></div>
+          <div><span class="label">Zona horaria</span><strong class="mono" id="detect-tz">—</strong></div>
+        </div>
+        <button class="btn btn-primary btn-block" id="owner-save" type="button">Continuar</button>
+      </div>
+    </section>
+
+    <!-- ============ Pantalla 2: Inicio ============ -->
+    <section class="view" id="view-home">
+      <div class="card hero">
+        <div class="hero-top">
+          <div>
+            <p class="eyebrow">Wooffi</p>
+            <h3 class="card-title" id="feeder-state">En espera</h3>
+          </div>
+          <span class="chip" id="device-online">Sin señal</span>
+        </div>
+
+        <div class="hopper">
+          <div class="hopper-head">
+            <span class="label">Croquetas en la tolva</span>
+            <strong class="mono hopper-pct" id="hopper-pct">78%</strong>
+          </div>
+          <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="78" id="hopper-bar"><span id="hopper-fill" style="width:78%"></span></div>
+          <p class="tiny muted mono" id="hopper-grams">≈ 1,950 g de 2,500 g</p>
+        </div>
+
+      </div>
+
+      <div class="card">
+        <div class="row-between">
+          <h3 class="card-title">Horarios de alimentación</h3>
+          <span class="pill pill-ai" id="sched-ai-tag" hidden>Calculado por Wooffi IA</span>
+        </div>
+        <p class="muted tiny" id="sched-hint">Elige la hora y los gramos de cada toma.</p>
+        <ul class="sched-list" id="sched-list"></ul>
+        <div class="row-between">
+          <button class="btn btn-ghost" id="sched-add" type="button">+ Agregar Horario</button>
+          <span class="mono tiny muted" id="sched-total">Total: 0 g/día</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">Dispensación manual</h3>
+        <div class="dispense">
+                    <div class="chips" id="gram-chips">
+            <button type="button" class="chip-btn" data-g="25">25 g</button>
+            <button type="button" class="chip-btn active" data-g="50">50 g</button>
+            <button type="button" class="chip-btn" data-g="100">100 g</button>
+            <label class="chip-input"><input id="custom-grams" type="number" inputmode="numeric" min="5" max="500" placeholder="Otro"><span>g</span></label>
+          </div>
+          <button class="btn btn-accent btn-block btn-lg" id="dispense-btn" type="button"><span>Dispensar Ahora · <span id="dispense-g">50</span> g</span></button>
+          <div class="row-between tiny">
+            <span class="muted" id="last-dispense">Aún no se ha dispensado hoy</span>
+            <button class="link-btn" id="tare-btn" type="button">Tarar báscula</button>
+          </div>
+          <span class="label">Últimas dispensadas (servido / pedido)</span>
+          <ul class="history" id="feed-log"></ul>
+        </div>
+      </div>
+
+      <div class="card card-soft owner-card">
+        <div>
+          <span class="label">Dueño</span>
+          <strong id="owner-display">—</strong>
+        </div>
+        <button class="link-btn" id="owner-edit" type="button">Editar</button>
+      </div>
+    </section>
+
+    <!-- ============ Pantalla 3: Mascota ============ -->
+    <section class="view" id="view-pet">
+      <form class="card" id="pet-form" novalidate>
+        <p class="eyebrow">Perfil</p>
+        <h3 class="card-title">Datos de tu perrito</h3>
+
+        <label class="field">
+          <span class="label">Nombre del perro</span>
+          <input id="pet-name" type="text" placeholder="Ej. Max" maxlength="30">
+        </label>
+
+        <label class="field">
+          <span class="label">Raza</span>
+          <input id="pet-breed" type="text" list="breeds" placeholder="Escribe o elige">
+          <datalist id="breeds"></datalist>
+        </label>
+
+        <div class="field">
+          <span class="label">Edad</span>
+          <div class="grid-2">
+            <label class="suffix"><input id="pet-years" type="number" inputmode="numeric" min="0" max="25" placeholder="0"><span>años</span></label>
+            <label class="suffix"><input id="pet-months" type="number" inputmode="numeric" min="0" max="11" placeholder="0"><span>meses</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="label">Sexo</span>
+          <div class="row-between gap">
+            <div class="segmented" role="radiogroup" aria-label="Sexo">
+              <button type="button" data-sex="macho">Macho</button>
+              <button type="button" data-sex="hembra">Hembra</button>
+            </div>
+            <label class="check"><input id="pet-neutered" type="checkbox"><span>Esterilizado</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="label">Tamaño</span>
+          <div class="size-cards" role="radiogroup" aria-label="Tamaño">
+            <button type="button" class="size-card" data-size="s"><svg class="sil sil-s"><use href="#dog-sil"/></svg><strong>Pequeño</strong><span class="mono">&lt;10 kg</span></button>
+            <button type="button" class="size-card" data-size="m"><svg class="sil sil-m"><use href="#dog-sil"/></svg><strong>Mediano</strong><span class="mono">10–25 kg</span></button>
+            <button type="button" class="size-card" data-size="l"><svg class="sil sil-l"><use href="#dog-sil"/></svg><strong>Grande</strong><span class="mono">&gt;25 kg</span></button>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="label">Peso actual (kg)</span>
+          <div class="stepper">
+            <button type="button" id="w-minus" aria-label="Restar 0.1 kg">−</button>
+            <input id="pet-weight" type="number" inputmode="decimal" step="0.1" min="0.5" max="100" value="12.0">
+            <button type="button" id="w-plus" aria-label="Sumar 0.1 kg">+</button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-block btn-lg" id="pet-save" type="button">Actualizar Datos</button>
+      </form>
+
+      <div class="card">
+        <div class="row-between">
+          <h3 class="card-title">Evolución de peso</h3>
+          <span class="pill pill-pro" id="chart-pro-tag" hidden>Proyección Pro</span>
+        </div>
+        <div class="chart-box"><canvas id="weight-chart" aria-label="Gráfica de peso en el tiempo"></canvas></div>
+        <p class="tiny muted" id="chart-note">Cada vez que presionas «Actualizar Datos» se agrega un punto con la fecha de hoy.</p>
+        <ul class="history" id="weight-history"></ul>
+      </div>
+
+    </section>
+
+    <!-- ============ Pantalla 4: Alimento ============ -->
+    <section class="view" id="view-food">
+      <form class="card" id="food-form" novalidate>
+        <p class="eyebrow">Alimento</p>
+        <h3 class="card-title">Registra sus croquetas</h3>
+        <p class="muted tiny">Copia los datos de la bolsa. Ningún campo es obligatorio: llena los que vengan en tu marca.</p>
+
+        <label class="field"><span class="label">Marca del alimento <em>opcional</em></span><input id="food-brand" type="text" placeholder="Ej. Nupec"></label>
+        <label class="field"><span class="label">Nombre comercial <em>opcional</em></span><input id="food-name" type="text" placeholder="Ej. Weight Control Adulto"></label>
+        <label class="field"><span class="label">Etapa de vida <em>opcional</em></span>
+          <select id="food-stage">
+            <option value="">Sin especificar</option>
+            <option value="cachorro">Cachorro</option>
+            <option value="adulto">Adulto</option>
+            <option value="senior">Senior</option>
+          </select>
+        </label>
+        <label class="field"><span class="label">Energía metabolizable <em>opcional</em></span>
+          <span class="suffix"><input id="food-kcal" type="number" inputmode="numeric" placeholder="3500"><span>kcal/kg</span></span>
+        </label>
+
+        <div class="field">
+          <span class="label">Análisis garantizado <em>opcional</em></span>
+          <div class="grid-2">
+            <label class="suffix mini"><small>Proteína cruda</small><input id="food-protein" type="number" inputmode="decimal" step="0.1" placeholder="—"><span>%</span></label>
+            <label class="suffix mini"><small>Grasa cruda</small><input id="food-fat" type="number" inputmode="decimal" step="0.1" placeholder="—"><span>%</span></label>
+            <label class="suffix mini"><small>Fibra cruda</small><input id="food-fiber" type="number" inputmode="decimal" step="0.1" placeholder="—"><span>%</span></label>
+            <label class="suffix mini"><small>Humedad</small><input id="food-moisture" type="number" inputmode="decimal" step="0.1" placeholder="—"><span>%</span></label>
+          </div>
+        </div>
+
+        <label class="field"><span class="label">Porción diaria del fabricante <em>opcional</em></span>
+          <span class="suffix"><input id="food-portion" type="number" inputmode="numeric" placeholder="—"><span>g/día</span></span>
+        </label>
+
+        <button class="btn btn-primary btn-block" id="food-save" type="button">Guardar Alimento</button>
+      </form>
+
+      <div class="card card-soft" id="food-summary" hidden></div>
+    </section>
+
+    <!-- ============ Pantalla 5: Nutrición Pro ============ -->
+    <section class="view" id="view-pro">
+      <!-- Bloqueado (Plan Básico) -->
+      <div id="pro-locked" class="locked">
+        <div class="locked-preview" aria-hidden="true">
+          <div class="card"><div class="skel w60"></div><div class="skel w90"></div><div class="skel bar-skel"></div></div>
+          <div class="card"><div class="skel w40"></div><div class="skel chart-skel"></div></div>
+        </div>
+        <div class="locked-overlay">
+          <div class="lock-badge"><svg><use href="#i-lock"/></svg></div>
+          <span class="pill pill-pro">Wooffi Pro</span>
+          <h3>Tu nutriólogo canino inteligente</h3>
+          <ul class="perks">
+            <li>Gramos diarios exactos para llegar a su peso ideal</li>
+            <li>Recordatorios de pesaje para reajustar la dosis</li>
+            <li>Plan de mantenimiento anti-rebote</li>
+            <li>Código para que tu veterinario llene su diagnóstico</li>
+          </ul>
+          <button class="btn btn-accent btn-block btn-lg" id="unlock-pro" type="button">Activar Wooffi Pro</button>
+          <p class="tiny muted">Modo de prueba: puedes regresar al Plan Básico desde el encabezado.</p>
+        </div>
+      </div>
+
+      <!-- Contenido Pro -->
+      <div id="pro-content" hidden>
+        <div class="alert" id="weigh-alert">
+          <svg class="alert-ico"><use href="#i-bell"/></svg>
+          <div class="alert-body">
+            <strong id="weigh-title">Toca pesar a tu perrito</strong>
+            <p id="weigh-text">Pesarlo cada 2 semanas evita estancamientos y efecto rebote.</p>
+            <div class="alert-actions">
+              <button class="btn btn-light btn-sm" id="weigh-go" type="button">Actualizar peso</button>
+              <button class="link-btn on-accent" id="notif-btn" type="button">Activar recordatorios</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="eyebrow phase-eyebrow" id="phase-eyebrow">Fase nutricional</p>
+          <h3 class="card-title" id="phase-title">Fase 1: Ajuste hacia peso ideal</h3>
+          <div class="phase-track">
+            <span class="phase-step active" id="ps1">1 · Ajuste</span>
+            <span class="phase-step" id="ps2">2 · Mantenimiento</span>
+          </div>
+          <div class="bar bar-phase"><span id="phase-fill" style="width:0%"></span></div>
+          <div class="row-between tiny mono">
+            <span id="phase-start">Inicio —</span>
+            <span id="phase-now">Hoy —</span>
+            <span id="phase-goal">Meta —</span>
+          </div>
+          <p class="muted tiny" id="phase-text">Registra el peso y el diagnóstico del veterinario para calcular su plan.</p>
+        </div>
+
+        <div class="card">
+          <div class="row-between">
+            <h3 class="card-title">Veterinario</h3>
+            <svg class="ico-brown"><use href="#i-steth"/></svg>
+          </div>
+          <p class="muted tiny">Genera un código temporal. Tu veterinario lo usa para llenar el cuestionario clínico sin crear cuenta.</p>
+          <div class="code-box" id="code-box" hidden>
+            <span class="mono code" id="vet-code">WFF-0000</span>
+            <span class="tiny muted" id="vet-exp">Vence en 72 h</span>
+            <button class="link-btn" id="copy-code" type="button">Copiar</button>
+          </div>
+          <div class="btn-col">
+            <button class="btn btn-primary btn-block" id="gen-code" type="button">Generar Código para Veterinario</button>
+            <button class="btn btn-ghost btn-block" id="open-vet" type="button">Abrir Vista Veterinario (Demo)</button>
+          </div>
+          <div class="vet-summary" id="vet-summary" hidden></div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Motor nutricional Wooffi IA</h3>
+          <p class="muted tiny">Cruza los datos de tu perro, su alimento y el diagnóstico del veterinario para calcular los gramos exactos y enviarlos al comedero.</p>
+          <ul class="inputs-check" id="inputs-check"></ul>
+          <button class="btn btn-accent btn-block btn-lg" id="ai-calc" type="button">Calcular Ración con IA</button>
+          <div class="ai-result" id="ai-result" hidden></div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Proyección de peso</h3>
+          <div class="chart-box tall"><canvas id="pro-chart" aria-label="Proyección de peso hacia la meta"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Sub-vista: Veterinario (demo) ============ -->
+    <section class="view" id="view-vet" data-sub="true">
+      <div class="card vet-head">
+        <svg class="ico-brown"><use href="#i-steth"/></svg>
+        <div>
+          <p class="eyebrow">Portal veterinario · sin cuenta</p>
+          <h3 class="card-title">Cuestionario clínico</h3>
+        </div>
+      </div>
+      <div class="card" id="vet-login">
+        <label class="field"><span class="label">Código de acceso</span><input id="vet-code-input" class="mono" type="text" placeholder="WFF-0000" autocapitalize="characters"></label>
+        <button class="btn btn-primary btn-block" id="vet-enter" type="button">Ingresar</button>
+        <p class="tiny muted" id="vet-login-msg"></p>
+      </div>
+      <form class="card" id="vet-form" hidden novalidate>
+        <p class="muted tiny" id="vet-patient">Paciente: —</p>
+        <div class="field">
+          <span class="label">Condición corporal (escala 1–9): <strong class="mono" id="bcs-val">5</strong> · <span id="bcs-label">Ideal</span></span>
+          <input id="vet-bcs" type="range" min="1" max="9" step="1" value="5">
+          <div class="row-between tiny muted mono"><span>1 Emaciado</span><span>5 Ideal</span><span>9 Obeso</span></div>
+        </div>
+        <label class="field"><span class="label">Nivel de actividad</span>
+          <select id="vet-activity">
+            <option value="sedentario">Sedentario (menos de 30 min/día)</option>
+            <option value="moderado" selected>Moderado (30–60 min/día)</option>
+            <option value="activo">Activo (1–2 h/día)</option>
+            <option value="muy_activo">Muy activo / trabajo (más de 2 h/día)</option>
+          </select>
+        </label>
+        <label class="field"><span class="label">Peso ideal objetivo</span>
+          <span class="suffix"><input id="vet-ideal" type="number" inputmode="decimal" step="0.1" placeholder="Ej. 10.5"><span>kg</span></span>
+        </label>
+        <label class="field"><span class="label">Observaciones clínicas</span>
+          <textarea id="vet-notes" rows="4" placeholder="Ej. Sin enfermedades endocrinas. Revisar en 4 semanas."></textarea>
+        </label>
+        <label class="field"><span class="label">Nombre del veterinario <em>opcional</em></span><input id="vet-name" type="text" placeholder="MVZ …"></label>
+        <button class="btn btn-primary btn-block" id="vet-submit" type="button">Enviar diagnóstico</button>
+      </form>
+    </section>
+
+
+  </main>
+
+
+  <!-- ============ Navegación inferior ============ -->
+  <nav class="tabbar" aria-label="Navegación principal">
+    <button type="button" data-tab="home" class="tab active"><svg><use href="#i-home"/></svg><span>Inicio</span></button>
+    <button type="button" data-tab="pet" class="tab"><svg><use href="#i-pet"/></svg><span>Mascota</span></button>
+    <button type="button" data-tab="food" class="tab"><svg><use href="#i-food"/></svg><span>Alimento</span></button>
+    <button type="button" data-tab="pro" class="tab"><svg><use href="#i-pro"/></svg><span>Nutrición Pro</span></button>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+</div>
+
+<script src="https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+/* =========================================================
+   Wooffi — app.js (JavaScript vanilla)
+   - Estado local en localStorage
+   - Cliente MQTT (mqtt.js por WebSocket)
+   - Motor nutricional local (RER/MER) + endpoint opcional de IA (Claude)
+   - Gráficas con Chart.js
+   ========================================================= */
+(() => {
+  'use strict';
+
+  /* ---------------------------------------------------------
+     1. CONFIGURACIÓN Y CONTRATO MQTT
+     ---------------------------------------------------------
+     Tópicos (reemplaza <id> por el ID del comedero):
+       wooffi/<id>/cmd     app → comedero   (QoS 1)
+       wooffi/<id>/status  comedero → app   (retained; LWT {"online":false})
+       wooffi/<id>/event   comedero → app   (eventos puntuales)
+
+     Comandos que publica la app en /cmd:
+       {"cmd":"dispense","grams":50,"src":"manual","req":"k3f9"}
+       {"cmd":"tare","req":"…"}
+       {"cmd":"schedule","mode":"manual|ia","tz":"America/Mexico_City",
+        "utc_offset_min":-360,"daily_grams":220,
+        "meals":[{"time":"08:00","grams":110,"enabled":true}],"req":"…"}
+       {"cmd":"time","epoch":1764126000,"tz":"America/Mexico_City","utc_offset_min":-360}
+       {"cmd":"status"}   (pide al comedero que reenvíe su estado)
+
+     Estado que publica el comedero en /status:
+       {"online":true,"state":"idle|dispensing|jam|empty|error",
+        "hopper_g":1950,"hopper_cap_g":2500,"hopper_pct":78,"rssi":-61,"fw":"0.1.0"}
+
+     Eventos en /event:
+       {"event":"dispensed","req":"k3f9","target_g":50,"real_g":48.7,"src":"manual","ok":true}
+       {"event":"jam","retries":1}   {"event":"tared"}   {"event":"empty"}
+       {"event":"schedule_ok","req":"…","meals":2}
+       {"event":"history","items":[[epoch,objetivo_g,real_g,"manual|schedule",ok],…]}
+
+     Extras del firmware 0.2.x (XIAO ESP32-S3):
+       /status también trae "today_g" (gramos servidos hoy) y "time_ok" (si ya tiene hora).
+       La app pide {"cmd":"history"} al conectar y guarda el historial en este teléfono.
+  --------------------------------------------------------- */
+  /* Configuración fija de conexión (no se muestra en la interfaz) */
+  const CONFIG = {
+    broker: 'wss://broker.emqx.io:8084/mqtt',
+    device: 'wooffi-001',
+    user: '',
+    pass: '',
+    aiEndpoint: '',
+    simulate: false,   // false = habla con la XIAO real por el broker
+  };
+  const HOPPER_CAP_G = 2500;
+  const WEIGH_EVERY_DAYS_LOSS = 14;   // fase 1
+  const WEIGH_EVERY_DAYS_MAINT = 30;  // fase 2
+  const MAINT_WEEKS = 12;             // duración del plan anti-rebote
+
+  const BREEDS = ['Mestizo / Criollo', 'Chihuahua', 'Schnauzer miniatura', 'Poodle (French Poodle)', 'Yorkshire Terrier', 'Pug', 'Shih Tzu', 'Dachshund (Salchicha)', 'Beagle', 'Bulldog francés', 'Bulldog inglés', 'Cocker Spaniel', 'Border Collie', 'Pastor australiano', 'Husky siberiano', 'Labrador Retriever', 'Golden Retriever', 'Pastor alemán', 'Pitbull', 'Rottweiler', 'Boxer', 'Gran danés', 'Xoloitzcuintle', 'Maltés', 'Pomerania', 'Jack Russell Terrier', 'Doberman', 'Bóxer', 'Akita', 'San Bernardo'];
+
+  /* ---------------------------------------------------------
+     2. ESTADO Y ALMACENAMIENTO
+  --------------------------------------------------------- */
+  const KEY = 'wooffi.v1';
+  const store = {
+    load() { try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch { return null; } },
+    save(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch { /* sin almacenamiento */ } },
+    clear() { try { localStorage.removeItem(KEY); } catch { /* */ } },
+  };
+
+  const freshState = () => ({
+    owner: '',
+    plan: 'free',
+    pet: { name: '', breed: '', years: '', months: '', sex: '', neutered: false, size: '', weight: 12 },
+    weights: [],               // [{date:'YYYY-MM-DD', kg}]
+    food: {},
+    schedules: [
+      { id: uid(), time: '08:00', grams: 60, enabled: true },
+      { id: uid(), time: '19:00', grams: 60, enabled: true },
+    ],
+    vet: null,                 // {code, created, expires, bcs, activity, ideal, notes, name, date}
+    vetCode: null,             // {code, created, expires}
+    ai: null,                  // resultado del último cálculo
+    maintStart: null,          // fecha en que se alcanzó la meta
+    device: { hopperPct: 78, hopperG: 1950, state: 'idle', online: false, lastDispense: null, todayG: null },
+    feedLog: [],               // historial de dispensadas que manda el comedero: [{t, target, real, src, ok}]
+    cfg: { ...CONFIG },
+  });
+
+  let S = store.load();
+  if (!S) S = freshState();
+  S.cfg = { ...CONFIG };
+  S.device = { ...freshState().device, ...(S.device || {}) };
+  if (!Array.isArray(S.feedLog)) S.feedLog = [];
+  S.device.online = false;   // hasta que el comedero confirme por MQTT
+  const save = () => store.save(S);
+
+  /* ---------------------------------------------------------
+     3. UTILIDADES
+  --------------------------------------------------------- */
+  function uid() { return Math.random().toString(36).slice(2, 7); }
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+  const todayISO = () => { const d = new Date(); return new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10); };
+  const parseISO = (s) => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+  const daysBetween = (a, b) => Math.round((parseISO(b) - parseISO(a)) / 864e5);
+  const addDays = (iso, n) => { const d = parseISO(iso); d.setDate(d.getDate() + n); return new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10); };
+  const fmtDate = (iso) => parseISO(iso).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+  const fmtDateLong = (iso) => parseISO(iso).toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' });
+  const num = (v) => { const n = parseFloat(String(v).replace(',', '.')); return Number.isFinite(n) ? n : null; };
+  const r1 = (n) => Math.round(n * 10) / 10;
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const tz = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Local'; } catch { return 'Local'; } };
+  const petName = () => S.pet.name || 'tu perrito';
+  const isPro = () => S.plan === 'pro';
+  const lastWeight = () => (S.weights.length ? S.weights[S.weights.length - 1] : null);
+
+  let toastTimer;
+  function toast(msg, accent = false) {
+    const t = $('#toast');
+    t.textContent = msg;
+    t.classList.toggle('accent', accent);
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+  }
+
+  /* ---------------------------------------------------------
+     4. CONSOLA MQTT
+  --------------------------------------------------------- */
+  // Registro solo para desarrollo: se ve en la consola del navegador, no en la app.
+  function log(dir, topic, payload) {
+    const tag = { out: 'PUB', in: 'SUB', sim: 'SUB', sys: 'SYS' }[dir] || dir;
+    console.debug(`[Wooffi MQTT] ${tag}`, topic || '', payload ?? '');
+  }
+
+  /* ---------------------------------------------------------
+     5. CLIENTE MQTT
+  --------------------------------------------------------- */
+  let client = null;
+  let connState = 'connecting';
+  const topic = (t) => `wooffi/${S.cfg.device}/${t}`;
+
+  function setConn(state) {
+    connState = state;
+    const el = $('#connection-status');
+    el.className = 'conn conn-' + state;
+    el.querySelector('.conn-text').textContent = { online: 'CONECTADO', connecting: 'CONECTANDO...', offline: 'DESCONECTADO' }[state];
+    const sd = $('#splash-dot');
+    sd.className = 'dot ' + ({ online: 'ok', connecting: 'wait', offline: 'bad' }[state]);
+    $('#splash-status').textContent = {
+      online: 'Comedero conectado',
+      connecting: 'Conectando con tu comedero…',
+      offline: S.cfg.simulate ? 'Comedero listo' : 'Sin conexión con tu comedero',
+    }[state];
+    renderDevice();
+  }
+
+  function connect() {
+    if (client) { try { client.end(true); } catch { /* */ } client = null; }
+    if (typeof window.mqtt === 'undefined') {
+      log('sys', '', 'No se pudo cargar mqtt.js (¿sin internet?). Trabajando sin conexión.');
+      setConn('offline');
+      return;
+    }
+    setConn('connecting');
+    log('sys', '', `Conectando a ${S.cfg.broker}`);
+    try {
+      client = window.mqtt.connect(S.cfg.broker, {
+        clientId: 'wooffi-app-' + uid() + uid(),
+        clean: true,
+        connectTimeout: 8000,
+        reconnectPeriod: 4000,
+        username: S.cfg.user || undefined,
+        password: S.cfg.pass || undefined,
+      });
+    } catch (e) {
+      log('sys', '', 'Error al crear el cliente: ' + e.message);
+      setConn('offline');
+      return;
+    }
+    client.on('connect', () => {
+      setConn('online');
+      log('sys', '', 'Conexión establecida');
+      client.subscribe([topic('status'), topic('event')], { qos: 1 }, (err) => {
+        if (err) log('sys', '', 'Error al suscribirse: ' + err.message);
+        else log('sys', '', `Suscrito a ${topic('status')} y ${topic('event')}`);
+      });
+      publish({ cmd: 'time', ...timePayload() }, true);
+      publish({ cmd: 'status' }, true);
+      publish({ cmd: 'history' }, true);
+      schedSynced = false;   // al primer status del comedero se le reenvían los horarios
+    });
+    client.on('reconnect', () => setConn('connecting'));
+    client.on('close', () => { if (connState !== 'offline') setConn('offline'); });
+    client.on('offline', () => setConn('offline'));
+    client.on('error', (e) => log('sys', '', 'Error MQTT: ' + (e && e.message)));
+    client.on('message', (t, buf) => {
+      const raw = buf.toString();
+      let data;
+      try { data = JSON.parse(raw); } catch { data = null; }
+      log('in', t, raw);
+      if (!data) return;
+      if (t.endsWith('/status')) onStatus(data);
+      else if (t.endsWith('/event')) onEvent(data);
+    });
+  }
+
+  function timePayload() {
+    return { epoch: Math.floor(Date.now() / 1000), tz: tz(), utc_offset_min: -new Date().getTimezoneOffset() };
+  }
+
+  /** Publica un comando. Devuelve true si salió por MQTT o por el simulador. */
+  function publish(obj, quiet = false) {
+    const payload = { ...obj };
+    if (!payload.req && payload.cmd !== 'time' && payload.cmd !== 'status') payload.req = uid();
+    const t = topic('cmd');
+    let sent = false;
+    if (client && client.connected) {
+      client.publish(t, JSON.stringify(payload), { qos: 1 });
+      log('out', t, payload);
+      sent = true;
+    } else if (!quiet) {
+      log('sys', t, 'Sin conexión: comando no enviado al broker → ' + JSON.stringify(payload));
+    }
+    if (S.cfg.simulate) { sim.handle(payload); sent = true; }
+    return sent;
+  }
+
+  let schedSynced = false;
+  let lastTimeSent = 0;
+  function onStatus(d) {
+    if (typeof d.online === 'boolean') S.device.online = d.online;
+    if (Number.isFinite(d.today_g)) S.device.todayG = d.today_g;
+    // El comedero se reinició sin internet: se le manda la hora del teléfono
+    if (d.online && d.time_ok === false && Date.now() - lastTimeSent > 60000) { lastTimeSent = Date.now(); publish({ cmd: 'time', ...timePayload() }, true); }
+    // Mantiene el comedero con los mismos horarios que la app (los guarda en su memoria)
+    if (d.online && !schedSynced) { schedSynced = true; pushSchedule(); }
+    if (d.state) S.device.state = d.state;
+    if (Number.isFinite(d.hopper_pct)) S.device.hopperPct = d.hopper_pct;
+    if (Number.isFinite(d.hopper_g)) S.device.hopperG = d.hopper_g;
+    S.device.seen = Date.now();
+    save();
+    renderDevice();
+  }
+
+  function onEvent(d) {
+    if (d.event === 'dispensed') {
+      const real = d.real_g ?? d.target_g;
+      S.device.lastDispense = { g: real, at: Date.now() };
+      addFeed({ t: Math.floor(Date.now() / 1000), target: d.target_g, real, src: d.src || 'manual', ok: d.ok !== false });
+      save();
+      renderDevice();
+      if (d.ok === false) toast(`Solo salieron ${r1(real)} de ${d.target_g} g. Revisa el comedero.`, true);
+      else toast(`Listo: se sirvieron ${r1(real)} g`);
+    } else if (d.event === 'jam') {
+      toast('El sinfín se atoró. El comedero intentará liberarlo.', true);
+    } else if (d.event === 'tared') {
+      toast('Báscula en cero');
+    } else if (d.event === 'empty') {
+      toast('La tolva está vacía: rellena croquetas', true);
+    } else if (d.event === 'schedule_ok') {
+      toast(`Horarios guardados en el comedero (${d.meals} activos)`);
+    } else if (d.event === 'history' && Array.isArray(d.items)) {
+      d.items.forEach(([t, target, real, src, ok]) => { if (t) addFeed({ t, target, real, src, ok: !!ok }); });
+      save();
+      renderDevice();
+    }
+  }
+
+  /* Historial de dispensadas: se va acumulando en este teléfono (localStorage).
+     El comedero solo recuerda las últimas 30; la app guarda hasta 1,000. */
+  function addFeed(e) {
+    const dup = S.feedLog.some((x) => Math.abs(x.t - e.t) < 90 && x.target === e.target);
+    if (dup) return;
+    S.feedLog.push(e);
+    S.feedLog.sort((a, b) => a.t - b.t);
+    if (S.feedLog.length > 1000) S.feedLog = S.feedLog.slice(-1000);
+  }
+
+  /* Simulador del comedero: responde como lo haría el firmware */
+  const sim = {
+    handle(p) {
+      const reply = (kind, data, delay = 400) => setTimeout(() => {
+        log('sim', topic(kind), data);
+        kind === 'status' ? onStatus(data) : onEvent(data);
+      }, delay);
+      const status = (state) => ({ online: true, state, hopper_g: Math.round(S.device.hopperG), hopper_cap_g: HOPPER_CAP_G, hopper_pct: Math.round(S.device.hopperG / HOPPER_CAP_G * 100), rssi: -58, fw: 'sim' });
+      if (p.cmd === 'dispense') {
+        reply('status', status('dispensing'), 300);
+        const real = r1(p.grams * (0.97 + Math.random() * 0.05));
+        setTimeout(() => {
+          S.device.hopperG = Math.max(0, S.device.hopperG - real);
+          reply('event', { event: 'dispensed', req: p.req, target_g: p.grams, real_g: real }, 0);
+          reply('status', status(S.device.hopperG < 50 ? 'empty' : 'idle'), 150);
+        }, 1600 + p.grams * 8);
+      } else if (p.cmd === 'tare') {
+        reply('event', { event: 'tared' }, 700);
+      } else if (p.cmd === 'status' || p.cmd === 'time') {
+        reply('status', status('idle'), 500);
+      } else if (p.cmd === 'schedule') {
+        reply('event', { event: 'schedule_ok', req: p.req, meals: p.meals.filter((m) => m.enabled).length }, 500);
+      }
+    },
+  };
+
+  /* ---------------------------------------------------------
+     6. NAVEGACIÓN
+  --------------------------------------------------------- */
+  let currentTab = 'home';
+  let currentView = 'home';
+  function show(view, { sub = false } = {}) {
+    currentView = view;
+    $$('.view').forEach((v) => v.classList.toggle('active', v.id === 'view-' + view));
+    $('#back-btn').hidden = !sub;
+    $('#greet-block').hidden = sub;
+    if (!sub) {
+      currentTab = view;
+      $$('.tab').forEach((t) => t.classList.toggle('active', t.dataset.tab === view));
+    }
+    $('#views').scrollTop = 0;
+    window.scrollTo(0, 0);
+    if (view === 'pet') setTimeout(() => charts.pet && charts.pet.resize(), 30);
+    if (view === 'pro') setTimeout(() => charts.pro && charts.pro.resize(), 30);
+  }
+  $$('.tab').forEach((t) => t.addEventListener('click', () => show(t.dataset.tab)));
+  $('#back-btn').addEventListener('click', () => show(currentTab));
+
+  /* ---------------------------------------------------------
+     7. HEADER: SALUDO, RELOJ, PLAN
+  --------------------------------------------------------- */
+  function greetingWord(h) { return h >= 5 && h < 12 ? 'Buenos días' : h >= 12 && h < 19 ? 'Buenas tardes' : 'Buenas noches'; }
+  function renderClock() {
+    const d = new Date();
+    const h = d.getHours();
+    $('#greeting').textContent = `${greetingWord(h)}${S.owner ? ', ' + S.owner : ''}`;
+    const day = d.toLocaleDateString('es-MX', { weekday: 'short', day: 'numeric', month: 'short' }).toUpperCase();
+    const time = d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', hour12: false });
+    $('#greet-clock').textContent = `${day} · ${time}`;
+    $('#detect-time').textContent = time;
+    $('#detect-tz').textContent = tz();
+  }
+
+  function setPlan(plan) {
+    S.plan = plan;
+    save();
+    $$('.plan-switch button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.plan === plan)));
+    renderAll();
+  }
+  $$('.plan-switch button').forEach((b) => b.addEventListener('click', () => {
+    setPlan(b.dataset.plan);
+    toast(b.dataset.plan === 'pro' ? 'Wooffi Pro activado (modo prueba)' : 'Plan Básico activado', b.dataset.plan === 'pro');
+  }));
+
+  /* ---------------------------------------------------------
+     8. DUEÑO (ONBOARDING)
+  --------------------------------------------------------- */
+  function openOwner() {
+    $('#owner-name').value = S.owner;
+    show('owner', { sub: !!S.owner });
+  }
+  $('#owner-edit').addEventListener('click', openOwner);
+  $('#owner-save').addEventListener('click', () => {
+    const name = $('#owner-name').value.trim();
+    if (!name) { toast('Escribe tu nombre para continuar'); $('#owner-name').focus(); return; }
+    const first = !S.owner;
+    S.owner = name;
+    if (first && !S.weights.length) loadExample();
+    save();
+    renderAll();
+    show('home');
+    publish({ cmd: 'time', ...timePayload() }, true);
+    toast(first ? `¡Hola, ${name}! Cargamos a Max como ejemplo` : 'Datos guardados');
+  });
+
+  function loadExample() {
+    const t = todayISO();
+    S.pet = { name: 'Max', breed: 'Beagle', years: 5, months: 3, sex: 'macho', neutered: true, size: 'm', weight: 15.1 };
+    S.weights = [
+      { date: addDays(t, -42), kg: 16.4 },
+      { date: addDays(t, -28), kg: 16.0 },
+      { date: addDays(t, -14), kg: 15.6 },
+      { date: addDays(t, -1), kg: 15.1 },
+    ];
+    S.food = { brand: 'Marca de ejemplo', name: 'Control de peso adulto', stage: 'adulto', kcal: 3350, protein: 26, fat: 9, fiber: 6, moisture: 10, portion: 230, saved: t };
+  }
+
+  /* ---------------------------------------------------------
+     9. INICIO: COMEDERO
+  --------------------------------------------------------- */
+  let selectedGrams = 50;
+  function renderDevice() {
+    const d = S.device;
+    const pct = Math.max(0, Math.min(100, Math.round(d.hopperPct)));
+    $('#hopper-pct').textContent = pct + '%';
+    $('#hopper-fill').style.width = pct + '%';
+    $('#hopper-bar').setAttribute('aria-valuenow', pct);
+    $('#hopper-bar').classList.toggle('low', pct < 20);
+    $('#hopper-grams').textContent = `≈ ${Math.round(d.hopperG).toLocaleString('es-MX')} g de ${HOPPER_CAP_G.toLocaleString('es-MX')} g`;
+    const stateTxt = { idle: 'En espera', dispensing: 'Dispensando…', jam: 'Atasco en el sinfín', empty: 'Tolva vacía', error: 'Revisar comedero' }[d.state] || 'En espera';
+    $('#feeder-state').textContent = stateTxt;
+    const chip = $('#device-online');
+    const fresh = d.seen && Date.now() - d.seen < 90000;   // el comedero manda su estado cada 30 s
+    const live = (connState === 'online' && d.online && fresh) || S.cfg.simulate;
+    chip.textContent = live ? 'En línea' : 'Sin señal';
+    chip.className = 'chip ' + (live ? 'ok' : 'warn');
+    if (!d.lastDispense) $('#last-dispense').textContent = 'Aún no se ha dispensado hoy';
+    if (d.lastDispense) {
+      const t = new Date(d.lastDispense.at);
+      $('#last-dispense').textContent = `Último: ${r1(d.lastDispense.g)} g a las ${t.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', hour12: false })}`;
+    }
+    if (Number.isFinite(d.todayG)) $('#last-dispense').textContent += ` · Hoy: ${Math.round(d.todayG)} g`;
+    $('#dispense-btn').disabled = d.state === 'dispensing';
+    renderFeedLog();
+  }
+
+  function renderFeedLog() {
+    const ul = $('#feed-log');
+    if (!ul) return;
+    const last = S.feedLog.slice(-15).reverse();
+    ul.innerHTML = last.length ? last.map((e) => {
+      const dt = new Date(e.t * 1000);
+      const when = dt.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' }) + ' ' + dt.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', hour12: false });
+      return `<li><span>${esc(when)} · ${e.src === 'schedule' ? 'horario' : 'manual'}</span><span class="${e.ok ? 'delta-down' : 'delta-up'}">${r1(e.real)} / ${esc(e.target)} g</span></li>`;
+    }).join('') : '<li><span class="muted">Aún no hay dispensadas registradas</span></li>';
+  }
+
+  $('#gram-chips').addEventListener('click', (e) => {
+    const b = e.target.closest('.chip-btn');
+    if (!b) return;
+    selectedGrams = Number(b.dataset.g);
+    $('#custom-grams').value = '';
+    $$('.chip-btn').forEach((c) => c.classList.toggle('active', c === b));
+    $('.chip-input').classList.remove('active');
+    $('#dispense-g').textContent = selectedGrams;
+  });
+  $('#custom-grams').addEventListener('input', (e) => {
+    const g = num(e.target.value);
+    if (g) {
+      selectedGrams = Math.round(g);
+      $$('.chip-btn').forEach((c) => c.classList.remove('active'));
+      $('.chip-input').classList.add('active');
+      $('#dispense-g').textContent = selectedGrams;
+    }
+  });
+  $('#dispense-btn').addEventListener('click', () => {
+    if (!(selectedGrams >= 5 && selectedGrams <= 500)) { toast('Elige entre 5 y 500 g'); return; }
+    const ok = publish({ cmd: 'dispense', grams: selectedGrams, src: 'manual' });
+    toast(ok ? `Enviando ${selectedGrams} g al comedero…` : 'No pudimos comunicarnos con tu comedero', !ok);
+  });
+  $('#tare-btn').addEventListener('click', () => {
+    const ok = publish({ cmd: 'tare' });
+    toast(ok ? 'Tarando báscula: no toques el comedero' : 'Sin conexión: no se pudo tarar');
+  });
+
+  /* ---------------------------------------------------------
+     10. HORARIOS
+  --------------------------------------------------------- */
+  const KIBBLE = '<svg class="kibble" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-food"/></svg>';
+  function proMealGrams() {
+    const active = S.schedules.filter((s) => s.enabled).length;
+    if (!S.ai || !active) return null;
+    return Math.round(S.ai.dailyGrams / active);
+  }
+  function renderSchedules() {
+    const list = $('#sched-list');
+    const pro = isPro();
+    const perMeal = proMealGrams();
+    $('#sched-ai-tag').hidden = !pro;
+    $('#sched-hint').textContent = pro
+      ? (S.ai ? `Wooffi IA reparte ${S.ai.dailyGrams} g/día entre las tomas activas. Tú solo eliges las horas.` : 'Calcula la ración en Nutrición Pro para repartir los gramos automáticamente.')
+      : 'Elige la hora y los gramos de cada toma.';
+    if (!S.schedules.length) {
+      list.innerHTML = '<li class="empty">No hay horarios. Agrega el primero.</li>';
+    } else {
+      const sorted = [...S.schedules].sort((a, b) => a.time.localeCompare(b.time));
+      list.innerHTML = sorted.map((s) => `
+        <li class="sched-item ${s.enabled ? '' : 'off'}" data-id="${s.id}">
+          <label class="switch" title="Activar o desactivar"><input type="checkbox" data-k="enabled" ${s.enabled ? 'checked' : ''} aria-label="Toma de las ${s.time}"><span></span></label>
+          <input type="time" data-k="time" value="${s.time}" aria-label="Hora">
+          ${pro
+            ? `<span class="sched-grams locked">${KIBBLE}<strong>${s.enabled && perMeal ? perMeal : '—'}</strong><span>g</span></span>`
+            : `<span class="sched-grams">${KIBBLE}<input type="number" inputmode="numeric" min="5" max="500" data-k="grams" value="${s.grams}" aria-label="Gramos"><span>g</span></span>`}
+          <button type="button" class="del-btn" data-del aria-label="Eliminar horario">×</button>
+        </li>`).join('');
+    }
+    const total = pro ? (perMeal ? perMeal * S.schedules.filter((s) => s.enabled).length : 0)
+      : S.schedules.filter((s) => s.enabled).reduce((a, s) => a + (Number(s.grams) || 0), 0);
+    $('#sched-total').textContent = `Total: ${total} g/día`;
+  }
+  let schedTimer;
+  function pushSchedule() {
+    clearTimeout(schedTimer);
+    schedTimer = setTimeout(() => {
+      const pro = isPro();
+      const perMeal = proMealGrams();
+      const meals = [...S.schedules].sort((a, b) => a.time.localeCompare(b.time)).map((s) => ({
+        time: s.time, grams: pro ? (s.enabled ? perMeal || 0 : 0) : Number(s.grams) || 0, enabled: s.enabled,
+      }));
+      const daily = meals.filter((m) => m.enabled).reduce((a, m) => a + m.grams, 0);
+      publish({ cmd: 'schedule', mode: pro && S.ai ? 'ia' : 'manual', tz: tz(), utc_offset_min: -new Date().getTimezoneOffset(), daily_grams: daily, meals });
+    }, 700);
+  }
+  $('#sched-list').addEventListener('change', (e) => {
+    const li = e.target.closest('.sched-item');
+    if (!li) return;
+    const s = S.schedules.find((x) => x.id === li.dataset.id);
+    const k = e.target.dataset.k;
+    if (k === 'enabled') s.enabled = e.target.checked;
+    if (k === 'time' && e.target.value) s.time = e.target.value;
+    if (k === 'grams') s.grams = Math.max(5, Math.min(500, Math.round(num(e.target.value) || 5)));
+    save();
+    renderSchedules();
+    pushSchedule();
+  });
+  $('#sched-list').addEventListener('click', (e) => {
+    if (!e.target.closest('[data-del]')) return;
+    const id = e.target.closest('.sched-item').dataset.id;
+    S.schedules = S.schedules.filter((s) => s.id !== id);
+    save(); renderSchedules(); pushSchedule();
+  });
+  $('#sched-add').addEventListener('click', () => {
+    const last = [...S.schedules].sort((a, b) => a.time.localeCompare(b.time)).pop();
+    let h = last ? (Number(last.time.slice(0, 2)) + 4) % 24 : 8;
+    S.schedules.push({ id: uid(), time: String(h).padStart(2, '0') + ':00', grams: 50, enabled: true });
+    save(); renderSchedules(); pushSchedule();
+  });
+
+  /* ---------------------------------------------------------
+     11. MASCOTA
+  --------------------------------------------------------- */
+  $('#breeds').innerHTML = BREEDS.map((b) => `<option value="${esc(b)}">`).join('');
+
+  function fillPet() {
+    const p = S.pet;
+    $('#pet-name').value = p.name || '';
+    $('#pet-breed').value = p.breed || '';
+    $('#pet-years').value = p.years ?? '';
+    $('#pet-months').value = p.months ?? '';
+    $('#pet-neutered').checked = !!p.neutered;
+    $('#pet-weight').value = (lastWeight() ? lastWeight().kg : p.weight || 12).toFixed(1);
+    $$('[data-sex]').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.sex === p.sex)));
+    $$('[data-size]').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.size === p.size)));
+  }
+  $$('[data-sex]').forEach((b) => b.addEventListener('click', () => {
+    $$('[data-sex]').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+  }));
+  $$('[data-size]').forEach((b) => b.addEventListener('click', () => {
+    $$('[data-size]').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+  }));
+  const stepW = (d) => {
+    const w = Math.max(0.5, Math.min(100, (num($('#pet-weight').value) || 0) + d));
+    $('#pet-weight').value = w.toFixed(1);
+  };
+  $('#w-minus').addEventListener('click', () => stepW(-0.1));
+  $('#w-plus').addEventListener('click', () => stepW(0.1));
+
+  $('#pet-save').addEventListener('click', () => {
+    const w = num($('#pet-weight').value);
+    if (!w || w < 0.5 || w > 100) { toast('Escribe un peso entre 0.5 y 100 kg'); return; }
+    const sex = ($$('[data-sex]').find((b) => b.getAttribute('aria-checked') === 'true') || {}).dataset?.sex || '';
+    let size = ($$('[data-size]').find((b) => b.getAttribute('aria-checked') === 'true') || {}).dataset?.size || '';
+    if (!size) size = w < 10 ? 's' : w <= 25 ? 'm' : 'l';
+    S.pet = {
+      name: $('#pet-name').value.trim(),
+      breed: $('#pet-breed').value.trim(),
+      years: num($('#pet-years').value) ?? '',
+      months: num($('#pet-months').value) ?? '',
+      sex, neutered: $('#pet-neutered').checked, size, weight: r1(w),
+    };
+    const t = todayISO();
+    const existing = S.weights.find((x) => x.date === t);
+    if (existing) existing.kg = r1(w); else S.weights.push({ date: t, kg: r1(w) });
+    S.weights.sort((a, b) => a.date.localeCompare(b.date));
+    checkMaintenance();
+    save();
+    renderAll();
+    toast(`Peso de ${petName()} registrado: ${r1(w)} kg`);
+  });
+
+  function renderHistory() {
+    const ul = $('#weight-history');
+    if (!S.weights.length) { ul.innerHTML = '<li class="empty">Aún no hay registros de peso.</li>'; return; }
+    const rows = [...S.weights].reverse().map((w, i, arr) => {
+      const prev = arr[i + 1];
+      const d = prev ? r1(w.kg - prev.kg) : null;
+      const delta = d === null ? '' : d === 0 ? '<span>±0.0</span>' : `<span class="${d > 0 ? 'delta-up' : 'delta-down'}">${d > 0 ? '+' : ''}${d.toFixed(1)}</span>`;
+      return `<li><span>${fmtDate(w.date)}</span><span>${w.kg.toFixed(1)} kg ${delta}</span></li>`;
+    });
+    ul.innerHTML = rows.join('');
+  }
+
+  /* ---------------------------------------------------------
+     12. ALIMENTO
+  --------------------------------------------------------- */
+  const FOOD_FIELDS = ['brand', 'name', 'stage', 'kcal', 'protein', 'fat', 'fiber', 'moisture', 'portion'];
+  function fillFood() { FOOD_FIELDS.forEach((k) => { $('#food-' + k).value = S.food[k] ?? ''; }); renderFoodSummary(); }
+  $('#food-save').addEventListener('click', () => {
+    const f = {};
+    FOOD_FIELDS.forEach((k) => {
+      const v = $('#food-' + k).value.trim();
+      f[k] = ['brand', 'name', 'stage'].includes(k) ? v : (v === '' ? '' : num(v));
+    });
+    f.saved = todayISO();
+    S.food = f;
+    save();
+    renderFoodSummary();
+    renderProInputs();
+    toast('Alimento guardado');
+  });
+  function renderFoodSummary() {
+    const f = S.food;
+    const box = $('#food-summary');
+    if (!f || !f.saved) { box.hidden = true; return; }
+    const me = metabolizable(f);
+    const row = (k, v) => (v === '' || v == null ? '' : `<dt>${k}</dt><dd>${esc(v)}</dd>`);
+    box.hidden = false;
+    box.innerHTML = `<div class="food-sum">
+      <p class="eyebrow">Alimento actual</p>
+      <h3 class="card-title">${esc([f.brand, f.name].filter(Boolean).join(' · ') || 'Croquetas sin nombre')}</h3>
+      <dl>
+        ${row('Etapa', f.stage && f.stage[0].toUpperCase() + f.stage.slice(1))}
+        <dt>Energía</dt><dd>${Math.round(me.value)} kcal/kg${me.source === 'bolsa' ? '' : ' *'}</dd>
+        ${row('Proteína', f.protein !== '' ? f.protein + ' %' : '')}
+        ${row('Grasa', f.fat !== '' ? f.fat + ' %' : '')}
+        ${row('Fibra', f.fiber !== '' ? f.fiber + ' %' : '')}
+        ${row('Humedad', f.moisture !== '' ? f.moisture + ' %' : '')}
+        ${row('Porción del fabricante', f.portion !== '' ? f.portion + ' g/día' : '')}
+      </dl>
+      ${me.source !== 'bolsa' ? `<p class="tiny muted">* ${me.source === 'atwater' ? 'Estimada con el análisis garantizado (Atwater modificado).' : 'Valor típico de croqueta seca: agrega las kcal/kg de la bolsa para mayor precisión.'}</p>` : ''}
+      <p class="tiny muted">Guardado el ${fmtDate(f.saved)}</p>
+    </div>`;
+  }
+
+  /* ---------------------------------------------------------
+     13. MOTOR NUTRICIONAL
+     Referencias usadas en la lógica local (NRC 2006 / guías WSAVA):
+       RER = 70 × peso^0.75 (kcal/día)
+       Pérdida de peso: 1.0 × RER del peso ideal
+       Mantenimiento adulto: 1.6 × RER (esterilizado) o 1.8 × RER (entero)
+       Ganancia: MER del peso ideal × 1.1
+     El veterinario siempre valida la meta.
+  --------------------------------------------------------- */
+  function metabolizable(f) {
+    if (f && num(f.kcal)) return { value: num(f.kcal), source: 'bolsa' };
+    const P = num(f?.protein), F = num(f?.fat);
+    if (P != null && F != null) {
+      const fiber = num(f.fiber) ?? 4, moist = num(f.moisture) ?? 10, ash = 7;
+      const nfe = Math.max(0, 100 - P - F - fiber - moist - ash);
+      return { value: 10 * (3.5 * P + 8.5 * F + 3.5 * nfe), source: 'atwater' };
+    }
+    return { value: 3500, source: 'tipico' };
+  }
+  const rer = (kg) => 70 * Math.pow(kg, 0.75);
+  const ACTIVITY = { sedentario: { f: -0.2, t: 'sedentario' }, moderado: { f: 0, t: 'moderado' }, activo: { f: 0.4, t: 'activo' }, muy_activo: { f: 1.0, t: 'muy activo' } };
+  const BCS_LABEL = ['', 'Emaciado', 'Muy delgado', 'Delgado', 'Ligeramente delgado', 'Ideal', 'Ligero sobrepeso', 'Sobrepeso', 'Obeso', 'Obesidad severa'];
+
+  function idealWeight() {
+    const w = lastWeight();
+    if (S.vet && num(S.vet.ideal)) return num(S.vet.ideal);
+    if (!w) return null;
+    const bcs = S.vet ? Number(S.vet.bcs) : 5;
+    // Cada punto de condición corporal por encima/debajo de 5 ≈ 10 % del peso
+    return r1(w.kg / (1 + 0.1 * (bcs - 5)));
+  }
+  function ageYears() { return (num(S.pet.years) || 0) + (num(S.pet.months) || 0) / 12; }
+
+  function maintenanceFactor() {
+    const age = ageYears();
+    if (S.food.stage === 'cachorro' || (age > 0 && age < 1)) return age > 0 && age < 0.34 ? 3.0 : 2.0;
+    let f = S.pet.neutered ? 1.6 : 1.8;
+    if (age >= 8 || S.food.stage === 'senior') f -= 0.2;
+    const act = ACTIVITY[S.vet?.activity || 'moderado'];
+    return Math.max(1.2, f + act.f);
+  }
+
+  function goalType(current, ideal) {
+    if (current > ideal * 1.02) return 'loss';
+    if (current < ideal * 0.98) return 'gain';
+    return 'maint';
+  }
+
+  function checkMaintenance() {
+    const w = lastWeight(); const ideal = idealWeight();
+    if (!w || !ideal) return;
+    const g = goalType(w.kg, ideal);
+    if (g === 'maint' && !S.maintStart) S.maintStart = w.date;
+    if (g !== 'maint' && S.maintStart && Math.abs(w.kg - ideal) / ideal > 0.05) S.maintStart = null; // salió del rango: vuelve a fase 1
+  }
+
+  /** Cálculo local. Devuelve el mismo formato que el endpoint de IA. */
+  function localRation() {
+    const w = lastWeight();
+    const ideal = idealWeight();
+    const me = metabolizable(S.food);
+    const goal = goalType(w.kg, ideal);
+    const mf = maintenanceFactor();
+    const rerIdeal = rer(ideal);
+    let kcal, phase, steps = [], weeks = 0;
+    if (goal === 'loss') {
+      kcal = rerIdeal * 1.0;
+      weeks = Math.ceil(Math.log(ideal / w.kg) / Math.log(0.99));
+      phase = 1;
+      steps.push(`Pérdida segura de ~1 % de peso por semana: ${(w.kg * 0.01).toFixed(2)} kg/semana aprox.`);
+      steps.push(`Meta estimada en ${weeks} semanas (${fmtDate(addDays(todayISO(), weeks * 7))}).`);
+    } else if (goal === 'gain') {
+      kcal = rerIdeal * mf * 1.1;
+      weeks = Math.ceil(Math.log(ideal / w.kg) / Math.log(1.01));
+      phase = 1;
+      steps.push(`Subida gradual de ~1 % por semana hasta ${ideal} kg (≈ ${weeks} semanas).`);
+    } else {
+      phase = 2;
+      // Anti-rebote: no se pasa de golpe a la ración de mantenimiento;
+      // se sube 10 % del RER cada 2 semanas hasta llegar al factor objetivo.
+      const start = S.maintStart || todayISO();
+      const wk = Math.max(0, Math.floor(daysBetween(start, todayISO()) / 7));
+      const stepF = Math.min(mf, 1.1 + 0.1 * Math.floor(wk / 2));
+      kcal = rerIdeal * stepF;
+      steps.push(`Semana ${wk + 1} de ${MAINT_WEEKS} del plan de mantenimiento.`);
+      steps.push(`Factor actual ${stepF.toFixed(1)} × RER; sube 0.1 cada 2 semanas hasta ${mf.toFixed(1)} si el peso se mantiene.`);
+      steps.push('Si sube más de 3 % en un control, Wooffi baja un escalón.');
+    }
+    const grams = Math.round(kcal / (me.value / 1000));
+    steps.unshift(`Energía en reposo (RER) a ${ideal} kg: ${Math.round(rerIdeal)} kcal/día.`);
+    if (num(S.food.portion)) {
+      const diff = Math.round((grams - num(S.food.portion)) / num(S.food.portion) * 100);
+      steps.push(`La bolsa sugiere ${S.food.portion} g/día; Wooffi ajusta ${diff > 0 ? '+' : ''}${diff} % según la meta.`);
+    }
+    if (S.vet?.notes) steps.push(`Observación del veterinario considerada: «${S.vet.notes.slice(0, 90)}${S.vet.notes.length > 90 ? '…' : ''}».`);
+    return {
+      dailyGrams: grams, kcal: Math.round(kcal), phase, goal, ideal, weeks,
+      kcalPerKg: Math.round(me.value), kcalSource: me.source, steps,
+      summary: goal === 'loss' ? `${petName()} necesita bajar ${r1(w.kg - ideal)} kg.` : goal === 'gain' ? `${petName()} necesita subir ${r1(ideal - w.kg)} kg.` : `${petName()} está en su peso ideal: toca estabilizar.`,
+      source: 'Cálculo local Wooffi (RER/MER)', date: todayISO(), fromWeight: w.kg,
+    };
+  }
+
+  /** Datos que se envían al backend que llama a la API de Claude. */
+  function buildAIPayload(local) {
+    return {
+      perro: { ...S.pet, edad_anios: r1(ageYears()) },
+      historial_peso: S.weights,
+      alimento: { ...S.food, kcal_kg_usada: local.kcalPerKg, fuente_kcal: local.kcalSource },
+      veterinario: S.vet ? { condicion_corporal: S.vet.bcs, actividad: S.vet.activity, peso_ideal: S.vet.ideal, observaciones: S.vet.notes } : null,
+      tomas_activas: S.schedules.filter((s) => s.enabled).map((s) => s.time),
+      calculo_local: { gramos_diarios: local.dailyGrams, kcal_diarias: local.kcal, fase: local.phase },
+      formato_respuesta: '{ "gramos_diarios": number, "kcal_diarias": number, "fase": 1|2, "resumen": string, "pasos": string[] }',
+    };
+  }
+
+  async function calcRation() {
+    const w = lastWeight();
+    if (!w) { toast('Primero registra el peso en Mascota'); show('pet'); return; }
+    const box = $('#ai-result');
+    const btn = $('#ai-calc');
+    btn.disabled = true;
+    box.hidden = false;
+    box.innerHTML = '<div class="thinking"><span class="spinner"></span><span id="think-txt">Leyendo perfil de ' + esc(petName()) + '…</span></div>';
+    const msgs = ['Cruzando datos del alimento…', 'Aplicando diagnóstico del veterinario…', 'Calculando gramos por toma…'];
+    let i = 0;
+    const iv = setInterval(() => { const el = $('#think-txt'); if (el && msgs[i]) el.textContent = msgs[i++]; }, 450);
+
+    let res = localRation();
+    if (S.cfg.aiEndpoint) {
+      try {
+        const ctrl = new AbortController();
+        const to = setTimeout(() => ctrl.abort(), 20000);
+        const r = await fetch(S.cfg.aiEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(buildAIPayload(res)), signal: ctrl.signal });
+        clearTimeout(to);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const j = await r.json();
+        if (!Number.isFinite(j.gramos_diarios)) throw new Error('respuesta sin gramos_diarios');
+        res = { ...res, dailyGrams: Math.round(j.gramos_diarios), kcal: Math.round(j.kcal_diarias ?? res.kcal), phase: j.fase ?? res.phase, summary: j.resumen || res.summary, steps: j.pasos?.length ? j.pasos : res.steps, source: 'Wooffi IA (Claude)' };
+      } catch (e) {
+        res.source = `Cálculo local (la IA no respondió: ${e.message})`;
+      }
+    } else {
+      await new Promise((r) => setTimeout(r, 1500));
+    }
+    clearInterval(iv);
+    S.ai = res;
+    save();
+    btn.disabled = false;
+    renderAI();
+    renderSchedules();
+    renderPhase();
+    updateCharts();
+    pushSchedule();
+    toast(`Nueva ración: ${res.dailyGrams} g/día enviada al comedero`, true);
+  }
+  $('#ai-calc').addEventListener('click', calcRation);
+
+  function renderAI() {
+    const box = $('#ai-result');
+    const a = S.ai;
+    if (!a) { box.hidden = true; return; }
+    const active = S.schedules.filter((s) => s.enabled).length || 1;
+    box.hidden = false;
+    box.innerHTML = `
+      <p><strong>${esc(a.summary)}</strong></p>
+      <div class="ai-big">
+        <div><strong>${a.dailyGrams}</strong><span>g por día</span></div>
+        <div><strong>${Math.round(a.dailyGrams / active)}</strong><span>g × ${active} toma${active > 1 ? 's' : ''}</span></div>
+        <div><strong>${a.kcal}</strong><span>kcal/día</span></div>
+      </div>
+      <ol class="ai-steps">${a.steps.map((s) => `<li>${esc(s)}</li>`).join('')}</ol>
+      <p class="ai-src">${esc(a.source)} · ${fmtDate(a.date)} · ${a.kcalPerKg} kcal/kg${a.kcalSource !== 'bolsa' ? ' (estimado)' : ''}. Esta recomendación no sustituye la consulta veterinaria.</p>`;
+  }
+
+  function renderProInputs() {
+    const w = lastWeight();
+    const items = [
+      [!!w, w ? `Peso actual: ${w.kg} kg (${fmtDate(w.date)})` : 'Peso del perro (en Mascota)'],
+      [!!S.food.saved, S.food.saved ? `Alimento: ${[S.food.brand, S.food.name].filter(Boolean).join(' ') || 'registrado'}` : 'Alimento (opcional, mejora la precisión)'],
+      [!!S.vet, S.vet ? `Diagnóstico: CC ${S.vet.bcs}/9, meta ${S.vet.ideal || idealWeight()} kg` : 'Diagnóstico del veterinario (opcional, recomendado)'],
+    ];
+    $('#inputs-check').innerHTML = items.map(([ok, t]) => `<li class="${ok ? 'yes' : 'no'}"><span class="mk">${ok ? '✓' : '·'}</span>${esc(t)}</li>`).join('');
+  }
+
+  /* ---------------------------------------------------------
+     14. PRO: PESAJE, FASE, VETERINARIO
+  --------------------------------------------------------- */
+  function renderWeighAlert() {
+    const w = lastWeight();
+    const box = $('#weigh-alert');
+    const every = S.maintStart ? WEIGH_EVERY_DAYS_MAINT : WEIGH_EVERY_DAYS_LOSS;
+    if (!w) {
+      box.classList.remove('calm');
+      $('#weigh-title').textContent = `Registra el primer peso de ${petName()}`;
+      $('#weigh-text').textContent = 'Sin un peso de partida no podemos calcular su plan.';
+      return;
+    }
+    const next = addDays(w.date, every);
+    const left = daysBetween(todayISO(), next);
+    box.classList.toggle('calm', left > 3);
+    if (left <= 0) {
+      $('#weigh-title').textContent = `Hoy toca pesar a ${petName()}`;
+      $('#weigh-text').textContent = `Último pesaje: ${fmtDate(w.date)}. Actualizar el peso cada ${every} días reajusta la dosis y evita el efecto rebote.`;
+    } else {
+      $('#weigh-title').textContent = `Próximo pesaje en ${left} día${left > 1 ? 's' : ''}`;
+      $('#weigh-text').textContent = `${fmtDateLong(next)}. Te recordaremos para reajustar la ración de ${petName()}.`;
+    }
+  }
+  $('#weigh-go').addEventListener('click', () => { show('pet'); setTimeout(() => $('#pet-weight').focus(), 100); });
+  $('#notif-btn').addEventListener('click', async () => {
+    if (!('Notification' in window)) { toast('Este navegador no permite notificaciones'); return; }
+    try {
+      const p = await Notification.requestPermission();
+      toast(p === 'granted' ? 'Recordatorios de pesaje activados' : 'Permiso de notificaciones no concedido');
+      if (p === 'granted') maybeNotify(true);
+    } catch { toast('No se pudieron activar las notificaciones'); }
+  });
+  function maybeNotify(force = false) {
+    if (!isPro() || !('Notification' in window) || Notification.permission !== 'granted') return;
+    const w = lastWeight(); if (!w) return;
+    const every = S.maintStart ? WEIGH_EVERY_DAYS_MAINT : WEIGH_EVERY_DAYS_LOSS;
+    const left = daysBetween(todayISO(), addDays(w.date, every));
+    if (left > 0 && !force) return;
+    const body = left <= 0 ? `Hoy toca pesar a ${petName()} para reajustar su ración.` : `Próximo pesaje de ${petName()} en ${left} días.`;
+    try {
+      if (navigator.serviceWorker?.controller) navigator.serviceWorker.ready.then((r) => r.showNotification('Wooffi', { body, icon: 'icons/icon-192.png' }));
+      else new Notification('Wooffi', { body });
+    } catch { /* */ }
+  }
+
+  function renderPhase() {
+    const w = lastWeight();
+    const ideal = idealWeight();
+    const fill = $('#phase-fill');
+    if (!w || !ideal) {
+      $('#phase-title').textContent = 'Fase 1: Ajuste hacia peso ideal';
+      $('#phase-text').textContent = 'Registra el peso y el diagnóstico del veterinario para calcular su plan.';
+      fill.style.width = '0%';
+      return;
+    }
+    const maint = !!S.maintStart || goalType(w.kg, ideal) === 'maint';
+    const start = S.weights[0].kg;
+    $('#ps1').className = 'phase-step ' + (maint ? 'done' : 'active');
+    $('#ps2').className = 'phase-step ' + (maint ? 'active' : '');
+    $('.bar-phase').classList.toggle('maint', maint);
+    if (maint) {
+      const ms = S.maintStart || w.date;
+      const wk = Math.min(MAINT_WEEKS, Math.floor(daysBetween(ms, todayISO()) / 7) + 1);
+      $('#phase-title').textContent = 'Fase 2: Plan de Mantenimiento Anti-Rebote';
+      fill.style.width = Math.round(wk / MAINT_WEEKS * 100) + '%';
+      $('#phase-start').textContent = `Meta lograda ${fmtDate(ms)}`;
+      $('#phase-now').textContent = `Semana ${wk}/${MAINT_WEEKS}`;
+      $('#phase-goal').textContent = `${ideal} kg`;
+      $('#phase-text').textContent = 'La ración sube poco a poco en lugar de suspender el plan de golpe. Así el metabolismo se adapta y no regresa el peso perdido.';
+    } else {
+      const total = Math.abs(start - ideal) || 1;
+      const done = Math.max(0, Math.min(1, Math.abs(start - w.kg) / total * (Math.sign(start - ideal) === Math.sign(start - w.kg) ? 1 : 0)));
+      $('#phase-title').textContent = 'Fase 1: Ajuste hacia peso ideal';
+      fill.style.width = Math.round(done * 100) + '%';
+      $('#phase-start').textContent = `Inicio ${start.toFixed(1)} kg`;
+      $('#phase-now').textContent = `Hoy ${w.kg.toFixed(1)} kg`;
+      $('#phase-goal').textContent = `Meta ${ideal.toFixed(1)} kg`;
+      $('#phase-text').textContent = `${Math.round(done * 100)} % del camino. ${S.vet ? 'Meta validada por el veterinario.' : 'Meta estimada: pide al veterinario que la confirme.'}`;
+    }
+  }
+
+  // Código para veterinario
+  function renderVetCode() {
+    const c = S.vetCode;
+    const valid = c && Date.now() < c.expires;
+    $('#code-box').hidden = !valid;
+    if (valid) {
+      $('#vet-code').textContent = c.code;
+      const h = Math.max(1, Math.round((c.expires - Date.now()) / 36e5));
+      $('#vet-exp').textContent = `Vence en ${h} h · un solo uso`;
+    }
+    const vs = $('#vet-summary');
+    if (S.vet) {
+      vs.hidden = false;
+      vs.innerHTML = `<strong>Diagnóstico recibido · ${fmtDate(S.vet.date)}</strong>
+        <span>Condición corporal: <b class="mono">${S.vet.bcs}/9</b> (${BCS_LABEL[S.vet.bcs]})</span>
+        <span>Actividad: ${ACTIVITY[S.vet.activity]?.t || '—'} · Peso ideal: <b class="mono">${S.vet.ideal || '—'} kg</b></span>
+        ${S.vet.notes ? `<span>«${esc(S.vet.notes)}»</span>` : ''}
+        ${S.vet.name ? `<span class="muted">${esc(S.vet.name)}</span>` : ''}`;
+    } else vs.hidden = true;
+  }
+  $('#gen-code').addEventListener('click', () => {
+    const code = 'WFF-' + String(Math.floor(1000 + Math.random() * 9000));
+    S.vetCode = { code, created: Date.now(), expires: Date.now() + 72 * 36e5 };
+    save();
+    renderVetCode();
+    toast('Código generado: compártelo con tu veterinario');
+  });
+  $('#copy-code').addEventListener('click', async () => {
+    const text = `Hola, soy ${S.owner || 'dueño de ' + petName()}. Para llenar el cuestionario de ${petName()} en Wooffi usa el código ${S.vetCode.code} (vence en 72 h).`;
+    try { await navigator.clipboard.writeText(text); toast('Mensaje copiado'); }
+    catch { const r = document.createRange(); r.selectNodeContents($('#vet-code')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast('Selecciona y copia el código'); }
+  });
+  $('#open-vet').addEventListener('click', () => {
+    $('#vet-code-input').value = S.vetCode && Date.now() < S.vetCode.expires ? S.vetCode.code : '';
+    $('#vet-login-msg').textContent = S.vetCode ? '' : 'Primero genera un código desde Nutrición Pro.';
+    $('#vet-login').hidden = false;
+    $('#vet-form').hidden = true;
+    show('vet', { sub: true });
+  });
+  $('#vet-enter').addEventListener('click', () => {
+    const v = $('#vet-code-input').value.trim().toUpperCase();
+    if (!S.vetCode || v !== S.vetCode.code || Date.now() > S.vetCode.expires) {
+      $('#vet-login-msg').textContent = 'Código no válido o vencido. Pide al dueño uno nuevo.';
+      return;
+    }
+    const w = lastWeight();
+    $('#vet-patient').textContent = `Paciente: ${petName()} · ${S.pet.breed || 'raza no indicada'} · ${r1(ageYears())} años · ${w ? w.kg + ' kg (' + fmtDate(w.date) + ')' : 'sin peso'}`;
+    const prev = S.vet || {};
+    $('#vet-bcs').value = prev.bcs || 6;
+    $('#vet-activity').value = prev.activity || 'moderado';
+    $('#vet-ideal').value = prev.ideal || (w ? r1(w.kg / 1.1) : '');
+    $('#vet-notes').value = prev.notes || '';
+    $('#vet-name').value = prev.name || '';
+    updBcs();
+    $('#vet-login').hidden = true;
+    $('#vet-form').hidden = false;
+  });
+  const updBcs = () => { const b = Number($('#vet-bcs').value); $('#bcs-val').textContent = b; $('#bcs-label').textContent = BCS_LABEL[b]; };
+  $('#vet-bcs').addEventListener('input', updBcs);
+  $('#vet-submit').addEventListener('click', () => {
+    const ideal = num($('#vet-ideal').value);
+    if (!ideal || ideal < 0.5 || ideal > 100) { toast('Indica un peso ideal válido en kg'); return; }
+    S.vet = { bcs: Number($('#vet-bcs').value), activity: $('#vet-activity').value, ideal: r1(ideal), notes: $('#vet-notes').value.trim(), name: $('#vet-name').value.trim(), date: todayISO() };
+    S.vetCode = null; // un solo uso
+    checkMaintenance();
+    save();
+    renderAll();
+    show('pro');
+    toast('Diagnóstico guardado. Ya puedes calcular la ración.');
+  });
+  $('#unlock-pro').addEventListener('click', () => { setPlan('pro'); toast('Wooffi Pro activado (modo prueba)', true); });
+
+  /* ---------------------------------------------------------
+     15. GRÁFICAS
+  --------------------------------------------------------- */
+  const charts = { pet: null, pro: null };
+  function projection() {
+    const w = lastWeight(); const ideal = idealWeight();
+    if (!w || !ideal) return null;
+    const goal = goalType(w.kg, ideal);
+    const pts = [{ x: w.date, y: w.kg }];
+    let d = w.date, kg = w.kg;
+    if (goal !== 'maint') {
+      const rate = goal === 'loss' ? 0.99 : 1.01;
+      for (let i = 0; i < 80; i++) {
+        kg = kg * rate;
+        d = addDays(d, 7);
+        if ((goal === 'loss' && kg <= ideal) || (goal === 'gain' && kg >= ideal)) { kg = ideal; pts.push({ x: d, y: r1(kg) }); break; }
+        pts.push({ x: d, y: r1(kg) });
+      }
+    }
+    const reach = pts[pts.length - 1].x;
+    const maint = [{ x: reach, y: ideal }, { x: addDays(reach, MAINT_WEEKS * 7), y: ideal }];
+    return { pts, maint, reach };
+  }
+  function chartConfig(withProj) {
+    const base = S.weights[0]?.date || todayISO();
+    const toX = (iso) => daysBetween(base, iso);
+    const real = S.weights.map((w) => ({ x: toX(w.date), y: w.kg }));
+    const ds = [{
+      label: 'Peso real', data: real, borderColor: '#176FB7', backgroundColor: 'rgba(23,111,183,.12)', fill: true,
+      pointBackgroundColor: '#176FB7', pointRadius: 4, pointHoverRadius: 6, borderWidth: 2.5, tension: .25,
+    }];
+    if (withProj) {
+      const p = projection();
+      if (p) {
+        ds.push({ label: 'Proyección a peso ideal', data: p.pts.map((q) => ({ x: toX(q.x), y: q.y })), borderColor: '#F66F3A', borderDash: [6, 5], pointRadius: 0, borderWidth: 2, fill: false, tension: .2 });
+        ds.push({ label: 'Mantenimiento anti-rebote', data: p.maint.map((q) => ({ x: toX(q.x), y: q.y })), borderColor: '#85B3CC', borderDash: [3, 4], borderWidth: 2.5, fill: false, pointRadius: [6, 0], pointStyle: 'rectRot', pointBackgroundColor: '#996631', pointBorderColor: '#996631' });
+      }
+    }
+    return {
+      type: 'line',
+      data: { datasets: ds },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: { duration: 400 },
+        parsing: false,
+        interaction: { mode: 'nearest', intersect: false },
+        plugins: {
+          legend: { display: withProj, position: 'bottom', labels: { boxWidth: 14, boxHeight: 2, color: '#996631', font: { family: 'Inter', size: 11 } } },
+          tooltip: { callbacks: { title: (it) => fmtDate(addDays(base, it[0].parsed.x)), label: (it) => ` ${it.dataset.label}: ${it.parsed.y.toFixed(1)} kg` } },
+        },
+        scales: {
+          x: { type: 'linear', grid: { color: 'rgba(153,102,49,.08)' }, ticks: { color: '#996631', font: { family: 'DM Mono', size: 10 }, maxTicksLimit: 6, callback: (v) => fmtDate(addDays(base, Math.round(v))) } },
+          y: { grid: { color: 'rgba(153,102,49,.1)' }, ticks: { color: '#996631', font: { family: 'DM Mono', size: 10 }, callback: (v) => v + ' kg' }, grace: '8%' },
+        },
+      },
+    };
+  }
+  function updateCharts() {
+    if (typeof window.Chart === 'undefined') { $('#chart-note').textContent = 'No se pudo cargar Chart.js (¿sin internet?). Tu historial sigue guardado abajo.'; return; }
+    const make = (key, sel, proj) => {
+      if (charts[key]) charts[key].destroy();
+      charts[key] = new window.Chart($(sel), chartConfig(proj));
+    };
+    make('pet', '#weight-chart', isPro());
+    if (isPro()) make('pro', '#pro-chart', true);
+    $('#chart-pro-tag').hidden = !isPro();
+  }
+
+  /* ---------------------------------------------------------
+     18. RENDER GENERAL Y ARRANQUE
+  --------------------------------------------------------- */
+  function renderAll() {
+    renderClock();
+    $('#owner-display').textContent = S.owner || '—';
+    $$('.plan-switch button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.plan === S.plan)));
+    $('#pro-locked').hidden = isPro();
+    $('#pro-content').hidden = !isPro();
+    renderDevice();
+    renderSchedules();
+    fillPet();
+    renderHistory();
+    fillFood();
+    if (isPro()) { renderWeighAlert(); renderPhase(); renderVetCode(); renderProInputs(); renderAI(); }
+    updateCharts();
+  }
+
+  function enter() {
+    const sp = $('#splash');
+    if (sp.classList.contains('gone')) return;
+    sp.classList.add('gone');
+    if (!S.owner) show('owner'); else show('home');
+    maybeNotify();
+  }
+  $('#splash-enter').addEventListener('click', enter);
+
+  renderAll();
+  show(S.owner ? 'home' : 'owner');
+  connect();
+  setInterval(renderClock, 30000);
+  setInterval(renderDevice, 15000);   // apaga "En línea" si el comedero deja de reportar
+  setTimeout(enter, 1500);
+
+  // Service worker (solo en https o localhost; los artifacts y file:// lo omiten)
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    navigator.serviceWorker.register('sw.js').catch(() => { /* sin modo offline */ });
+  }
+})();
+
+</script>
+
+</body></html>
